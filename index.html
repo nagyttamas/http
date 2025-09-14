@@ -71,6 +71,8 @@
             --tab-border-dark: rgba(74, 85, 104, 0.5);
             --tab-hover-bg-dark: rgba(28, 41, 58, 0.9);
             --tab-glow-dark: rgba(56, 189, 248, 0.3);
+            --input-glow-light: rgba(13, 148, 136, 0.2);
+            --input-glow-dark: rgba(56, 189, 248, 0.2);
         }
 
         *, *::before, *::after {
@@ -179,10 +181,14 @@
             border-color: var(--border-dark);
         }
 
-        .input-field:focus {
+        .input-field:focus, .input-field:hover {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+            box-shadow: 0 0 0 3px var(--input-glow-light);
+        }
+        body.dark .input-field:focus,
+        body.dark .input-field:hover {
+             box-shadow: 0 0 0 3px var(--input-glow-dark);
         }
 
         select.input-field {
@@ -1889,6 +1895,7 @@
 </script>
 </body>
 </html>
+
 
 
 
