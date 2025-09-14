@@ -379,6 +379,19 @@
         </div>
     </div>
 
+    <div id="pin-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h3 id="pin-modal-title" class="text-xl font-bold mb-4">PIN kód szükséges</h3>
+            <p id="pin-modal-text" class="mb-4 text-gray-600">Kérjük, adja meg a PIN kódot az árak megtekintéséhez.</p>
+            <input type="password" id="pin-input" class="input-field text-center mb-4" placeholder="****" inputmode="numeric">
+            <p id="pin-error" class="text-red-500 text-sm mb-4 hidden">Helytelen PIN kód!</p>
+            <div class="flex justify-center space-x-4">
+                <button id="pin-submit-btn" class="btn btn-primary">Belépés</button>
+                <button id="pin-cancel-btn" class="btn btn-secondary">Mégse</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container mx-auto p-4 sm:p-6 lg:p-10 rounded-3xl shadow-2xl">
         <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-y-4">
             <div class="flex items-center space-x-4 min-w-0">
@@ -728,6 +741,10 @@
                 updateItemBtn: "Tétel módosítása", cancelEditBtn: "Mégse",
                 searchPlaceholder: "Keresés név vagy ügyfél alapján...",
                 extenderFrameLabel: "Kiemelő keret", extenderFramePrice: "Kiemelő keret (ár / m)",
+                pinModalTitle: "PIN kód szükséges",
+                pinModalText: "Kérjük, adja meg a PIN kódot az árak megtekintéséhez.",
+                pinSubmitBtn: "Belépés",
+                pinError: "Helytelen PIN kód!",
                 productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret" }
             },
             ro: {
@@ -749,6 +766,10 @@
                 tableAreaTh: "m²", updateItemBtn: "Modifică Articol", cancelEditBtn: "Anulează",
                 searchPlaceholder: "Căutare după nume sau client...",
                 extenderFrameLabel: "Cadru de extensie", extenderFramePrice: "Cadru de extensie (preț / m)",
+                pinModalTitle: "Cod PIN necesar",
+                pinModalText: "Vă rugăm să introduceți codul PIN pentru a vizualiza prețurile.",
+                pinSubmitBtn: "Intră",
+                pinError: "Cod PIN incorect!",
                 productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie" }
             },
             en: {
@@ -770,6 +791,10 @@
                 tableAreaTh: "m²", updateItemBtn: "Update Item", cancelEditBtn: "Cancel",
                 searchPlaceholder: "Search by name or client...",
                 extenderFrameLabel: "Extender frame", extenderFramePrice: "Extender frame (price / m)",
+                pinModalTitle: "PIN Code Required",
+                pinModalText: "Please enter the PIN code to view prices.",
+                pinSubmitBtn: "Enter",
+                pinError: "Incorrect PIN code!",
                 productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", wood: "Wood imitation", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahogany", extender_frame: "Extender frame" }
             }
         };
@@ -1669,11 +1694,24 @@
         }
 
         function setupListeners() {
-            $$('.tab-button').forEach(tab => tab.addEventListener('click', () => { 
+            $$('.tab-button').forEach(tab => tab.addEventListener('click', async () => { 
                 if (editingItemIndex !== null) {
                     resetEditingState();
                 }
-                switchToTab(tab.id); 
+
+                if (tab.id === 'prices-tab') {
+                    if (sessionStorage.getItem('pricesUnlocked') === 'true') {
+                        switchToTab('prices-tab');
+                    } else {
+                        const pinCorrect = await promptForPin();
+                        if (pinCorrect) {
+                            sessionStorage.setItem('pricesUnlocked', 'true');
+                            switchToTab('prices-tab');
+                        }
+                    }
+                } else {
+                    switchToTab(tab.id);
+                }
             }));
             
             $('#language-select').addEventListener('change', (e) => { currentLanguage = e.target.value; localStorage.setItem('language', currentLanguage); updateLocalization(); });
@@ -1816,6 +1854,63 @@
             $('#export-data-btn').addEventListener('click', exportData);
             $('#import-data-btn').addEventListener('click', () => $('#import-file-input').click());
             $('#import-file-input').addEventListener('change', importData);
+        }
+        
+        function promptForPin() {
+            return new Promise((resolve) => {
+                const modal = $('#pin-modal');
+                const pinInput = $('#pin-input');
+                const errorMsg = $('#pin-error');
+                const t = translations[currentLanguage];
+
+                // Update modal text with current language
+                $('#pin-modal-title').textContent = t.pinModalTitle;
+                $('#pin-modal-text').textContent = t.pinModalText;
+                $('#pin-submit-btn').textContent = t.pinSubmitBtn;
+                $('#pin-cancel-btn').textContent = t.cancelEditBtn; // Reuse translation
+                errorMsg.textContent = t.pinError;
+
+                pinInput.value = '';
+                errorMsg.classList.add('hidden');
+                modal.classList.add('active');
+                pinInput.focus();
+
+                const correctPin = '2009';
+
+                const submitHandler = () => {
+                    if (pinInput.value === correctPin) {
+                        modal.classList.remove('active');
+                        cleanup();
+                        resolve(true);
+                    } else {
+                        errorMsg.classList.remove('hidden');
+                        pinInput.value = '';
+                        pinInput.focus();
+                    }
+                };
+
+                const cancelHandler = () => {
+                    modal.classList.remove('active');
+                    cleanup();
+                    resolve(false);
+                };
+                
+                const keypressHandler = (e) => {
+                    if (e.key === 'Enter') {
+                        submitHandler();
+                    }
+                };
+
+                const cleanup = () => {
+                    $('#pin-submit-btn').removeEventListener('click', submitHandler);
+                    $('#pin-cancel-btn').removeEventListener('click', cancelHandler);
+                    pinInput.removeEventListener('keypress', keypressHandler);
+                };
+
+                $('#pin-submit-btn').addEventListener('click', submitHandler);
+                $('#pin-cancel-btn').addEventListener('click', cancelHandler);
+                pinInput.addEventListener('keypress', keypressHandler);
+            });
         }
         
         document.addEventListener('DOMContentLoaded', () => {
