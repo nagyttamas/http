@@ -59,7 +59,7 @@
             --tab-bg-light: rgba(204, 251, 241, 0.6);
             --tab-border-light: rgba(13, 148, 136, 0.2);
             --tab-hover-bg-light: rgba(204, 251, 241, 0.9);
-            --tab-glow-light: rgba(13, 148, 136, 0.4);
+            --tab-glow-light: rgba(13, 148, 136, 0.5); /* Intenzívebb fény */
 
             /* Sötét mód */
             --bg-dark: #111827;
@@ -70,9 +70,9 @@
             --tab-bg-dark: rgba(28, 41, 58, 0.6);
             --tab-border-dark: rgba(74, 85, 104, 0.5);
             --tab-hover-bg-dark: rgba(28, 41, 58, 0.9);
-            --tab-glow-dark: rgba(56, 189, 248, 0.3);
-            --input-glow-light: rgba(13, 148, 136, 0.2);
-            --input-glow-dark: rgba(56, 189, 248, 0.2);
+            --tab-glow-dark: rgba(56, 189, 248, 0.4); /* Intenzívebb fény */
+            --input-glow-light: rgba(13, 148, 136, 0.3); /* Intenzívebb fény */
+            --input-glow-dark: rgba(56, 189, 248, 0.3); /* Intenzívebb fény */
         }
 
         *, *::before, *::after {
@@ -136,11 +136,11 @@
         .tab-button:hover {
             transform: scale(1.05); /* Nagyítás effekt */
             background-color: var(--tab-hover-bg-light);
-            box-shadow: 0 8px 25px -5px var(--tab-glow-light), 0 5px 15px -5px rgba(0,0,0,0.1); /* Fény effekt */
+            box-shadow: 0 0 25px -5px var(--tab-glow-light), 0 5px 10px -5px rgba(0,0,0,0.1); /* Erősebb Fény effekt */
         }
         body.dark .tab-button:hover {
             background-color: var(--tab-hover-bg-dark);
-            box-shadow: 0 8px 25px -5px var(--tab-glow-dark), 0 5px 15px -5px rgba(0,0,0,0.2);
+            box-shadow: 0 0 25px -5px var(--tab-glow-dark), 0 5px 15px -5px rgba(0,0,0,0.2); /* Erősebb Fény effekt */
         }
 
         .tab-button:active {
@@ -184,11 +184,11 @@
         .input-field:focus, .input-field:hover {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px var(--input-glow-light);
+            box-shadow: 0 0 0 4px var(--input-glow-light); /* Nagyobb fény */
         }
         body.dark .input-field:focus,
         body.dark .input-field:hover {
-             box-shadow: 0 0 0 3px var(--input-glow-dark);
+             box-shadow: 0 0 0 4px var(--input-glow-dark); /* Nagyobb fény */
         }
 
         select.input-field {
@@ -259,13 +259,34 @@
         input:checked + .slider { background-color: var(--primary-color); border-color: var(--primary-dark); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        .tab-content { display: none; animation: content-slide-in 0.5s forwards; }
+        .tab-content { display: none; }
         .tab-content.active { display: block; }
         
         @keyframes content-slide-in {
             from { opacity: 0; transform: translateX(10px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
+        /* Új animáció a mezőknek */
+        @keyframes form-element-slide-in {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active .animated-form-group {
+            animation: form-element-slide-in 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Lépcsőzetes animáció késleltetés */
+        .animated-form-group:nth-child(1) { animation-delay: 0.1s; }
+        .animated-form-group:nth-child(2) { animation-delay: 0.15s; }
+        .animated-form-group:nth-child(3) { animation-delay: 0.2s; }
+        .animated-form-group:nth-child(4) { animation-delay: 0.25s; }
+        .animated-form-group:nth-child(5) { animation-delay: 0.3s; }
+        .animated-form-group:nth-child(6) { animation-delay: 0.35s; }
+        .animated-form-group:nth-child(7) { animation-delay: 0.4s; }
+        .animated-form-group:nth-child(8) { animation-delay: 0.45s; }
         
         #quote-items-body tr:hover {
              background-color: #f0fdfa;
@@ -361,19 +382,19 @@
             <div id="blinds-content" class="tab-content active">
                  <h2 id="blinds-heading" class="text-2xl font-bold mb-4">Redőny hozzáadása</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="blinds-width-label">Szélesség (mm):</label>
                         <input type="number" id="blinds-width" class="input-field mt-1" placeholder="1000" min="0">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="blinds-height-label">Magasság (mm):</label>
                         <input type="number" id="blinds-height" class="input-field mt-1" placeholder="1500" min="0">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="blinds-quantity-label">Darab:</label>
                         <input type="number" id="blinds-quantity" class="input-field mt-1" value="1" min="1">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="blinds-type-label">Típus:</label>
                         <select id="blinds-type" class="input-field mt-1">
                             <option value="pvc">PVC</option>
@@ -381,18 +402,18 @@
                             <option value="external-aluminium">Külső tokos alumínium</option>
                         </select>
                     </div>
-                    <div class="input-group" id="blinds-color-group">
+                    <div class="input-group animated-form-group" id="blinds-color-group">
                         <label id="blinds-color-label">Szín:</label>
                         <select id="blinds-color" class="input-field mt-1"></select>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="blinds-control-label">Vezérlés:</label>
                         <select id="blinds-control" class="input-field mt-1">
                             <option value="string">Zsinóros</option>
                             <option value="motorized">Motoros</option>
                         </select>
                     </div>
-                    <div id="integrated-screen-group" class="input-group">
+                    <div id="integrated-screen-group" class="input-group animated-form-group">
                         <label id="blinds-integrated-screen-label" for="blinds-integrated-screen">Beépített szúnyogháló</label>
                         <select id="blinds-integrated-screen" class="input-field mt-1">
                             <option value="none">Nincs</option>
@@ -400,7 +421,7 @@
                             <option value="half">Fele</option>
                         </select>
                     </div>
-                    <div class="input-group flex items-center justify-between col-span-1">
+                    <div class="input-group flex items-center justify-between col-span-1 animated-form-group">
                         <label id="blinds-divided-label" for="blinds-divided" class="input-label cursor-pointer font-medium">Kettéosztott</label>
                         <label class="toggle-switch">
                             <input type="checkbox" id="blinds-divided">
@@ -431,19 +452,19 @@
             <div id="screens-content" class="tab-content">
                 <h2 id="screens-heading" class="text-2xl font-bold mb-4">Szúnyogháló hozzáadása</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="screens-width-label">Szélesség (mm):</label>
                         <input type="number" id="screens-width" class="input-field mt-1" placeholder="1000" min="0">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="screens-height-label">Magasság (mm):</label>
                         <input type="number" id="screens-height" class="input-field mt-1" placeholder="1500" min="0">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="screens-quantity-label">Darab:</label>
                         <input type="number" id="screens-quantity" class="input-field mt-1" value="1" min="1">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="screens-type-label">Típus:</label>
                         <select id="screens-type" class="input-field mt-1">
                             <option value="fix">Fix háló</option>
@@ -454,11 +475,11 @@
                             <option value="thin-door">Vékony ajtó háló</option>
                         </select>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group animated-form-group">
                         <label id="screens-color-label">Szín:</label>
                         <select id="screens-color" class="input-field mt-1"></select>
                     </div>
-                    <div id="extender-frame-group" class="input-group flex items-center justify-between hidden">
+                    <div id="extender-frame-group" class="input-group flex items-center justify-between hidden animated-form-group">
                         <label id="screens-extender-frame-label" for="screens-extender-frame" class="input-label cursor-pointer font-medium">Kiemelő keret</label>
                          <label class="toggle-switch">
                             <input type="checkbox" id="screens-extender-frame">
@@ -476,19 +497,19 @@
                 <h2 id="quote-heading" class="text-2xl font-bold mb-4">Ajánlat</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                     <div class="input-group">
+                     <div class="input-group animated-form-group">
                         <label id="quote-name-label" for="quote-name">Ajánlat neve:</label>
                         <input type="text" id="quote-name" class="input-field mt-1" placeholder="Pl. Lakásfelújítási projekt">
                     </div>
-                     <div class="input-group">
+                     <div class="input-group animated-form-group">
                         <label id="client-name-label" for="client-name">Ügyfél neve:</label>
                         <input type="text" id="client-name" class="input-field mt-1" placeholder="Pl. Minta János">
                     </div>
-                     <div class="input-group">
+                     <div class="input-group animated-form-group">
                         <label id="client-address-label" for="client-address">Ügyfél címe:</label>
                         <input type="text" id="client-address" class="input-field mt-1" placeholder="Pl. 1234 Minta, Fő utca 5.">
                     </div>
-                     <div class="input-group">
+                     <div class="input-group animated-form-group">
                         <label id="client-phone-label" for="client-phone">Ügyfél telefonszáma:</label>
                         <input type="tel" id="client-phone" class="input-field mt-1" placeholder="Pl. +36 30 123 4567">
                     </div>
@@ -551,26 +572,26 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div class="space-y-6">
                         <h3 class="text-xl font-bold">Cég adatai</h3>
-                        <div class="input-group">
+                        <div class="input-group animated-form-group">
                             <label id="company-name-label" for="company-name">Cég neve:</label>
                             <input type="text" id="company-name" class="input-field mt-1" placeholder="Cég Kft.">
                         </div>
-                        <div class="input-group">
+                        <div class="input-group animated-form-group">
                             <label id="company-website-label" for="company-website">Weboldal:</label>
                             <input type="text" id="company-website" class="input-field mt-1" placeholder="www.ceg-oldala.hu">
                         </div>
-                         <div class="input-group">
+                         <div class="input-group animated-form-group">
                             <label id="company-email-label" for="company-email">Email cím:</label>
                             <input type="email" id="company-email" class="input-field mt-1" placeholder="info@ceg-oldala.hu">
                         </div>
-                         <div class="input-group">
+                         <div class="input-group animated-form-group">
                             <label id="company-phone-label" for="company-phone">Telefonszám:</label>
                             <input type="tel" id="company-phone" class="input-field mt-1" placeholder="+36 30 123 4567">
                         </div>
                     </div>
                      <div class="space-y-6">
                         <h3 class="text-xl font-bold">Vizuális elemek</h3>
-                         <div class="input-group">
+                         <div class="input-group animated-form-group">
                             <label id="company-logo-label">Cég logó:</label>
                             <input type="file" id="company-logo-input" class="hidden" accept="image/*">
                             <label for="company-logo-input" class="input-field mt-1 cursor-pointer flex items-center justify-center border-dashed border-2 h-48">
@@ -1895,6 +1916,7 @@
 </script>
 </body>
 </html>
+
 
 
 
