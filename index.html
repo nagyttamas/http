@@ -1885,7 +1885,7 @@
         });
     }
     
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener('DOMContentLoaded', () => {
         try {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
@@ -1894,31 +1894,28 @@
             setupListeners();
             $('#loading-overlay').classList.remove('hidden');
             
-            onAuthStateChanged(auth, (user) => {
+            onAuthStateChanged(auth, async (user) => {
                 if (user) {
-                    // User is authenticated
+                    // User is signed in.
                     console.log("User authenticated with UID:", user.uid);
                     initializeAppWithData(user);
                     $('#loading-overlay').classList.add('hidden');
-                }
-                // The 'else' case is handled by the initial sign-in logic below
-            });
-
-            // Handle initial sign-in only if there's no current user
-            if (!auth.currentUser) {
-                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        console.log("Attempting sign-in with custom token...");
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        console.log("No custom token, attempting anonymous sign-in...");
-                        await signInAnonymously(auth);
+                } else {
+                    // No user is signed in. Attempt to sign in.
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            console.log("Attempting sign-in with custom token...");
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            console.log("No custom token, attempting anonymous sign-in...");
+                            await signInAnonymously(auth);
+                        }
+                    } catch (authError) {
+                        console.error("Authentication failed:", authError);
+                        document.body.innerHTML = '<div style="padding: 2rem; text-align: center;">Hiba történt a bejelentkezés során. Kérjük, frissítse az oldalt.</div>';
                     }
-                } catch (authError) {
-                    console.error("Authentication failed:", authError);
-                    document.body.innerHTML = '<div style="padding: 2rem; text-align: center;">Hiba történt a bejelentkezés során. Kérjük, frissítse az oldalt.</div>';
                 }
-            }
+            });
 
         } catch (error) {
             console.error("Végzetes hiba az alkalmazás indításakor:", error);
