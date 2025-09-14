@@ -59,7 +59,7 @@
             --tab-bg-light: rgba(204, 251, 241, 0.6);
             --tab-border-light: rgba(13, 148, 136, 0.2);
             --tab-hover-bg-light: rgba(204, 251, 241, 0.9);
-            --tab-glow-light: rgba(13, 148, 136, 0.5); /* Intenzívebb fény */
+            --tab-glow-light: rgba(13, 148, 136, 0.7); /* Még intenzívebb fény */
 
             /* Sötét mód */
             --bg-dark: #111827;
@@ -70,9 +70,9 @@
             --tab-bg-dark: rgba(28, 41, 58, 0.6);
             --tab-border-dark: rgba(74, 85, 104, 0.5);
             --tab-hover-bg-dark: rgba(28, 41, 58, 0.9);
-            --tab-glow-dark: rgba(13, 148, 136, 0.4); /* Türkiz Fény sötét módban is */
-            --input-glow-light: rgba(13, 148, 136, 0.3); /* Intenzívebb fény */
-            --input-glow-dark: rgba(13, 148, 136, 0.3); /* Türkiz Fény sötét módban is */
+            --tab-glow-dark: rgba(13, 148, 136, 0.6); /* Még intenzívebb türkiz fény */
+            --input-glow-light: rgba(13, 148, 136, 0.45); /* Még intenzívebb fény */
+            --input-glow-dark: rgba(13, 148, 136, 0.45); /* Még intenzívebb türkiz fény */
         }
 
         *, *::before, *::after {
@@ -136,11 +136,11 @@
         .tab-button:hover {
             transform: scale(1.05); /* Nagyítás effekt */
             background-color: var(--tab-hover-bg-light);
-            box-shadow: 0 0 25px -5px var(--tab-glow-light), 0 5px 10px -5px rgba(0,0,0,0.1); /* Erősebb Fény effekt */
+            box-shadow: 0 0 35px -5px var(--tab-glow-light), 0 5px 10px -5px rgba(0,0,0,0.1); /* Látványosabb Fény effekt */
         }
         body.dark .tab-button:hover {
             background-color: var(--tab-hover-bg-dark);
-            box-shadow: 0 0 25px -5px var(--tab-glow-dark), 0 5px 15px -5px rgba(0,0,0,0.2); /* Erősebb Fény effekt */
+            box-shadow: 0 0 35px -5px var(--tab-glow-dark), 0 5px 15px -5px rgba(0,0,0,0.2); /* Látványosabb Fény effekt */
         }
 
         .tab-button:active {
@@ -155,12 +155,12 @@
             background-color: var(--primary-color);
             color: white;
             border-color: transparent;
-            box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.3), 0 4px 6px -4px rgba(13, 148, 136, 0.3);
+            box-shadow: 0 10px 25px -3px rgba(13, 148, 136, 0.4), 0 4px 10px -4px rgba(13, 148, 136, 0.4); /* Erősebb aktív árnyék */
             transform: scale(1.02);
         }
         body.dark .tab-button.active-style {
             border-color: transparent;
-            box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.4), 0 4px 6px -4px rgba(13, 148, 136, 0.4);
+            box-shadow: 0 10px 25px -3px rgba(13, 148, 136, 0.5), 0 4px 10px -4px rgba(13, 148, 136, 0.5); /* Erősebb aktív árnyék */
         }
         .tab-button.active-style .icon { color: white; }
 
@@ -184,11 +184,11 @@
         .input-field:focus, .input-field:hover {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px var(--input-glow-light); /* Nagyobb fény */
+            box-shadow: 0 0 0 5px var(--input-glow-light); /* Látványosabb fény */
         }
         body.dark .input-field:focus,
         body.dark .input-field:hover {
-             box-shadow: 0 0 0 4px var(--input-glow-dark); /* Nagyobb fény */
+             box-shadow: 0 0 0 5px var(--input-glow-dark); /* Látványosabb fény */
         }
 
         select.input-field {
@@ -267,26 +267,33 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        /* Új animáció a mezőknek */
-        @keyframes form-element-slide-in {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Látványos 3D animáció a mezőknek */
+        @keyframes spectacular-form-in {
+            from {
+                opacity: 0;
+                transform: perspective(800px) translateY(40px) rotateX(-20deg);
+            }
+            to {
+                opacity: 1;
+                transform: perspective(800px) translateY(0) rotateX(0deg);
+            }
         }
 
         .tab-content.active .animated-form-group {
-            animation: form-element-slide-in 0.6s ease-out forwards;
+            animation: spectacular-form-in 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
             opacity: 0;
+            transform-style: preserve-3d;
         }
 
         /* Lépcsőzetes animáció késleltetés */
-        .animated-form-group:nth-child(1) { animation-delay: 0.1s; }
-        .animated-form-group:nth-child(2) { animation-delay: 0.15s; }
-        .animated-form-group:nth-child(3) { animation-delay: 0.2s; }
-        .animated-form-group:nth-child(4) { animation-delay: 0.25s; }
-        .animated-form-group:nth-child(5) { animation-delay: 0.3s; }
-        .animated-form-group:nth-child(6) { animation-delay: 0.35s; }
-        .animated-form-group:nth-child(7) { animation-delay: 0.4s; }
-        .animated-form-group:nth-child(8) { animation-delay: 0.45s; }
+        .animated-form-group:nth-child(1) { animation-delay: 0.05s; }
+        .animated-form-group:nth-child(2) { animation-delay: 0.1s; }
+        .animated-form-group:nth-child(3) { animation-delay: 0.15s; }
+        .animated-form-group:nth-child(4) { animation-delay: 0.2s; }
+        .animated-form-group:nth-child(5) { animation-delay: 0.25s; }
+        .animated-form-group:nth-child(6) { animation-delay: 0.3s; }
+        .animated-form-group:nth-child(7) { animation-delay: 0.35s; }
+        .animated-form-group:nth-child(8) { animation-delay: 0.4s; }
         
         #quote-items-body tr:hover {
              background-color: #f0fdfa;
@@ -1916,6 +1923,7 @@
 </script>
 </body>
 </html>
+
 
 
 
