@@ -1451,8 +1451,11 @@
                         const previewData = ${JSON.stringify(previewData)};
                         
                         function renderPreview(lang) {
-                            const t = previewData.translations[lang];
-                            if (!t) return;
+                            const t = previewData.translations[lang] || previewData.translations.hu; // JAVÍTÁS: Biztonsági fordítás
+                            if (!t) {
+                                console.error("Fordítási hiba: A kiválasztott nyelv nem található.");
+                                return;
+                            }
                             
                             document.documentElement.lang = lang;
                             document.getElementById('preview-title').textContent = \`\${t.quotePreviewTitle}: \${previewData.quoteName}\`;
@@ -1534,7 +1537,11 @@
                         }
                         
                         function generatePdfBlob(lang) {
-                            const t = previewData.translations[lang];
+                            const t = previewData.translations[lang] || previewData.translations.hu; // JAVÍTÁS: Biztonsági fordítás
+                            if (!t) {
+                                console.error("PDF generálási hiba: Fordítás nem található.");
+                                return null;
+                            }
                             const { jsPDF } = window.jspdf;
                             const doc = new jsPDF();
                             
@@ -1803,30 +1810,28 @@
                     const names = translations[lang].productNames;
                     const t = translations[lang];
 
-                    const typeText = names[type] || type;
-                    const colorText = names[color] || color;
-                    
-                    let controlText = '';
+                    const parts = [];
+                    parts.push(names[type] || type);
+                    parts.push(`(${(names[color] || color)})`);
+
                     if (control === 'string') {
-                        controlText = ` (${(names.automata || 'automata')} x${divided ? 2 : 1})`;
+                        parts.push(`(${(names.automata || 'automata')} x${divided ? 2 : 1})`);
                     } else {
-                        controlText = ` (${(names.motorized || 'motorized')})`;
+                        parts.push(`(${(names.motorized || 'motorized')})`);
                     }
 
-                    let dividedText = '';
-                    if (divided) { 
+                    if (divided) {
                         const sideText = t[divisionSide === 'right' ? 'sideRight' : 'sideLeft'] || divisionSide;
-                        dividedText = ` (${(names.divided_blind || 'osztás')} ${sideText}: ${divisionWidth}mm)`;
+                        parts.push(`(${(names.divided_blind || 'osztás')} ${sideText}: ${divisionWidth}mm)`);
                     }
 
-                    let screenText = '';
                     if (integrated_screen === 'full') {
-                        screenText = ` (+${(names.integrated_screen_full || 'teljes szúnyogháló')})`;
+                        parts.push(`(+${(names.integrated_screen_full || 'teljes szúnyogháló')})`);
                     } else if (integrated_screen === 'half') {
-                        screenText = ` (+${(names.integrated_screen_half || 'fél szúnyogháló')})`;
+                        parts.push(`(+${(names.integrated_screen_half || 'fél szúnyogháló')})`);
                     }
                     
-                    productText[lang] = `${typeText} (${colorText})${controlText}${dividedText}${screenText}`.trim();
+                    productText[lang] = parts.filter(p => p).join(' '); // Biztonságos összefűzés
                 }
                 const newItem = { isScreen: false, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity, isNew: true };
                 
@@ -1857,13 +1862,14 @@
                 const productText = {};
                 for (const lang in translations) { 
                     const names = translations[lang].productNames;
-                    const typeText = names[type] || type;
-                    const colorText = names[color] || color;
-                    let extenderText = '';
+                    const parts = [];
+                    parts.push(names[type] || type);
+                    parts.push(`(${(names[color] || color)})`);
+
                     if (extenderFrame) {
-                        extenderText = ` (+${(names.extender_frame || 'kiemelő keret')})`;
+                        parts.push(`(+${(names.extender_frame || 'kiemelő keret')})`);
                     }
-                    productText[lang] = `${typeText} (${colorText})${extenderText}`.trim();
+                    productText[lang] = parts.filter(p => p).join(' '); // Biztonságos összefűzés
                 }
                 const newItem = { isScreen: true, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity, isNew: true };
                 
@@ -2049,6 +2055,8 @@
 </script>
 </body>
 </html>
+
+
 
 
 
