@@ -46,371 +46,239 @@
         
         /* --- Alkalmazás Stílusok --- */
         :root {
-            --primary-color: #009688; 
-            --primary-dark: #00796B;
-            --secondary-color: #00BCD4;
-            --secondary-dark: #0097A7;
-            --accent-color: #F59E0B;
+            --primary-color: #0d9488; 
+            --primary-dark: #0f766e;
+            --accent-color: #f59e0b;
             
-            /* Világos mód színei */
-            --background-start-light: #E0F2F1;
-            --background-end-light: #E0F7FA;
-            --surface-glass-light: rgba(255, 255, 255, 0.6);
-            --border-glass-light: rgba(255, 255, 255, 0.8);
-            --text-color: #1F2937;
-            --light-text-color: #6B7280;
-            --input-bg-color: #F9FAFB;
-            --input-border-color: #D1D5DB;
-            --table-header-bg: #E5E7EB;
-            --table-row-border: #E5E7EB;
-            --hover-bg-color: #E5E7EB;
+            /* Világos mód */
+            --bg-light: #f0fdfa;
+            --surface-light: #ffffff;
+            --text-light: #1f2937;
+            --text-muted-light: #6b7280;
+            --border-light: #cbd5e1;
+
+            /* Sötét mód */
+            --bg-dark: #111827;
+            --surface-dark: #1f2937;
+            --text-dark: #f9fafb;
+            --text-muted-dark: #9ca3af;
+            --border-dark: #4b5563;
         }
 
-        body.dark {
-            /* Sötét mód színei */
-            --background-start-dark: #1A202C;
-            --background-end-dark: #2D3748;
-            --surface-glass-dark: rgba(10, 15, 25, 0.65); /* Sötétebb, feketébb üveg hatás */
-            --border-glass-dark: rgba(50, 60, 75, 0.5);
-            --text-color: #F9FAFB;
-            --light-text-color: #9CA3AF;
-            --input-bg-color: #374151;
-            --input-border-color: #4B5563;
-            --table-header-bg: #374151;
-            --table-row-border: #4B5563;
-            --hover-bg-color: #374151;
+        *, *::before, *::after {
+            transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease, transform .2s ease;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--text-color);
-            background-image: linear-gradient(135deg, var(--background-start-light), var(--background-end-light));
-            background-attachment: fixed;
-            transition: color 0.3s;
+            background-color: var(--bg-light);
+            color: var(--text-light);
         }
 
         body.dark {
-            background-image: linear-gradient(135deg, var(--background-start-dark), var(--background-end-dark));
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
         }
 
         .container {
             max-width: 1024px;
-            background-color: var(--surface-glass-light);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass-light);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, border-color 0.3s;
+            background-color: var(--surface-light);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+            animation: container-fade-in 0.8s ease-out forwards;
+            opacity: 0;
         }
 
         body.dark .container {
-             background-color: var(--surface-glass-dark);
-             border-color: var(--border-glass-dark);
+             background-color: var(--surface-dark);
+             border-color: var(--border-dark);
+        }
+        
+        @keyframes container-fade-in {
+          from { opacity: 0; transform: translateY(20px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Tabs styling - iOS Glass Effect */
+        /* Tabs - Neu Brutalist style */
         .tab-button {
-            -webkit-appearance: none;
-            border: none;
-            transition: all 0.3s ease, transform 0.2s ease;
-            cursor: pointer;
+            font-weight: 600;
+            background-color: var(--surface-light);
+            border: 2px solid #1f2937;
             border-radius: 12px;
             padding: 0.75rem 1.25rem;
-            font-weight: 600;
-            background-color: rgba(148, 163, 184, 0.1); /* Subtle, glassy background */
-            color: var(--light-text-color);
-            flex-shrink: 0;
+            box-shadow: 4px 4px 0px #1f2937;
+            transform: translate(0, 0);
         }
-        body.dark .tab-button:not(.active-style) {
-            background-color: rgba(71, 85, 105, 0.2);
+        body.dark .tab-button {
+            background-color: var(--surface-dark);
+            border-color: #f9fafb;
+            box-shadow: 4px 4px 0px #f9fafb;
+            color: var(--text-muted-dark);
         }
-        .tab-button:not(.active-style):hover {
-            background-color: rgba(148, 163, 184, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 0 15px rgba(0, 150, 136, 0.15); /* Ragyogás effekt */
+
+        .tab-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #1f2937;
         }
-        body.dark .tab-button:not(.active-style):hover {
-            background-color: rgba(71, 85, 105, 0.6);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 0 15px rgba(0, 188, 212, 0.2); /* Sötét mód ragyogás effekt */
+        body.dark .tab-button:hover {
+            box-shadow: 6px 6px 0px #f9fafb;
         }
-        .tab-button:focus-visible { /* A11y focus state */
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.4);
+
+        .tab-button:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px #1f2937;
         }
+         body.dark .tab-button:active {
+            box-shadow: 0px 0px 0px #f9fafb;
+        }
+        
         .tab-button.active-style {
             background-color: var(--primary-color);
             color: white;
-            box-shadow: 0 4px 12px rgba(0, 150, 136, 0.3);
+            border-color: #1f2937;
+            box-shadow: 4px 4px 0px #1f2937;
         }
-        .tab-button.active-style:hover {
-            background-color: var(--primary-dark);
+        body.dark .tab-button.active-style {
+            border-color: #f9fafb;
+            box-shadow: 4px 4px 0px #f9fafb;
         }
-        
-        .tab-button .icon {
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-        
-        .tab-button:not(.active-style) .icon {
-             color: var(--light-text-color);
-        }
-
-        .tab-button.active-style .icon {
-            color: white;
-        }
+        .tab-button.active-style .icon { color: white; }
 
         /* Input and select styling */
         .input-field {
-            -webkit-appearance: none; /* iOS style reset */
+            -webkit-appearance: none;
             appearance: none;
             padding: 0.75rem 1rem;
             border-radius: 12px;
-            color: var(--text-color);
-            transition: all 0.3s ease;
+            color: var(--text-light);
             width: 100%;
-             /* Glass Effect */
-            background-color: rgba(224, 242, 241, 0.4); /* Finomított áttetsző háttér */
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(178, 222, 219, 0.5);
+            background-color: var(--bg-light);
+            border: 2px solid var(--border-light);
         }
-
         body.dark .input-field {
-            background-color: rgba(26, 32, 44, 0.5); /* Sötétebb input háttér sötét módban */
-            border-color: rgba(74, 85, 104, 0.5);
+            color: var(--text-dark);
+            background-color: var(--bg-dark);
+            border-color: var(--border-dark);
         }
 
         .input-field:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2);
-        }
-
-        body.dark .input-field:focus {
-            /* Nincs szükség külön háttérszín változásra, a keret jelzi a fókuszt */
-        }
-
-        .input-field::placeholder {
-            color: var(--light-text-color);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
         }
 
         select.input-field {
-             /* The glass effect is now inherited from .input-field */
-            /* Just keep the arrow styles */
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
             background-position: right 0.5rem center;
             background-repeat: no-repeat;
             background-size: 1.5em 1.5em;
-            padding-right: 2.5rem; /* Make space for the arrow */
+            padding-right: 2.5rem;
         }
-
         body.dark select.input-field {
-             /* The glass effect is now inherited from .dark .input-field */
-            /* Just update the arrow icon color for dark mode */
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
         }
-        
-        /* Specific overrides for the small header selects to fix iOS sizing issue */
-        #language-select, #currency-select {
-            width: auto;
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
-        }
 
-
-        /* Button styling - iOS Inspired */
+        /* Button styling */
         .btn {
-            -webkit-appearance: none; /* iOS style reset */
-            font-weight: 600;
+            font-weight: 700;
             padding: 0.9rem 1.75rem;
-            border-radius: 16px; /* Kerekebb gombok */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease;
-            transform: scale(1);
-            border: 1px solid transparent;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px #111827;
+            transform: translate(0, 0);
+            border: 2px solid #111827;
+        }
+        body.dark .btn {
+            box-shadow: 4px 4px 0px #f9fafb;
+            border-color: #f9fafb;
+        }
+        .btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #111827;
+        }
+        body.dark .btn:hover {
+             box-shadow: 6px 6px 0px #f9fafb;
         }
         .btn:active {
-            transform: scale(0.97);
-            box-shadow: none;
-            filter: brightness(0.95);
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px #111827;
+        }
+        body.dark .btn:active {
+            box-shadow: 0px 0px 0px #f9fafb;
         }
         .btn-primary { background-color: var(--primary-color); color: white; }
         .btn-primary:hover { background-color: var(--primary-dark); }
-        .btn-secondary { 
-            background-color: var(--hover-bg-color); 
-            color: var(--text-color);
-            border-color: var(--input-border-color);
-        }
-        body.dark .btn-secondary {
-            background-color: var(--input-bg-color);
-        }
-        .btn-secondary:hover { 
-            background-color: var(--input-border-color);
-        }
-        .btn-tertiary { background-color: var(--accent-color); color: white; border-color: transparent; }
-        .btn-tertiary:hover { background-color: #D97706; }
-        .btn-danger { background-color: #EF4444; color: white; border-color: transparent;}
-        .btn-danger:hover { background-color: #DC2626; }
-        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 12px; /* Kisebb gombok is kerekebbek */ }
-        
+        .btn-secondary { background-color: #e2e8f0; color: #1f2937; }
+        body.dark .btn-secondary { background-color: #374151; color: #f9fafb; }
+        .btn-tertiary { background-color: var(--accent-color); color: white; }
+        .btn-danger { background-color: #ef4444; color: white; }
         .btn-icon {
-             -webkit-appearance: none;
-             padding: 0;
-             width: 2.5rem; /* 40px */
-             height: 2.5rem; /* 40px */
-             display: inline-flex;
-             align-items: center;
-             justify-content: center;
-             border-radius: 9999px; /* Circular */
-             font-size: 1rem;
+             width: 2.75rem; height: 2.75rem; padding: 0;
+             display: inline-flex; align-items: center; justify-content: center;
+             border-radius: 9999px;
         }
 
+        /* Modern Toggle Switch */
+        .toggle-switch {
+            position: relative; display: inline-block; width: 52px; height: 32px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; border-radius: 34px; transition: .4s;
+            border: 2px solid #a3a3a3;
+        }
+        body.dark .slider { background-color: #4b5563; border-color: #6b7280; }
+        .slider:before {
+            position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px;
+            background-color: white; border-radius: 50%; transition: .4s;
+        }
+        input:checked + .slider { background-color: var(--primary-color); border-color: var(--primary-dark); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-        .tab-content { display: none; animation: fadeIn 0.5s; background-color: transparent; }
+        .tab-content { display: none; animation: content-slide-in 0.5s forwards; }
         .tab-content.active { display: block; }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .input-with-unit { display: flex; align-items: center; }
-        .input-with-unit .input-field { border-radius: 12px 0 0 12px; }
-        .input-with-unit .unit {
-            background-color: var(--hover-bg-color); color: var(--light-text-color); padding: 0.75rem 1rem;
-            border-radius: 0 12px 12px 0; border: 1px solid var(--input-border-color); border-left: none;
+        @keyframes content-slide-in {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
         
-        .table-header {
-            background-color: var(--table-header-bg);
-            color: var(--text-color);
+        #quote-items-body tr:hover {
+             background-color: #f0fdfa;
+        }
+        body.dark #quote-items-body tr:hover {
+            background-color: #111827;
         }
 
-        #quote-items-body {
-            border-color: var(--table-row-border);
-        }
-
-        #load-quote-section {
-            background-color: var(--background-color);
-        }
-
-        .saved-quote-item {
-            background-color: rgba(148, 163, 184, 0.1);
-            -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(148, 163, 184, 0.15);
-        }
-        body.dark .saved-quote-item {
-            background-color: rgba(71, 85, 105, 0.2);
-            border-color: rgba(71, 85, 105, 0.3);
-        }
-        .saved-quote-item.animated {
-            animation: slideInListItem 0.5s ease-out forwards;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        @keyframes slideInListItem {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-
-        /* Toast Notification */
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 1050; display: flex; flex-direction: column; gap: 10px; }
-        .toast {
-            display: flex; align-items: center; padding: 1rem 1.5rem; border-radius: 12px;
-            color: white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            opacity: 0; transform: translateX(100%);
-            animation: slideInToast 0.5s forwards, fadeOutToast 0.5s 4.5s forwards;
-            min-width: 250px;
-        }
-        .toast-success { background-color: var(--primary-color); }
-        .toast-error { background-color: #EF4444; }
-        .toast-info { background-color: var(--secondary-color); }
-        .toast .icon { margin-right: 0.75rem; font-size: 1.5rem; }
-        @keyframes slideInToast { to { opacity: 1; transform: translateX(0); } }
-        @keyframes fadeOutToast { from { opacity: 1; } to { opacity: 0; transform: translateX(100%); } }
-
-        /* Modal styling with Backdrop Blur */
+        /* Modal styling */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background-color: rgba(0, 0, 0, 0.35);
             display: flex; justify-content: center; align-items: center;
             z-index: 2000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
             backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px); /* --- KULCSFONTOSSÁGÚ A KOMPATIBILITÁSHOZ --- */
+            -webkit-backdrop-filter: blur(5px);
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
-            background: var(--surface-color); padding: 2rem; border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: var(--surface-light); padding: 2rem; border-radius: 16px;
+            border: 2px solid #1f2937;
+            box-shadow: 6px 6px 0px #1f2937;
             width: 90%; max-width: 400px;
-            transform: scale(0.95); transition: transform 0.3s ease;
+            transform: scale(0.95) translateY(10px); transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-
-        /* --- Eszköz-specifikus rács elrendezések --- */
-        .form-grid {
-            display: grid;
-            gap: 1.5rem; /* Tailwind's gap-6 */
-            grid-template-columns: 1fr; /* Alapértelmezett: Mobil (1 oszlop) */
+        body.dark .modal-content {
+            background: var(--surface-dark);
+            border-color: #f9fafb;
+            box-shadow: 6px 6px 0px #f9fafb;
         }
-
-        /* Tablet / iPad (álló) és nagyobb tabletek (768px-től) */
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        
+        /* Responsive Overrides */
         @media (min-width: 768px) {
-            .form-grid {
-                gap: 1.75rem; /* Increased gap for tablets */
-            }
-            #blinds-content .form-grid { grid-template-columns: repeat(3, 1fr); }
-            #screens-content .form-grid { grid-template-columns: repeat(2, 1fr); }
-            #settings-content .form-grid { grid-template-columns: repeat(2, 1fr); }
-            #quote-content .form-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        /* PC / iPad (fekvő) és nagyobb képernyők (1024px-től) */
-        @media (min-width: 1024px) {
-            #blinds-content .form-grid { grid-template-columns: repeat(4, 1fr); }
-            #screens-content .form-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        /* --- Reszponzív beállítások tabletekre (iPad) és nagyobb képenyőkre --- */
-        @media (min-width: 768px) {
-            #app-title {
-                font-size: 2rem;
-            }
-            .tab-button {
-                padding: 0.75rem 1.25rem;
-                font-size: 1rem;
-            }
-            .input-group label {
-                font-size: 0.9rem;
-                margin-bottom: 0.4rem;
-            }
-            .input-field {
-                padding: 0.9rem;
-                font-size: 1rem;
-            }
-            .btn:not(.btn-icon) { /* Apply to all buttons except icon-only */
+            .btn:not(.btn-icon) {
                 padding: 1.1rem 2.2rem;
                 font-size: 0.9rem;
-            }
-            .btn-small {
-                 padding: 0.6rem 1.2rem;
-                 font-size: 0.8rem;
-            }
-            #quote-items-body td, thead th {
-                padding-top: 0.75rem;
-                padding-bottom: 0.75rem;
-                font-size: 0.95rem;
-            }
-            .quote-summary {
-                font-size: 1.2rem;
-            }
-            .quote-summary #discount-percentage {
-                 padding: 0.5rem;
             }
         }
     </style>
@@ -421,7 +289,7 @@
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content text-center">
             <h3 id="modal-title" class="text-xl font-bold mb-4">Megerősítés</h3>
-            <p id="modal-text" class="mb-6 text-gray-600">Biztosan folytatja?</p>
+            <p id="modal-text" class="mb-6 text-muted-light dark:text-muted-dark">Biztosan folytatja?</p>
             <div class="flex justify-center space-x-4">
                 <button id="modal-confirm-btn" class="btn btn-danger">Törlés</button>
                 <button id="modal-cancel-btn" class="btn btn-secondary">Mégse</button>
@@ -432,7 +300,7 @@
     <div id="pin-modal" class="modal-overlay">
         <div class="modal-content text-center">
             <h3 id="pin-modal-title" class="text-xl font-bold mb-4">PIN kód szükséges</h3>
-            <p id="pin-modal-text" class="mb-4 text-gray-600">Kérjük, adja meg a PIN kódot az árak megtekintéséhez.</p>
+            <p id="pin-modal-text" class="mb-4 text-muted-light dark:text-muted-dark">Kérjük, adja meg a PIN kódot az árak megtekintéséhez.</p>
             <input type="password" id="pin-input" class="input-field text-center mb-4" placeholder="****" inputmode="numeric">
             <p id="pin-error" class="text-red-500 text-sm mb-4 hidden">Helytelen PIN kód!</p>
             <div class="flex justify-center space-x-4">
@@ -442,15 +310,15 @@
         </div>
     </div>
 
-    <div class="container mx-auto p-4 sm:p-6 lg:p-10 rounded-3xl shadow-2xl">
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-y-4">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-10 rounded-3xl">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-y-4">
             <div class="flex items-center space-x-4 min-w-0">
                 <img id="header-logo" src="" alt="Cég logója" class="h-16 w-auto hidden object-contain">
                 <h1 id="app-title" class="text-3xl font-bold truncate">Árajánlat Készítő</h1>
             </div>
             <div class="flex items-center justify-end flex-wrap gap-x-4 gap-y-2 flex-shrink-0">
                 <div class="flex items-center space-x-2">
-                    <label id="language-label" class="text-sm font-medium text-light-text-color flex-shrink-0">Nyelv:</label>
+                    <label id="language-label" class="text-sm font-medium text-muted-light dark:text-muted-dark flex-shrink-0">Nyelv:</label>
                     <select id="language-select" class="input-field py-1 px-2 text-sm w-auto">
                         <option value="hu">Magyar</option>
                         <option value="ro">Română</option>
@@ -458,19 +326,19 @@
                     </select>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <label id="currency-label" class="text-sm font-medium text-light-text-color flex-shrink-0">Pénznem:</label>
+                    <label id="currency-label" class="text-sm font-medium text-muted-light dark:text-muted-dark flex-shrink-0">Pénznem:</label>
                     <select id="currency-select" class="input-field py-1 px-2 text-sm w-auto">
                         <option value="RON">RON</option>
                         <option value="EUR">EUR</option>
                     </select>
                 </div>
-                <button id="theme-toggle" class="p-2 rounded-full hover:bg-[var(--hover-bg-color)] transition-colors" aria-label="Téma váltása">
-                    <i id="theme-icon" class="fa-solid fa-moon text-xl text-light-text-color"></i>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors" aria-label="Téma váltása">
+                    <i id="theme-icon" class="fa-solid fa-moon text-xl text-muted-light dark:text-muted-dark"></i>
                 </button>
             </div>
         </div>
         
-        <div class="flex justify-center md:justify-start gap-3 mb-6 overflow-x-auto pb-2">
+        <div class="flex justify-center md:justify-start gap-3 mb-8 overflow-x-auto pb-4">
             <button id="blinds-tab" class="tab-button active-style flex items-center space-x-2"><i class="fa-solid fa-window-maximize icon"></i><span>Redőnyök</span></button>
             <button id="screens-tab" class="tab-button flex items-center space-x-2"><i class="fa-solid fa-grip-lines-vertical icon"></i><span>Szúnyoghálók</span></button>
             <button id="quote-tab" class="tab-button flex items-center space-x-2"><i class="fa-solid fa-file-invoice icon"></i><span>Ajánlat</span></button>
@@ -479,24 +347,24 @@
         </div>
 
         <div id="tab-content-container">
-            <div id="blinds-content" class="tab-content active p-4 md:p-6 rounded-2xl shadow-inner">
+            <div id="blinds-content" class="tab-content active">
                  <h2 id="blinds-heading" class="text-2xl font-bold mb-4">Redőny hozzáadása</h2>
-                <div class="form-grid">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="input-group">
                         <label id="blinds-width-label">Szélesség (mm):</label>
-                        <input type="number" id="blinds-width" class="input-field" placeholder="1000" min="0">
+                        <input type="number" id="blinds-width" class="input-field mt-1" placeholder="1000" min="0">
                     </div>
                     <div class="input-group">
                         <label id="blinds-height-label">Magasság (mm):</label>
-                        <input type="number" id="blinds-height" class="input-field" placeholder="1500" min="0">
+                        <input type="number" id="blinds-height" class="input-field mt-1" placeholder="1500" min="0">
                     </div>
                     <div class="input-group">
                         <label id="blinds-quantity-label">Darab:</label>
-                        <input type="number" id="blinds-quantity" class="input-field" value="1" min="1">
+                        <input type="number" id="blinds-quantity" class="input-field mt-1" value="1" min="1">
                     </div>
                     <div class="input-group">
                         <label id="blinds-type-label">Típus:</label>
-                        <select id="blinds-type" class="input-field">
+                        <select id="blinds-type" class="input-field mt-1">
                             <option value="pvc">PVC</option>
                             <option value="aluminium">Alumínium</option>
                             <option value="external-aluminium">Külső tokos alumínium</option>
@@ -504,38 +372,42 @@
                     </div>
                     <div class="input-group" id="blinds-color-group">
                         <label id="blinds-color-label">Szín:</label>
-                        <select id="blinds-color" class="input-field"></select>
+                        <select id="blinds-color" class="input-field mt-1"></select>
                     </div>
                     <div class="input-group">
                         <label id="blinds-control-label">Vezérlés:</label>
-                        <select id="blinds-control" class="input-field">
+                        <select id="blinds-control" class="input-field mt-1">
                             <option value="string">Zsinóros</option>
                             <option value="motorized">Motoros</option>
                         </select>
                     </div>
-                    <div class="input-group flex items-center mt-6">
-                        <input type="checkbox" id="blinds-divided" class="mr-2 h-6 w-6 rounded-lg text-primary-color focus:ring-0">
-                        <label id="blinds-divided-label" for="blinds-divided" class="input-label mb-0 cursor-pointer">Kettéosztott</label>
-                    </div>
-                     <div id="integrated-screen-group" class="input-group mt-1">
+                    <div id="integrated-screen-group" class="input-group">
                         <label id="blinds-integrated-screen-label" for="blinds-integrated-screen">Beépített szúnyogháló</label>
-                        <select id="blinds-integrated-screen" class="input-field">
+                        <select id="blinds-integrated-screen" class="input-field mt-1">
                             <option value="none">Nincs</option>
                             <option value="full">Teljes</option>
                             <option value="half">Fele</option>
                         </select>
                     </div>
+                    <div class="input-group flex items-center justify-between col-span-1">
+                        <label id="blinds-divided-label" for="blinds-divided" class="input-label cursor-pointer font-medium">Kettéosztott</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="blinds-divided">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
                     <div id="blinds-division-details" class="hidden col-span-1 md:col-span-2 lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
                         <div class="input-group">
                             <label id="blinds-division-side-label">Osztás oldala:</label>
-                            <select id="blinds-division-side" class="input-field">
+                            <select id="blinds-division-side" class="input-field mt-1">
                                 <option value="right">Jobb</option>
                                 <option value="left">Bal</option>
                             </select>
                         </div>
                         <div class="input-group">
                             <label id="blinds-division-width-label">Mező szélessége (mm):</label>
-                            <input type="number" id="blinds-division-width" class="input-field" placeholder="500" min="0">
+                            <input type="number" id="blinds-division-width" class="input-field mt-1" placeholder="500" min="0">
                         </div>
                     </div>
                 </div>
@@ -543,26 +415,26 @@
                     <button id="add-blind-btn" class="flex-grow btn btn-primary">Redőny Hozzáadása</button>
                     <button id="cancel-edit-blind-btn" class="hidden btn btn-secondary">Mégse</button>
                 </div>
-                <div id="blinds-summary-container" class="mt-8 pt-6 border-t border-[var(--input-border-color)]"></div>
+                <div id="blinds-summary-container" class="mt-8 pt-6 border-t border-[var(--border-light)] dark:border-[var(--border-dark)]"></div>
             </div>
-            <div id="screens-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
+            <div id="screens-content" class="tab-content">
                 <h2 id="screens-heading" class="text-2xl font-bold mb-4">Szúnyogháló hozzáadása</h2>
-                <div class="form-grid">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="input-group">
                         <label id="screens-width-label">Szélesség (mm):</label>
-                        <input type="number" id="screens-width" class="input-field" placeholder="1000" min="0">
+                        <input type="number" id="screens-width" class="input-field mt-1" placeholder="1000" min="0">
                     </div>
                     <div class="input-group">
                         <label id="screens-height-label">Magasság (mm):</label>
-                        <input type="number" id="screens-height" class="input-field" placeholder="1500" min="0">
+                        <input type="number" id="screens-height" class="input-field mt-1" placeholder="1500" min="0">
                     </div>
                     <div class="input-group">
                         <label id="screens-quantity-label">Darab:</label>
-                        <input type="number" id="screens-quantity" class="input-field" value="1" min="1">
+                        <input type="number" id="screens-quantity" class="input-field mt-1" value="1" min="1">
                     </div>
                     <div class="input-group">
                         <label id="screens-type-label">Típus:</label>
-                        <select id="screens-type" class="input-field">
+                        <select id="screens-type" class="input-field mt-1">
                             <option value="fix">Fix háló</option>
                             <option value="balcony">Balamas háló</option>
                             <option value="mobile">Mobil háló</option>
@@ -573,58 +445,61 @@
                     </div>
                     <div class="input-group">
                         <label id="screens-color-label">Szín:</label>
-                        <select id="screens-color" class="input-field"></select>
+                        <select id="screens-color" class="input-field mt-1"></select>
                     </div>
-                    <div id="extender-frame-group" class="input-group flex items-center mt-2 hidden">
-                        <input type="checkbox" id="screens-extender-frame" class="mr-2 h-6 w-6 rounded-lg text-primary-color focus:ring-0">
-                        <label id="screens-extender-frame-label" for="screens-extender-frame" class="input-label mb-0 cursor-pointer">Kiemelő keret</label>
+                    <div id="extender-frame-group" class="input-group flex items-center justify-between hidden">
+                        <label id="screens-extender-frame-label" for="screens-extender-frame" class="input-label cursor-pointer font-medium">Kiemelő keret</label>
+                         <label class="toggle-switch">
+                            <input type="checkbox" id="screens-extender-frame">
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
                 <div id="add-screen-buttons-container" class="w-full mt-6 flex gap-4">
                     <button id="add-screen-btn" class="flex-grow btn btn-primary">Szúnyogháló Hozzáadása</button>
                     <button id="cancel-edit-screen-btn" class="hidden btn btn-secondary">Mégse</button>
                 </div>
-                <div id="screens-summary-container" class="mt-8 pt-6 border-t border-[var(--input-border-color)]"></div>
+                <div id="screens-summary-container" class="mt-8 pt-6 border-t border-[var(--border-light)] dark:border-[var(--border-dark)]"></div>
             </div>
-            <div id="quote-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
+            <div id="quote-content" class="tab-content">
                 <h2 id="quote-heading" class="text-2xl font-bold mb-4">Ajánlat</h2>
                 
-                <div class="form-grid mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                      <div class="input-group">
                         <label id="quote-name-label" for="quote-name">Ajánlat neve:</label>
-                        <input type="text" id="quote-name" class="input-field" placeholder="Pl. Lakásfelújítási projekt">
+                        <input type="text" id="quote-name" class="input-field mt-1" placeholder="Pl. Lakásfelújítási projekt">
                     </div>
                      <div class="input-group">
                         <label id="client-name-label" for="client-name">Ügyfél neve:</label>
-                        <input type="text" id="client-name" class="input-field" placeholder="Pl. Minta János">
+                        <input type="text" id="client-name" class="input-field mt-1" placeholder="Pl. Minta János">
                     </div>
                      <div class="input-group">
                         <label id="client-address-label" for="client-address">Ügyfél címe:</label>
-                        <input type="text" id="client-address" class="input-field" placeholder="Pl. 1234 Minta, Fő utca 5.">
+                        <input type="text" id="client-address" class="input-field mt-1" placeholder="Pl. 1234 Minta, Fő utca 5.">
                     </div>
                      <div class="input-group">
                         <label id="client-phone-label" for="client-phone">Ügyfél telefonszáma:</label>
-                        <input type="tel" id="client-phone" class="input-field" placeholder="Pl. +36 30 123 4567">
+                        <input type="tel" id="client-phone" class="input-field mt-1" placeholder="Pl. +36 30 123 4567">
                     </div>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full whitespace-nowrap table-auto">
                         <thead>
-                            <tr class="text-left font-semibold table-header">
-                                <th id="table-product-th" class="px-4 py-2">Termék</th>
-                                <th id="table-size-th" class="px-4 py-2">Méret (mm)</th>
-                                <th id="table-area-th" class="px-4 py-2">m²</th>
-                                <th id="table-quantity-th" class="px-4 py-2">Darab</th>
-                                <th id="table-price-th" class="px-4 py-2">Egységár</th>
-                                <th id="table-subtotal-th" class="px-4 py-2">Részösszeg</th>
-                                <th id="table-actions-th" class="px-4 py-2 text-right">Műveletek</th>
+                            <tr class="text-left font-semibold bg-black/5 dark:bg-white/5">
+                                <th id="table-product-th" class="px-4 py-3">Termék</th>
+                                <th id="table-size-th" class="px-4 py-3">Méret (mm)</th>
+                                <th id="table-area-th" class="px-4 py-3">m²</th>
+                                <th id="table-quantity-th" class="px-4 py-3">Darab</th>
+                                <th id="table-price-th" class="px-4 py-3">Egységár</th>
+                                <th id="table-subtotal-th" class="px-4 py-3">Részösszeg</th>
+                                <th id="table-actions-th" class="px-4 py-3 text-right">Műveletek</th>
                             </tr>
                         </thead>
-                        <tbody id="quote-items-body" class="divide-y"></tbody>
+                        <tbody id="quote-items-body" class="divide-y divide-black/5 dark:divide-white/10"></tbody>
                     </table>
                 </div>
-                <div class="mt-6 border-t-2 pt-4 space-y-2 text-xl font-bold quote-summary">
+                <div class="mt-6 border-t-2 pt-4 space-y-2 text-xl font-bold">
                     <div class="flex justify-between items-center">
                         <span id="subtotal-text">Részösszeg:</span>
                         <span id="subtotal-price">0.00 RON</span>
@@ -637,7 +512,7 @@
                         <span id="discount-amount-text">Kedvezmény:</span>
                         <span id="discount-amount">-0.00 RON</span>
                     </div>
-                    <div class="flex justify-between items-center border-t pt-2 mt-2">
+                    <div class="flex justify-between items-center border-t border-[var(--border-light)] dark:border-[var(--border-dark)] pt-2 mt-2">
                         <span id="total-text">Végösszeg:</span>
                         <span id="total-price">0.00 RON</span>
                     </div>
@@ -647,7 +522,7 @@
                      <button id="load-quotes-btn" class="btn btn-tertiary flex-grow sm:flex-grow-0"></button>
                      <button id="preview-quote-btn" class="btn btn-primary flex-grow sm:flex-grow-0"></button>
                 </div>
-                 <div id="load-quote-section" class="mt-6 p-4 rounded-2xl shadow-md hidden transition-all duration-300">
+                 <div id="load-quote-section" class="mt-6 p-4 rounded-2xl bg-black/5 dark:bg-black/20 hidden transition-all duration-300">
                     <h3 id="load-quote-heading" class="text-xl font-bold mb-4">Mentett ajánlatok</h3>
                     <div class="relative mb-4">
                         <input type="search" id="quote-search-input" class="input-field pl-10" placeholder="Keresés név vagy ügyfél alapján...">
@@ -656,30 +531,30 @@
                     <ul id="saved-quotes-list" class="space-y-2 max-h-80 overflow-y-auto"></ul>
                 </div>
             </div>
-            <div id="prices-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
+            <div id="prices-content" class="tab-content">
                  <h2 id="prices-heading" class="text-2xl font-bold mb-4">Árbeállítások</h2>
                  <div id="prices-container" class="space-y-6"></div>
             </div>
-            <div id="settings-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
+            <div id="settings-content" class="tab-content">
                 <h2 id="settings-heading" class="text-2xl font-bold mb-4">Beállítások</h2>
-                <div class="form-grid">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div class="space-y-6">
                         <h3 class="text-xl font-bold">Cég adatai</h3>
                         <div class="input-group">
                             <label id="company-name-label" for="company-name">Cég neve:</label>
-                            <input type="text" id="company-name" class="input-field" placeholder="Cég Kft.">
+                            <input type="text" id="company-name" class="input-field mt-1" placeholder="Cég Kft.">
                         </div>
                         <div class="input-group">
                             <label id="company-website-label" for="company-website">Weboldal:</label>
-                            <input type="text" id="company-website" class="input-field" placeholder="www.ceg-oldala.hu">
+                            <input type="text" id="company-website" class="input-field mt-1" placeholder="www.ceg-oldala.hu">
                         </div>
                          <div class="input-group">
                             <label id="company-email-label" for="company-email">Email cím:</label>
-                            <input type="email" id="company-email" class="input-field" placeholder="info@ceg-oldala.hu">
+                            <input type="email" id="company-email" class="input-field mt-1" placeholder="info@ceg-oldala.hu">
                         </div>
                          <div class="input-group">
                             <label id="company-phone-label" for="company-phone">Telefonszám:</label>
-                            <input type="tel" id="company-phone" class="input-field" placeholder="+36 30 123 4567">
+                            <input type="tel" id="company-phone" class="input-field mt-1" placeholder="+36 30 123 4567">
                         </div>
                     </div>
                      <div class="space-y-6">
@@ -687,7 +562,7 @@
                          <div class="input-group">
                             <label id="company-logo-label">Cég logó:</label>
                             <input type="file" id="company-logo-input" class="hidden" accept="image/*">
-                            <label for="company-logo-input" class="input-field cursor-pointer flex items-center justify-center border-dashed border-2 h-48">
+                            <label for="company-logo-input" class="input-field mt-1 cursor-pointer flex items-center justify-center border-dashed border-2 h-48">
                                 <span id="logo-upload-text">Kattintson a logó feltöltéséhez</span>
                             </label>
                             <img id="logo-preview" src="" class="mt-4 h-24 w-auto hidden rounded-lg shadow-md object-contain" alt="Logó előnézet">
@@ -698,9 +573,9 @@
 
                 <button id="save-settings-btn" class="w-full md:w-auto mt-8 btn btn-primary">Beállítások mentése</button>
                 
-                <div class="mt-8 pt-6 border-t border-[var(--input-border-color)]">
+                <div class="mt-8 pt-6 border-t border-[var(--border-light)] dark:border-[var(--border-dark)]">
                     <h3 id="data-management-heading" class="text-xl font-bold mb-4">Adatkezelés</h3>
-                    <div id="data-loss-warning" class="p-4 mb-4 rounded-lg bg-yellow-100 dark:bg-yellow-900 border border-yellow-300 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200 flex items-start gap-3">
+                    <div id="data-loss-warning" class="p-4 mb-4 rounded-lg bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-300 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200 flex items-start gap-3">
                         <i class="fa-solid fa-triangle-exclamation mt-1"></i>
                         <p id="data-management-desc" class="text-sm">Minden adat a böngészőjében tárolódik. A böngésző gyorsítótárának törlése az összes mentett ajánlat és beállítás elvesztésével járhat. **Javasoljuk az adatok rendszeres exportálását!**</p>
                     </div>
@@ -1143,7 +1018,7 @@
             const tbody = $('#quote-items-body'), t = translations[currentLanguage];
             tbody.innerHTML = '';
             let subtotal = 0;
-            if (quoteItems.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-light-text-color">${t.noItemsInQuote}</td></tr>`;
+            if (quoteItems.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted-light dark:text-muted-dark">${t.noItemsInQuote}</td></tr>`;
             } else {
                 quoteItems.forEach((item, index) => {
                     const row = document.createElement('tr');
@@ -1177,10 +1052,10 @@
                 let summarySubtotal = 0;
                 const itemsHtml = items.map(item => {
                     summarySubtotal += item.price;
-                    return `<li class="flex justify-between items-center py-2 border-b border-[var(--table-row-border)]"><span class="text-sm">${item.product[currentLanguage] || item.product.hu} (${item.width}x${item.height}) x${item.quantity}</span><span class="font-semibold text-sm">${item.price.toFixed(2)} ${currentCurrency}</span></li>`;
+                    return `<li class="flex justify-between items-center py-2 border-b border-black/5 dark:border-white/10"><span class="text-sm">${item.product[currentLanguage] || item.product.hu} (${item.width}x${item.height}) x${item.quantity}</span><span class="font-semibold text-sm">${item.price.toFixed(2)} ${currentCurrency}</span></li>`;
                 }).join('');
 
-                container.innerHTML = `<h3 class="text-lg font-bold mb-3">${title}</h3><ul class="space-y-1">${itemsHtml}</ul><div class="flex justify-between items-center mt-4 pt-3 border-t border-[var(--input-border-color)]"><span class="font-bold">${t.summaryTotal}:</span><span class="font-bold text-lg">${summarySubtotal.toFixed(2)} ${currentCurrency}</span></div>`;
+                container.innerHTML = `<h3 class="text-lg font-bold mb-3">${title}</h3><ul class="space-y-1">${itemsHtml}</ul><div class="flex justify-between items-center mt-4 pt-3 border-t border-[var(--border-light)] dark:border-[var(--border-dark)]"><span class="font-bold">${t.summaryTotal}:</span><span class="font-bold text-lg">${summarySubtotal.toFixed(2)} ${currentCurrency}</span></div>`;
             };
             renderFullSummary('#blinds-summary-container');
             renderFullSummary('#screens-summary-container');
@@ -1191,8 +1066,8 @@
             container.innerHTML = '';
 
             const exchangeRateContainer = document.createElement('div');
-            exchangeRateContainer.className = "p-4 rounded-2xl shadow-md mb-6 saved-quote-item";
-            exchangeRateContainer.innerHTML = `<h3 class="text-xl font-semibold mb-4">${t.exchangeRateTitle}</h3><div class="flex items-center space-x-4 mb-2"><label class="w-2/3">1 EUR =</label><div class="input-with-unit w-1/3"><input type="number" id="exchange-rate-input" class="input-field text-right" value="${exchangeRate.toFixed(2)}" min="0" step="0.01"><span class="unit">RON</span></div></div>`;
+            exchangeRateContainer.className = "p-4 rounded-xl border-2 border-black/10 dark:border-white/10 mb-6";
+            exchangeRateContainer.innerHTML = `<h3 class="text-xl font-semibold mb-4">${t.exchangeRateTitle}</h3><div class="flex items-center space-x-4 mb-2"><label class="w-2/3">1 EUR =</label><div class="flex items-center w-1/3"><input type="number" id="exchange-rate-input" class="input-field text-right" value="${exchangeRate.toFixed(2)}" min="0" step="0.01"><span class="ml-2">RON</span></div></div>`;
             container.appendChild(exchangeRateContainer);
 
             const structure = [
@@ -1205,7 +1080,7 @@
                 categoryWrapper.innerHTML = `<h2 class="text-2xl font-bold mb-4">${category.title}</h2>`;
                 category.sections.forEach(section => {
                     const sectionContainer = document.createElement('div');
-                    sectionContainer.className = "p-4 rounded-2xl shadow-md mb-4 saved-quote-item";
+                    sectionContainer.className = "p-4 rounded-xl border-2 border-black/10 dark:border-white/10 mb-4";
                     sectionContainer.innerHTML = `<h3 class="text-xl font-semibold mb-4">${section.subtitle}</h3>`;
                     section.items.forEach(item => {
                         let priceValue = item.path.split('.').reduce((o, i) => o?.[i], pricesInRon) || 0;
@@ -1216,7 +1091,7 @@
 
                         const priceItem = document.createElement('div');
                         priceItem.className = "flex items-center space-x-4 mb-2";
-                        priceItem.innerHTML = `<label class="w-2/3">${t.productNames[item.key] || t[item.key]}:</label><div class="input-with-unit w-1/3"><input type="number" data-path="${item.path}" class="input-field text-right" value="${isPercentage ? priceValue : priceValue.toFixed(2)}" min="0" step="any"><span class="unit">${item.unit || currentCurrency}</span></div>`;
+                        priceItem.innerHTML = `<label class="w-2/3">${t.productNames[item.key] || t[item.key]}:</label><div class="flex items-center w-1/3"><input type="number" data-path="${item.path}" class="input-field text-right" value="${isPercentage ? priceValue : priceValue.toFixed(2)}" min="0" step="any"><span class="ml-2">${item.unit || currentCurrency}</span></div>`;
                         sectionContainer.appendChild(priceItem);
                     });
                     categoryWrapper.appendChild(sectionContainer);
@@ -1265,17 +1140,14 @@
                 (q.clientName && q.clientName.toLowerCase().includes(searchTerm.toLowerCase()))
             );
 
-            if (filteredQuotes.length === 0) { list.innerHTML = `<li class="text-light-text-color p-3">${t.noQuotesFound}</li>`; return; }
+            if (filteredQuotes.length === 0) { list.innerHTML = `<li class="text-muted-light dark:text-muted-dark p-3">${t.noQuotesFound}</li>`; return; }
 
             filteredQuotes.sort((a,b) => b.createdAt.localeCompare(a.createdAt)).forEach((quote, index) => {
                 const listItem = document.createElement('li');
-                listItem.className = "saved-quote-item flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-xl shadow-sm";
-                listItem.style.animationDelay = `${index * 50}ms`;
-                const clientInfo = quote.clientName ? `<span class="text-sm text-light-text-color">${quote.clientName}</span>` : '';
+                listItem.className = "bg-white dark:bg-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-xl shadow-sm border border-black/10 dark:border-white/10";
+                const clientInfo = quote.clientName ? `<span class="text-sm text-muted-light dark:text-muted-dark">${quote.clientName}</span>` : '';
                 listItem.innerHTML = `<div><p class="font-semibold">${quote.name}</p>${clientInfo}</div><div class="flex space-x-2 w-full sm:w-auto mt-2 sm:mt-0 flex-shrink-0"><button class="btn btn-primary btn-small w-full sm:w-auto" data-action="load">${t.loadQuotesBtn}</button><button class="btn btn-danger btn-small w-full sm:w-auto" data-action="delete">${t.deleteBtn}</button></div>`;
                 
-                listItem.addEventListener('animationend', () => { listItem.classList.remove('animated'); });
-
                 listItem.querySelector('[data-action="load"]').addEventListener('click', () => {
                     const loadedItems = JSON.parse(quote.items);
                     const fixedItems = loadedItems.map(item => { if (item.options === undefined) { console.warn('Old quote item format detected, upgrading.'); item.options = { type: item.type || (item.isScreen ? 'fix' : 'pvc'), color: 'white', control: 'string', divided: false, integrated_screen: 'none', divisionSide: null, divisionWidth: null }; } return item; });
@@ -1300,8 +1172,6 @@
                     }
                 });
                 list.appendChild(listItem);
-                // Trigger animation
-                requestAnimationFrame(() => { listItem.classList.add('animated'); });
             });
         }
 
@@ -2014,7 +1884,4 @@
 </script>
 </body>
 </html>
-
-
-
 
