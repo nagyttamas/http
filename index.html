@@ -1800,23 +1800,45 @@
 
                 const productText = {};
                 for (const lang in translations) { 
-                    const names = translations[lang].productNames; let text = `${names[type]} (${names[color]})`; 
-                    if (control === 'string') text += ` (${names.automata} x${divided ? 2 : 1})`; else text += ` (${names.motorized})`; 
-                    if (divided) { const sideText = translations[lang][divisionSide === 'right' ? 'sideRight' : 'sideLeft']; text += ` (${names.divided_blind} ${sideText}: ${divisionWidth}mm)`; }
-                    if (integrated_screen === 'full') text += ` (+${names.integrated_screen_full})`; else if (integrated_screen === 'half') text += ` (+${names.integrated_screen_half})`; 
-                    productText[lang] = text; 
+                    const names = translations[lang].productNames;
+                    const t = translations[lang];
+
+                    const typeText = names[type] || type;
+                    const colorText = names[color] || color;
+                    
+                    let controlText = '';
+                    if (control === 'string') {
+                        controlText = ` (${(names.automata || 'automata')} x${divided ? 2 : 1})`;
+                    } else {
+                        controlText = ` (${(names.motorized || 'motorized')})`;
+                    }
+
+                    let dividedText = '';
+                    if (divided) { 
+                        const sideText = t[divisionSide === 'right' ? 'sideRight' : 'sideLeft'] || divisionSide;
+                        dividedText = ` (${(names.divided_blind || 'osztás')} ${sideText}: ${divisionWidth}mm)`;
+                    }
+
+                    let screenText = '';
+                    if (integrated_screen === 'full') {
+                        screenText = ` (+${(names.integrated_screen_full || 'teljes szúnyogháló')})`;
+                    } else if (integrated_screen === 'half') {
+                        screenText = ` (+${(names.integrated_screen_half || 'fél szúnyogháló')})`;
+                    }
+                    
+                    productText[lang] = `${typeText} (${colorText})${controlText}${dividedText}${screenText}`.trim();
                 }
-                const newItem = { isScreen: false, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity };
+                const newItem = { isScreen: false, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity, isNew: true };
                 
                 if (editingItemIndex !== null) {
                     quoteItems[editingItemIndex] = newItem;
+                    delete newItem.isNew; // A módosítás ne animáljon
                     showToast(translations[currentLanguage].productUpdatedMessage);
                 } else {
                     quoteItems.push(newItem);
                     showToast(translations[currentLanguage].productAddedMessage);
                 }
-                resetEditingState();
-                renderQuote();
+                resetEditingState(); renderQuote();
             };
 
             const handleScreenSubmit = () => {
@@ -1834,23 +1856,26 @@
 
                 const productText = {};
                 for (const lang in translations) { 
-                    let text = `${translations[lang].productNames[type]} (${translations[lang].productNames[color]})`;
+                    const names = translations[lang].productNames;
+                    const typeText = names[type] || type;
+                    const colorText = names[color] || color;
+                    let extenderText = '';
                     if (extenderFrame) {
-                        text += ` (+${translations[lang].productNames.extender_frame})`;
+                        extenderText = ` (+${(names.extender_frame || 'kiemelő keret')})`;
                     }
-                    productText[lang] = text;
+                    productText[lang] = `${typeText} (${colorText})${extenderText}`.trim();
                 }
-                const newItem = { isScreen: true, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity };
+                const newItem = { isScreen: true, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity, isNew: true };
                 
                 if (editingItemIndex !== null) {
                     quoteItems[editingItemIndex] = newItem;
+                    delete newItem.isNew; // A módosítás ne animáljon
                     showToast(translations[currentLanguage].productUpdatedMessage);
                 } else {
                     quoteItems.push(newItem);
                     showToast(translations[currentLanguage].productAddedMessage);
                 }
-                resetEditingState();
-                renderQuote();
+                resetEditingState(); renderQuote();
             };
 
             $('#add-blind-btn').addEventListener('click', handleBlindSubmit);
@@ -2024,6 +2049,7 @@
 </script>
 </body>
 </html>
+
 
 
 
