@@ -262,12 +262,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
-        @keyframes content-slide-in {
-            from { opacity: 0; transform: translateX(10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* Látványos 3D animáció a mezőknek */
+        /* Látványos 3D KIBEILLENŐ animáció a mezőknek */
         @keyframes spectacular-form-in {
             from {
                 opacity: 0;
@@ -279,21 +274,48 @@
             }
         }
 
+        @keyframes spectacular-form-out {
+            from {
+                opacity: 1;
+                transform: perspective(800px) translateY(0) rotateX(0deg);
+            }
+            to {
+                opacity: 0;
+                transform: perspective(800px) translateY(-40px) rotateX(20deg);
+            }
+        }
+
         .tab-content.active .animated-form-group {
             animation: spectacular-form-in 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
             opacity: 0;
             transform-style: preserve-3d;
         }
 
-        /* Lépcsőzetes animáció késleltetés */
-        .animated-form-group:nth-child(1) { animation-delay: 0.05s; }
-        .animated-form-group:nth-child(2) { animation-delay: 0.1s; }
-        .animated-form-group:nth-child(3) { animation-delay: 0.15s; }
-        .animated-form-group:nth-child(4) { animation-delay: 0.2s; }
-        .animated-form-group:nth-child(5) { animation-delay: 0.25s; }
-        .animated-form-group:nth-child(6) { animation-delay: 0.3s; }
-        .animated-form-group:nth-child(7) { animation-delay: 0.35s; }
-        .animated-form-group:nth-child(8) { animation-delay: 0.4s; }
+        .tab-content.exiting .animated-form-group {
+            animation: spectacular-form-out 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+            opacity: 1; /* Láthatóról indul */
+            transform-style: preserve-3d;
+        }
+
+        /* Lépcsőzetes animáció késleltetés (belépés) */
+        .tab-content.active .animated-form-group:nth-child(1) { animation-delay: 0.05s; }
+        .tab-content.active .animated-form-group:nth-child(2) { animation-delay: 0.1s; }
+        .tab-content.active .animated-form-group:nth-child(3) { animation-delay: 0.15s; }
+        .tab-content.active .animated-form-group:nth-child(4) { animation-delay: 0.2s; }
+        .tab-content.active .animated-form-group:nth-child(5) { animation-delay: 0.25s; }
+        .tab-content.active .animated-form-group:nth-child(6) { animation-delay: 0.3s; }
+        .tab-content.active .animated-form-group:nth-child(7) { animation-delay: 0.35s; }
+        .tab-content.active .animated-form-group:nth-child(8) { animation-delay: 0.4s; }
+
+        /* Lépcsőzetes animáció késleltetés (kilépés - fordított sorrend) */
+        .tab-content.exiting .animated-form-group:nth-last-child(1) { animation-delay: 0.0s; }
+        .tab-content.exiting .animated-form-group:nth-last-child(2) { animation-delay: 0.05s; }
+        .tab-content.exiting .animated-form-group:nth-last-child(3) { animation-delay: 0.1s; }
+        .tab-content.exiting .animated-form-group:nth-last-child(4) { animation-delay: 0.15s; }
+        .tab-content.exiting .animated-form-group:nth-last-child(5) { animation-delay: 0.2s; }
+        .tab-content.exiting .animated-form-group:nth-last-child(6) { animation-delay: 0.25s; }
+        .tab-content.exiting .animated-form-group:nth-last-child(7) { animation-delay: 0.3s; }
+        .tab-content.exiting .animated-form-group:nth-last-child(8) { animation-delay: 0.35s; }
         
         #quote-items-body tr:hover {
              background-color: #f0fdfa;
@@ -840,10 +862,31 @@
         }
 
         function switchToTab(tabId) {
-            $$('.tab-button').forEach(t => t.classList.remove('active-style'));
-            $(`#${tabId}`).classList.add('active-style');
-            $$('.tab-content').forEach(content => content.classList.remove('active'));
-            $(`#${tabId.replace('-tab', '-content')}`).classList.add('active');
+            const newTabContentId = tabId.replace('-tab', '-content');
+            const newTabContent = $(`#${newTabContentId}`);
+            const currentActiveContent = $('.tab-content.active');
+
+            if (currentActiveContent && currentActiveContent.id !== newTabContentId) {
+                // Kilépő animáció hozzáadása
+                currentActiveContent.classList.add('exiting');
+                
+                // Időzítő a kilépő animáció végére
+                setTimeout(() => {
+                    currentActiveContent.classList.remove('active');
+                    currentActiveContent.classList.remove('exiting');
+                    
+                    // Új fül aktiválása a kilépés után
+                    $$('.tab-button').forEach(t => t.classList.remove('active-style'));
+                    $(`#${tabId}`).classList.add('active-style');
+                    newTabContent.classList.add('active');
+                }, 400); // Ennek meg kell egyeznie a kilépő animáció idejével (0.4s)
+
+            } else if (!currentActiveContent) {
+                 // Első betöltéskor nincs kilépő animáció
+                 $$('.tab-button').forEach(t => t.classList.remove('active-style'));
+                 $(`#${tabId}`).classList.add('active-style');
+                 newTabContent.classList.add('active');
+            }
         }
 
         function applyTheme(theme) {
@@ -1923,6 +1966,7 @@
 </script>
 </body>
 </html>
+
 
 
 
