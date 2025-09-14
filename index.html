@@ -70,8 +70,8 @@
             /* Sötét mód színei */
             --background-start-dark: #1A202C;
             --background-end-dark: #2D3748;
-            --surface-glass-dark: rgba(31, 41, 55, 0.6);
-            --border-glass-dark: rgba(75, 85, 99, 0.4);
+            --surface-glass-dark: rgba(10, 15, 25, 0.65); /* Sötétebb, feketébb üveg hatás */
+            --border-glass-dark: rgba(50, 60, 75, 0.5);
             --text-color: #F9FAFB;
             --light-text-color: #9CA3AF;
             --input-bg-color: #374151;
@@ -127,10 +127,11 @@
         .tab-button:not(.active-style):hover {
             background-color: rgba(148, 163, 184, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 0 15px rgba(0, 150, 136, 0.15); /* Ragyogás effekt */
         }
         body.dark .tab-button:not(.active-style):hover {
-            background-color: rgba(71, 85, 105, 0.5);
+            background-color: rgba(71, 85, 105, 0.6);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 0 15px rgba(0, 188, 212, 0.2); /* Sötét mód ragyogás effekt */
         }
         .tab-button:focus-visible { /* A11y focus state */
             outline: none;
@@ -168,26 +169,25 @@
             transition: all 0.3s ease;
             width: 100%;
              /* Glass Effect */
-            background-color: rgba(148, 163, 184, 0.15); 
-            -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(148, 163, 184, 0.2);
+            background-color: rgba(224, 242, 241, 0.4); /* Finomított áttetsző háttér */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(178, 222, 219, 0.5);
         }
 
         body.dark .input-field {
-            background-color: rgba(71, 85, 105, 0.25);
-            border-color: rgba(71, 85, 105, 0.4);
+            background-color: rgba(26, 32, 44, 0.5); /* Sötétebb input háttér sötét módban */
+            border-color: rgba(74, 85, 104, 0.5);
         }
 
         .input-field:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2);
-            background-color: rgba(148, 163, 184, 0.25);
         }
 
         body.dark .input-field:focus {
-            background-color: rgba(71, 85, 105, 0.4);
+            /* Nincs szükség külön háttérszín változásra, a keret jelzi a fókuszt */
         }
 
         .input-field::placeholder {
@@ -223,7 +223,7 @@
             -webkit-appearance: none; /* iOS style reset */
             font-weight: 600;
             padding: 0.9rem 1.75rem;
-            border-radius: 12px;
+            border-radius: 16px; /* Kerekebb gombok */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: all 0.2s ease;
             transform: scale(1);
@@ -251,7 +251,7 @@
         .btn-tertiary:hover { background-color: #D97706; }
         .btn-danger { background-color: #EF4444; color: white; border-color: transparent;}
         .btn-danger:hover { background-color: #DC2626; }
-        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 8px; }
+        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 12px; /* Kisebb gombok is kerekebbek */ }
         
         .btn-icon {
              -webkit-appearance: none;
@@ -2014,5 +2014,7 @@
 </script>
 </body>
 </html>
+
+
 
 
