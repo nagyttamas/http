@@ -1885,55 +1885,40 @@
         });
     }
     
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
         try {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
             
             setupListeners();
-            // Overlay is visible by default from HTML. It gets hidden when auth completes.
+            $('#loading-overlay').classList.remove('hidden');
             
-            const unsubscribe = onAuthStateChanged(auth, async (user) => {
-                unsubscribe(); // This listener only runs once for the initial auth check.
-
+            onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    // User is already signed in (session restored from storage)
-                    console.log("Existing user session found:", user.uid);
+                    // User is authenticated
+                    console.log("User authenticated with UID:", user.uid);
                     initializeAppWithData(user);
                     $('#loading-overlay').classList.add('hidden');
-                } else {
-                    // No user session found, so we attempt to sign in.
-                    try {
-                        let newUser;
-                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                            console.log("No session, attempting sign-in with custom token...");
-                            const userCredential = await signInWithCustomToken(auth, __initial_auth_token);
-                            newUser = userCredential.user;
-                        } else {
-                            console.log("No session or token, attempting anonymous sign-in...");
-                            const userCredential = await signInAnonymously(auth);
-                            newUser = userCredential.user;
-                        }
-                        console.log("New user session created:", newUser.uid);
-                        initializeAppWithData(newUser);
-                        $('#loading-overlay').classList.add('hidden');
-                    } catch (authError) {
-                        console.error("Authentication failed:", authError);
-                        document.body.innerHTML = '<div style="padding: 2rem; text-align: center;">Hiba történt a bejelentkezés során. Kérjük, frissítse az oldalt.</div>';
-                    }
                 }
-                
-                // Set up a permanent listener for any future auth state changes.
-                // In this app, the user should always be signed in. If they become un-authenticated,
-                // it's an unexpected state, and reloading is a simple recovery mechanism.
-                onAuthStateChanged(auth, (user) => {
-                    if (!user) {
-                         console.error("User session lost unexpectedly. Reloading...");
-                         window.location.reload();
-                    }
-                });
+                // The 'else' case is handled by the initial sign-in logic below
             });
+
+            // Handle initial sign-in only if there's no current user
+            if (!auth.currentUser) {
+                 try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        console.log("Attempting sign-in with custom token...");
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        console.log("No custom token, attempting anonymous sign-in...");
+                        await signInAnonymously(auth);
+                    }
+                } catch (authError) {
+                    console.error("Authentication failed:", authError);
+                    document.body.innerHTML = '<div style="padding: 2rem; text-align: center;">Hiba történt a bejelentkezés során. Kérjük, frissítse az oldalt.</div>';
+                }
+            }
 
         } catch (error) {
             console.error("Végzetes hiba az alkalmazás indításakor:", error);
