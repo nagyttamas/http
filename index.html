@@ -355,6 +355,25 @@
                 font-size: 0.9rem;
             }
         }
+
+        /* Toast Notification */
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 2050; display: flex; flex-direction: column; gap: 10px; }
+        .toast {
+            display: flex; align-items: center; padding: 1rem 1.5rem; border-radius: 20px;
+            color: white;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0; transform: translateX(100%);
+            animation: slideInToast 0.5s forwards, fadeOutToast 0.5s 4.5s forwards;
+            min-width: 250px;
+        }
+        .toast-success { background-color: rgba(13, 148, 136, 0.8); }
+        .toast-error { background-color: rgba(239, 68, 68, 0.8); }
+        .toast-info { background-color: rgba(245, 158, 11, 0.8); }
+        .toast .icon { margin-right: 0.75rem; font-size: 1.5rem; }
+        @keyframes slideInToast { to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeOutToast { from { opacity: 1; } to { opacity: 0; transform: translateX(100%); } }
     </style>
 </head>
 <body class="p-2 sm:p-4 md:p-6 lg:p-8">
@@ -647,6 +666,18 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+    <div id="pin-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h3 id="pin-modal-title" class="text-xl font-bold mb-4">PIN kód szükséges</h3>
+            <p id="pin-modal-text" class="mb-4 text-muted-light dark:text-muted-dark">Kérjük, adja meg a PIN kódot az árak megtekintéséhez.</p>
+            <input type="password" id="pin-input" class="input-field text-center mb-4" placeholder="****" inputmode="numeric">
+            <p id="pin-error" class="text-red-500 text-sm mb-4 hidden">Helytelen PIN kód!</p>
+            <div class="flex justify-center space-x-4">
+                <button id="pin-submit-btn" class="btn btn-primary">Belépés</button>
+                <button id="pin-cancel-btn" class="btn btn-secondary">Mégse</button>
             </div>
         </div>
     </div>
@@ -1864,12 +1895,23 @@
                 const pinInput = $('#pin-input');
                 const errorMsg = $('#pin-error');
                 const t = translations[currentLanguage];
+                const modalTitle = $('#pin-modal-title');
+                const modalText = $('#pin-modal-text');
+                const submitBtn = $('#pin-submit-btn');
+                const cancelBtn = $('#pin-cancel-btn');
+
+                // Hiba megelőzése: Ellenőrizzük, hogy az elemek léteznek-e
+                if (!modal || !pinInput || !errorMsg || !modalTitle || !modalText || !submitBtn || !cancelBtn) {
+                    console.error("A PIN bekérő ablak elemei hiányoznak a DOM-ból.");
+                    resolve(false); // A Promise-t 'false'-al oldjuk fel, hogy elkerüljük a további hibákat
+                    return;
+                }
 
                 // Update modal text with current language
-                $('#pin-modal-title').textContent = t.pinModalTitle;
-                $('#pin-modal-text').textContent = t.pinModalText;
-                $('#pin-submit-btn').textContent = t.pinSubmitBtn;
-                $('#pin-cancel-btn').textContent = t.cancelEditBtn; // Reuse translation
+                modalTitle.textContent = t.pinModalTitle;
+                modalText.textContent = t.pinModalText;
+                submitBtn.textContent = t.pinSubmitBtn;
+                cancelBtn.textContent = t.cancelEditBtn; // Reuse translation
                 errorMsg.textContent = t.pinError;
 
                 pinInput.value = '';
@@ -1904,13 +1946,13 @@
                 };
 
                 const cleanup = () => {
-                    $('#pin-submit-btn').removeEventListener('click', submitHandler);
-                    $('#pin-cancel-btn').removeEventListener('click', cancelHandler);
+                    submitBtn.removeEventListener('click', submitHandler);
+                    cancelBtn.removeEventListener('click', cancelHandler);
                     pinInput.removeEventListener('keypress', keypressHandler);
                 };
 
-                $('#pin-submit-btn').addEventListener('click', submitHandler);
-                $('#pin-cancel-btn').addEventListener('click', cancelHandler);
+                submitBtn.addEventListener('click', submitHandler);
+                cancelBtn.addEventListener('click', cancelHandler);
                 pinInput.addEventListener('keypress', keypressHandler);
             });
         }
@@ -1966,6 +2008,7 @@
 </script>
 </body>
 </html>
+
 
 
 
