@@ -53,10 +53,12 @@
             --accent-color: #F59E0B;
             
             /* Világos mód színei */
-            --background-color: #F3F4F6;
+            --background-start-light: #E0F2F1;
+            --background-end-light: #E0F7FA;
+            --surface-glass-light: rgba(255, 255, 255, 0.6);
+            --border-glass-light: rgba(255, 255, 255, 0.8);
             --text-color: #1F2937;
             --light-text-color: #6B7280;
-            --surface-color: #FFFFFF;
             --input-bg-color: #F9FAFB;
             --input-border-color: #D1D5DB;
             --table-header-bg: #E5E7EB;
@@ -66,10 +68,12 @@
 
         body.dark {
             /* Sötét mód színei */
-            --background-color: #111827;
+            --background-start-dark: #1A202C;
+            --background-end-dark: #2D3748;
+            --surface-glass-dark: rgba(31, 41, 55, 0.6);
+            --border-glass-dark: rgba(75, 85, 99, 0.4);
             --text-color: #F9FAFB;
             --light-text-color: #9CA3AF;
-            --surface-color: #1F2937;
             --input-bg-color: #374151;
             --input-border-color: #4B5563;
             --table-header-bg: #374151;
@@ -79,22 +83,36 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--background-color);
             color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
+            background-image: linear-gradient(135deg, var(--background-start-light), var(--background-end-light));
+            background-attachment: fixed;
+            transition: color 0.3s;
+        }
+
+        body.dark {
+            background-image: linear-gradient(135deg, var(--background-start-dark), var(--background-end-dark));
         }
 
         .container {
             max-width: 1024px;
-            background-color: var(--surface-color);
-            transition: background-color 0.3s;
+            background-color: var(--surface-glass-light);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass-light);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        body.dark .container {
+             background-color: var(--surface-glass-dark);
+             border-color: var(--border-glass-dark);
         }
 
         /* Tabs styling - iOS Glass Effect */
         .tab-button {
             -webkit-appearance: none;
             border: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease, transform 0.2s ease;
             cursor: pointer;
             border-radius: 12px;
             padding: 0.75rem 1.25rem;
@@ -107,10 +125,12 @@
             background-color: rgba(71, 85, 105, 0.2);
         }
         .tab-button:not(.active-style):hover {
-            background-color: rgba(148, 163, 184, 0.2);
+            background-color: rgba(148, 163, 184, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         body.dark .tab-button:not(.active-style):hover {
-            background-color: rgba(71, 85, 105, 0.4);
+            background-color: rgba(71, 85, 105, 0.5);
         }
         .tab-button:focus-visible { /* A11y focus state */
             outline: none;
@@ -144,22 +164,39 @@
             appearance: none;
             padding: 0.75rem 1rem;
             border-radius: 12px;
-            border: 1px solid var(--input-border-color);
-            background-color: var(--input-bg-color);
             color: var(--text-color);
             transition: all 0.3s ease;
             width: 100%;
+             /* Glass Effect */
+            background-color: rgba(148, 163, 184, 0.15); 
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
         }
+
+        body.dark .input-field {
+            background-color: rgba(71, 85, 105, 0.25);
+            border-color: rgba(71, 85, 105, 0.4);
+        }
+
         .input-field:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2);
+            background-color: rgba(148, 163, 184, 0.25);
         }
+
+        body.dark .input-field:focus {
+            background-color: rgba(71, 85, 105, 0.4);
+        }
+
         .input-field::placeholder {
             color: var(--light-text-color);
         }
 
         select.input-field {
+             /* The glass effect is now inherited from .input-field */
+            /* Just keep the arrow styles */
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
             background-position: right 0.5rem center;
             background-repeat: no-repeat;
@@ -167,6 +204,12 @@
             padding-right: 2.5rem; /* Make space for the arrow */
         }
 
+        body.dark select.input-field {
+             /* The glass effect is now inherited from .dark .input-field */
+            /* Just update the arrow icon color for dark mode */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+        
         /* Specific overrides for the small header selects to fix iOS sizing issue */
         #language-select, #currency-select {
             width: auto;
@@ -223,7 +266,7 @@
         }
 
 
-        .tab-content { display: none; animation: fadeIn 0.5s; background-color: var(--background-color); }
+        .tab-content { display: none; animation: fadeIn 0.5s; background-color: transparent; }
         .tab-content.active { display: block; }
         
         @keyframes fadeIn {
@@ -252,7 +295,14 @@
         }
 
         .saved-quote-item {
-            background-color: var(--surface-color);
+            background-color: rgba(148, 163, 184, 0.1);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+        }
+        body.dark .saved-quote-item {
+            background-color: rgba(71, 85, 105, 0.2);
+            border-color: rgba(71, 85, 105, 0.3);
         }
         .saved-quote-item.animated {
             animation: slideInListItem 0.5s ease-out forwards;
@@ -1964,4 +2014,5 @@
 </script>
 </body>
 </html>
+
 
