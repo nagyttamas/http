@@ -56,6 +56,10 @@
             --text-light: #1f2937;
             --text-muted-light: #6b7280;
             --border-light: #cbd5e1;
+            --tab-bg-light: rgba(204, 251, 241, 0.6);
+            --tab-border-light: rgba(13, 148, 136, 0.2);
+            --tab-hover-bg-light: rgba(204, 251, 241, 0.9);
+            --tab-glow-light: rgba(13, 148, 136, 0.4);
 
             /* Sötét mód */
             --bg-dark: #111827;
@@ -63,10 +67,14 @@
             --text-dark: #f9fafb;
             --text-muted-dark: #9ca3af;
             --border-dark: #4b5563;
+            --tab-bg-dark: rgba(28, 41, 58, 0.6);
+            --tab-border-dark: rgba(74, 85, 104, 0.5);
+            --tab-hover-bg-dark: rgba(28, 41, 58, 0.9);
+            --tab-glow-dark: rgba(56, 189, 248, 0.3);
         }
 
         *, *::before, *::after {
-            transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease, transform .2s ease;
+            transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease, transform .2s ease, box-shadow .2s ease;
         }
 
         body {
@@ -99,48 +107,58 @@
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Tabs - Neu Brutalist style */
+        /* Tabs - Glass Effect */
         .tab-button {
             font-weight: 600;
-            background-color: var(--surface-light);
-            border: 2px solid #1f2937;
             border-radius: 12px;
             padding: 0.75rem 1.25rem;
-            box-shadow: 4px 4px 0px #1f2937;
-            transform: translate(0, 0);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background-color: var(--tab-bg-light);
+            border: 1px solid var(--tab-border-light);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         body.dark .tab-button {
-            background-color: var(--surface-dark);
-            border-color: #f9fafb;
-            box-shadow: 4px 4px 0px #f9fafb;
+            background-color: var(--tab-bg-dark);
+            border: 1px solid var(--tab-border-dark);
+            color: var(--text-muted-dark);
+        }
+
+        .tab-button .icon {
+            color: var(--primary-color);
+        }
+        body.dark .tab-button .icon {
             color: var(--text-muted-dark);
         }
 
         .tab-button:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px #1f2937;
+            transform: scale(1.05); /* Nagyítás effekt */
+            background-color: var(--tab-hover-bg-light);
+            box-shadow: 0 8px 25px -5px var(--tab-glow-light), 0 5px 15px -5px rgba(0,0,0,0.1); /* Fény effekt */
         }
         body.dark .tab-button:hover {
-            box-shadow: 6px 6px 0px #f9fafb;
+            background-color: var(--tab-hover-bg-dark);
+            box-shadow: 0 8px 25px -5px var(--tab-glow-dark), 0 5px 15px -5px rgba(0,0,0,0.2);
         }
 
         .tab-button:active {
-            transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px #1f2937;
+            transform: scale(0.98); /* Kattintás effekt */
+            box-shadow: none;
         }
          body.dark .tab-button:active {
-            box-shadow: 0px 0px 0px #f9fafb;
+            box-shadow: none;
         }
         
         .tab-button.active-style {
             background-color: var(--primary-color);
             color: white;
-            border-color: #1f2937;
-            box-shadow: 4px 4px 0px #1f2937;
+            border-color: transparent;
+            box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.3), 0 4px 6px -4px rgba(13, 148, 136, 0.3);
+            transform: scale(1.02);
         }
         body.dark .tab-button.active-style {
-            border-color: #f9fafb;
-            box-shadow: 4px 4px 0px #f9fafb;
+            border-color: transparent;
+            box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.4), 0 4px 6px -4px rgba(13, 148, 136, 0.4);
         }
         .tab-button.active-style .icon { color: white; }
 
@@ -1884,4 +1902,5 @@
 </script>
 </body>
 </html>
+
 
