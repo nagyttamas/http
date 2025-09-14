@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Árajánlat Készítő (Offline)</title>
 
     <!-- WebKit/iOS Home Screen Ikon és Beállítások -->
@@ -75,14 +75,24 @@
             --input-glow-dark: rgba(13, 148, 136, 0.45); /* Még intenzívebb türkiz fény */
         }
 
+        html {
+            height: 100%;
+        }
+
         *, *::before, *::after {
             transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease, transform .2s ease, box-shadow .2s ease;
         }
 
         body {
+            min-height: 100%;
+            margin: 0;
+            padding: 1rem; /* Távolság a képernyő szélétől */
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-light);
             color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         body.dark {
@@ -91,12 +101,17 @@
         }
 
         .container {
-            max-width: 1024px;
+            max-width: 1280px;
+            width: 100%;
+            height: 100%;
             background-color: var(--surface-light);
             border: 1px solid var(--border-light);
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
             animation: container-fade-in 0.8s ease-out forwards;
             opacity: 0;
+            display: flex; /* Flexbox a belső elrendezéshez */
+            flex-direction: column; /* Elemek egymás alatt */
+            overflow: hidden; /* A konténer ne lógjon túl */
         }
 
         body.dark .container {
@@ -317,6 +332,26 @@
         .tab-content.exiting .animated-form-group:nth-last-child(7) { animation-delay: 0.3s; }
         .tab-content.exiting .animated-form-group:nth-last-child(8) { animation-delay: 0.35s; }
         
+        #tab-content-container {
+            flex-grow: 1; /* Kitölti a maradék helyet */
+            overflow-y: auto; /* Csak ez a rész görgethető */
+            padding-bottom: 1.5rem; /* Tér a görgetősáv alján */
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+        }
+        #tab-content-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        #tab-content-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #tab-content-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: 10px;
+            border: 3px solid transparent;
+            background-clip: content-box;
+        }
+
         #quote-items-body tr:hover {
             background-color: #111827;
         }
@@ -385,7 +420,7 @@
         @keyframes fadeOutToast { from { opacity: 1; } to { opacity: 0; transform: translateX(100%); } }
     </style>
 </head>
-<body class="p-2 sm:p-4 md:p-6 lg:p-8">
+<body>
     <div id="toast-container"></div>
     
     <div id="confirmation-modal" class="modal-overlay">
@@ -399,7 +434,7 @@
         </div>
     </div>
 
-    <div class="container mx-auto p-4 sm:p-6 lg:p-10 rounded-[2.5rem]"> <!-- Még kerekebb konténer -->
+    <div class="container p-4 sm:p-6 lg:p-10 rounded-[2.5rem]"> <!-- Még kerekebb konténer -->
         <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-y-4">
             <div class="flex items-center space-x-4 min-w-0">
                 <img id="header-logo" src="" alt="Cég logója" class="h-16 w-auto hidden object-contain">
@@ -1989,6 +2024,7 @@
 </script>
 </body>
 </html>
+
 
 
 
