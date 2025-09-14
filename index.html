@@ -657,7 +657,7 @@
 <script type="module">
     // --- FIREBASE IMPORTS ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, collection, onSnapshot, setDoc, addDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     
     // --- FIREBASE CONFIG (provided by environment) ---
@@ -1885,30 +1885,41 @@
         });
     }
     
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
         try {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
             
-            $('#loading-overlay').classList.remove('hidden');
             setupListeners();
+            $('#loading-overlay').classList.remove('hidden');
             
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    // User is signed in (anonymously).
-                    console.log("Anonymous user is signed in:", user.uid);
-                    $('#loading-overlay').classList.add('hidden');
+                    // User is authenticated
+                    console.log("User authenticated with UID:", user.uid);
                     initializeAppWithData(user);
-                } else {
-                    // No user, sign in anonymously.
-                    console.log("No user found, signing in anonymously...");
-                    signInAnonymously(auth).catch((error) => {
-                        console.error("Anonymous sign-in failed:", error);
-                        document.body.innerHTML = '<div style="padding: 2rem; text-align: center;">Hiba történt az anonim bejelentkezés során. Kérjük, frissítse az oldalt.</div>';
-                    });
+                    $('#loading-overlay').classList.add('hidden');
                 }
+                // The 'else' case is handled by the initial sign-in logic below
             });
+
+            // Handle initial sign-in only if there's no current user
+            if (!auth.currentUser) {
+                 try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        console.log("Attempting sign-in with custom token...");
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        console.log("No custom token, attempting anonymous sign-in...");
+                        await signInAnonymously(auth);
+                    }
+                } catch (authError) {
+                    console.error("Authentication failed:", authError);
+                    document.body.innerHTML = '<div style="padding: 2rem; text-align: center;">Hiba történt a bejelentkezés során. Kérjük, frissítse az oldalt.</div>';
+                }
+            }
+
         } catch (error) {
             console.error("Végzetes hiba az alkalmazás indításakor:", error);
             document.body.innerHTML = '<div style="padding: 2rem; text-align: center;">Hoppá! Egy hiba történt az alkalmazás betöltése közben. Próbálja meg frissíteni az oldalt.</div>';
@@ -1917,3 +1928,4 @@
 </script>
 </body>
 </html>
+
