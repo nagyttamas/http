@@ -64,6 +64,7 @@
             --table-header-bg: #E5E7EB;
             --table-row-border: #E5E7EB;
             --hover-bg-color: #E5E7EB;
+            --surface-color: #FFFFFF;
         }
 
         body.dark {
@@ -79,6 +80,7 @@
             --table-header-bg: #374151;
             --table-row-border: #4B5563;
             --hover-bg-color: #374151;
+            --surface-color: #1F2937;
         }
         
         html {
@@ -118,7 +120,7 @@
             border: none;
             transition: all 0.3s ease, transform 0.2s ease;
             cursor: pointer;
-            border-radius: 12px;
+            border-radius: 9999px; /* Kerekebb */
             padding: 0.75rem 1.25rem;
             font-weight: 600;
             background-color: rgba(148, 163, 184, 0.1);
@@ -151,7 +153,6 @@
         }
         .tab-button:active {
             transform: scale(0.96) translateY(1px);
-            filter: brightness(0.95);
         }
         
         .tab-button .icon {
@@ -168,11 +169,15 @@
         }
 
         /* Input and select styling */
+        @keyframes input-focus-glow {
+            from { box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2), 0 0 0 rgba(0, 188, 212, 0); }
+            to { box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2), 0 0 20px 5px rgba(0, 188, 212, 0.3); }
+        }
         .input-field {
             -webkit-appearance: none;
             appearance: none;
             padding: 0.75rem 1rem;
-            border-radius: 12px;
+            border-radius: 16px; /* Kerekebb */
             color: var(--text-color);
             transition: all 0.3s ease;
             width: 100%;
@@ -187,10 +192,16 @@
             border-color: rgba(74, 85, 104, 0.5);
         }
 
+        .input-field:hover:not(:disabled) {
+            border-color: var(--secondary-dark);
+            box-shadow: 0 0 20px 5px rgba(0, 188, 212, 0.3);
+            transform: translateY(-1px);
+        }
+
         .input-field:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2);
+            animation: input-focus-glow 0.8s alternate infinite;
         }
 
         .input-field::placeholder {
@@ -221,7 +232,7 @@
             -webkit-appearance: none;
             font-weight: 600;
             padding: 0.9rem 1.75rem;
-            border-radius: 16px;
+            border-radius: 9999px; /* Kerekebb */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: all 0.2s ease;
             transform: scale(1);
@@ -249,7 +260,7 @@
         .btn-tertiary:hover { background-color: #D97706; }
         .btn-danger { background-color: #EF4444; color: white; border-color: transparent;}
         .btn-danger:hover { background-color: #DC2626; }
-        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 12px; }
+        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 9999px; /* Kerekebb */ }
         
         .btn-icon {
              -webkit-appearance: none;
@@ -263,9 +274,9 @@
              font-size: 1rem;
              transition: all 0.2s ease;
         }
-        .btn-icon:active, #theme-toggle:active {
-            transform: scale(0.95);
-            box-shadow: 0 0 16px 4px rgba(0, 188, 212, 0.5); /* Türkiz fény */
+        .btn:active, .tab-button:active, .btn-icon:active, #theme-toggle:active {
+            transform: scale(0.97);
+            box-shadow: 0 0 25px 8px rgba(0, 188, 212, 0.4);
         }
 
 
@@ -364,6 +375,7 @@
         .saved-quote-item:active {
             transform: scale(0.98);
             filter: brightness(0.95);
+            box-shadow: 0 0 20px 5px rgba(0, 188, 212, 0.3);
         }
         body.dark .saved-quote-item {
             background-color: rgba(71, 85, 105, 0.2);
@@ -406,12 +418,20 @@
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
-            background: var(--surface-color); padding: 2rem; border-radius: 16px;
+            background: var(--surface-color); padding: 2rem; border-radius: 24px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             width: 90%; max-width: 400px;
-            transform: scale(0.95); transition: transform 0.3s ease;
+            transform: scale(0.95) translateY(-20px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
 
         /* --- Eszköz-specifikus rács elrendezések --- */
         .form-grid {
@@ -503,7 +523,7 @@
         </div>
     </div>
 
-    <div class="container mx-auto p-4 sm:p-6 lg:p-10 rounded-3xl shadow-2xl">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-10 rounded-[32px] shadow-2xl">
         <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-y-4">
             <div class="flex items-center space-x-4 min-w-0">
                 <button id="refresh-btn" class="btn btn-icon btn-secondary" aria-label="Oldal frissítése" title="Oldal frissítése"><i class="fa-solid fa-arrows-rotate"></i></button>
@@ -1439,7 +1459,7 @@
 
             filteredQuotes.sort((a,b) => b.createdAt.localeCompare(a.createdAt)).forEach((quote, index) => {
                 const listItem = document.createElement('li');
-                listItem.className = "saved-quote-item flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-xl shadow-sm";
+                listItem.className = "saved-quote-item flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-2xl shadow-sm";
                 listItem.style.animationDelay = `${index * 50}ms`;
                 
                 const savedDate = new Date(quote.createdAt);
@@ -2363,4 +2383,6 @@
 </script>
 </body>
 </html>
+
+
 
