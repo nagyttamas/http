@@ -291,7 +291,7 @@
         }
 
         #load-quote-section {
-            background-color: var(--background-color);
+            background-color: var(--input-bg-color);
         }
 
         .saved-quote-item {
@@ -304,6 +304,10 @@
             background-color: rgba(71, 85, 105, 0.2);
             border-color: rgba(71, 85, 105, 0.3);
         }
+        .saved-quote-item:not(.animated) {
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
         .saved-quote-item.animated {
             animation: slideInListItem 0.5s ease-out forwards;
             opacity: 0;
@@ -421,7 +425,7 @@
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content text-center">
             <h3 id="modal-title" class="text-xl font-bold mb-4">Megerősítés</h3>
-            <p id="modal-text" class="mb-6 text-gray-600">Biztosan folytatja?</p>
+            <p id="modal-text" class="mb-6 text-gray-600 dark:text-gray-300">Biztosan folytatja?</p>
             <div class="flex justify-center space-x-4">
                 <button id="modal-confirm-btn" class="btn btn-danger">Törlés</button>
                 <button id="modal-cancel-btn" class="btn btn-secondary">Mégse</button>
@@ -432,7 +436,7 @@
     <div id="pin-modal" class="modal-overlay">
         <div class="modal-content text-center">
             <h3 id="pin-modal-title" class="text-xl font-bold mb-4">PIN kód szükséges</h3>
-            <p id="pin-modal-text" class="mb-4 text-gray-600">Kérjük, adja meg a PIN kódot az árak megtekintéséhez.</p>
+            <p id="pin-modal-text" class="mb-4 text-gray-600 dark:text-gray-300">Kérjük, adja meg a PIN kódot az árak megtekintéséhez.</p>
             <input type="password" id="pin-input" class="input-field text-center mb-4" placeholder="****" inputmode="numeric">
             <p id="pin-error" class="text-red-500 text-sm mb-4 hidden">Helytelen PIN kód!</p>
             <div class="flex justify-center space-x-4">
@@ -643,12 +647,14 @@
                     </div>
                 </div>
                 <div class="mt-8 flex flex-wrap gap-3 justify-end">
+                     <button id="new-quote-btn" class="btn btn-secondary flex-grow sm:flex-grow-0"></button>
                      <button id="save-quote-btn" class="btn btn-secondary flex-grow sm:flex-grow-0"></button>
                      <button id="load-quotes-btn" class="btn btn-tertiary flex-grow sm:flex-grow-0"></button>
                      <button id="preview-quote-btn" class="btn btn-primary flex-grow sm:flex-grow-0"></button>
                 </div>
-                 <div id="load-quote-section" class="mt-6 p-4 rounded-2xl shadow-md hidden transition-all duration-300">
+                 <div id="load-quote-section" class="relative mt-6 p-4 rounded-2xl shadow-md hidden transition-all duration-300">
                     <h3 id="load-quote-heading" class="text-xl font-bold mb-4">Mentett ajánlatok</h3>
+                    <button id="close-load-quote-btn" class="absolute top-3 right-3 btn btn-icon btn-secondary" aria-label="Bezárás"><i class="fa-solid fa-times"></i></button>
                     <div class="relative mb-4">
                         <input type="search" id="quote-search-input" class="input-field pl-10" placeholder="Keresés név vagy ügyfél alapján...">
                         <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
@@ -744,7 +750,7 @@
                 tableSizeTh: "Méret (mm)", tableQuantityTh: "Darab", tablePriceTh: "Egységár",
                 tableSubtotalTh: "Részösszeg", tableActionsTh: "Műveletek", subtotalText: "Részösszeg:",
                 discountLabel: "Kedvezmény (%):", discountAmountText: "Kedvezmény:", totalText: "Végösszeg:",
-                saveQuoteBtn: "Ajánlat mentése", loadQuotesBtn: "Mentett ajánlatok",
+                saveQuoteBtn: "Ajánlat mentése", loadQuotesBtn: "Mentett ajánlatok", newQuoteBtn: "Új ajánlat",
                 quoteNameLabel: "Ajánlat neve:", loadQuoteHeading: "Mentett ajánlatok",
                 deleteBtn: "Törlés", editBtn: "Szerkesztés", savePriceBtn: "Árak mentése", priceSavedMessage: "Árak sikeresen elmentve!",
                 productAddedMessage: "A termék sikeresen hozzáadva az ajánlathoz!",
@@ -760,6 +766,9 @@
                 noQuotesFound: "Nincsenek mentett ajánlatok.", noItemsInQuote: "Az ajánlat üres.",
                 deleteQuotePromptTitle: "Ajánlat törlése",
                 deleteQuotePromptText: "Biztosan törli a(z) '{{name}}' nevű ajánlatot?",
+                newQuotePromptTitle: "Új ajánlat kezdése",
+                newQuotePromptText: "Biztosan új, üres ajánlatot szeretne kezdeni? A jelenlegi, nem mentett módosítások elvesznek.",
+                newQuoteStarted: "Új, üres ajánlat kezdődött.",
                 minAreaWarning: "Figyelem: A minimális számlázott terület {{area}} m².",
                 pvcColorError: "A PVC redőny csak fehér színben kapható.",
                 logoUploadText: "Kattintson a logó feltöltéséhez",
@@ -799,7 +808,7 @@
                 productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret" }
             },
             ro: {
-                title: "Creator de Oferte", languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", pricesTab: "Prețuri", quoteTab: "Ofertă", settingsTab: "Setări", blindsHeading: "Adăugare jaluzea", blindsTypeLabel: "Tip:", blindsWidthLabel: "Lățime (mm):", blindsHeightLabel: "Înălțime (mm):", blindsQuantityLabel: "Bucăți:", blindsColorLabel: "Culoare:", blindsControlLabel: "Control:", blindsDividedLabel: "Divizat", blindsIntegratedScreenLabel: "Plasă de insecte integrată", screenOptionNone: "Niciuna", screenOptionFull: "Completă", screenOptionHalf: "Jumătate", addBlindBtn: "Adaugă Jaluzea", screensHeading: "Adăugare plasă de insecte", screensTypeLabel: "Tip:", screensWidthLabel: "Lățime (mm):", screensHeightLabel: "Înălțime (mm):", screensQuantityLabel: "Bucăți:", screensColorLabel: "Culoare:", addScreenBtn: "Adaugă Plasă", pricesHeading: "Setări Prețuri", blindsPrices: "Prețuri Jaluzele", screensPrices: "Prețuri Plase de Insecte", basePricesM2: "Prețuri de bază (preț / m²)", surcharges: "Suprataxe", colorSurcharges: "Suprataxe Culoare - Aluminiu (%)", externalColorSurcharges: "Suprataxe Culoare - Exterior (%)", screenBasePricesM2: "Prețuri de bază (preț / m²)", screenColorSurcharges: "Suprataxe Culoare (%)", unit_currency_pc: " / buc", quoteHeading: "Ofertă", settingsHeading: "Setări", companyNameLabel: "Nume Companie:", companyLogoLabel: "Logo Companie:", saveSettingsBtn: "Salvează Setările", settingsSavedMessage: "Setările au fost salvate cu succes!", tableProductTh: "Produs", tableSizeTh: "Dimensiune (mm)", tableQuantityTh: "Bucăți", tablePriceTh: "Preț Unitar", tableSubtotalTh: "Subtotal", tableActionsTh: "Acțiuni", subtotalText: "Subtotal:", discountLabel: "Reducere (%):", discountAmountText: "Reducere:", totalText: "Total Final:", saveQuoteBtn: "Salvează Oferta", loadQuotesBtn: "Încarcă Oferte", quoteNameLabel: "Nume Ofertă:", loadQuoteHeading: "Oferte Salvate", deleteBtn: "Șterge", editBtn: "Editare", savePriceBtn: "Salvează Prețurile", priceSavedMessage: "Prețurile au fost salvate cu succes!", productAddedMessage: "Produsul a fost adăugat cu succes la ofertă!", productUpdatedMessage: "Articolul a fost modificat cu succes!", emptyFieldsError: "Vă rugăm să completați câmpurile obligatorii!", invalidSizeError: "Vă rugăm să introduceți dimensiuni valide (număr pozitiv).", invalidQuantityError: "Vă rugăm să introduceți o cantitate validă (număr întreg pozitiv).", invalidDivisionWidthError: "Lățimea diviziunii nu poate fi mai mare decât lățimea totală.", quoteSaved: "Oferta a fost salvată!", quoteLoaded: "Oferta a fost încărcată cu succes!", quoteDeleted: "Oferta a fost ștearsă cu succes!", quoteNameRequired: "Vă rugăm să introduceți un nume pentru ofertă!", noQuotesFound: "Nicio ofertă salvată.", noItemsInQuote: "Oferta este goală.", deleteQuotePromptTitle: "Șterge Oferta", deleteQuotePromptText: "Sigur doriți să ștergeți oferta '{{name}}'?", minAreaWarning: "Atenție: Suprafața minimă facturată este de {{area}} m².", pvcColorError: "Jaluzelele din PVC sunt disponibile doar pe alb.", logoUploadText: "Faceți clic pentru a încărca logo-ul", deleteLogoBtn: "Șterge Logo", logoDeletedMessage: "Logo-ul a fost șters cu succes!",
+                title: "Creator de Oferte", languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", pricesTab: "Prețuri", quoteTab: "Ofertă", settingsTab: "Setări", blindsHeading: "Adăugare jaluzea", blindsTypeLabel: "Tip:", blindsWidthLabel: "Lățime (mm):", blindsHeightLabel: "Înălțime (mm):", blindsQuantityLabel: "Bucăți:", blindsColorLabel: "Culoare:", blindsControlLabel: "Control:", blindsDividedLabel: "Divizat", blindsIntegratedScreenLabel: "Plasă de insecte integrată", screenOptionNone: "Niciuna", screenOptionFull: "Completă", screenOptionHalf: "Jumătate", addBlindBtn: "Adaugă Jaluzea", screensHeading: "Adăugare plasă de insecte", screensTypeLabel: "Tip:", screensWidthLabel: "Lățime (mm):", screensHeightLabel: "Înălțime (mm):", screensQuantityLabel: "Bucăți:", screensColorLabel: "Culoare:", addScreenBtn: "Adaugă Plasă", pricesHeading: "Setări Prețuri", blindsPrices: "Prețuri Jaluzele", screensPrices: "Prețuri Plase de Insecte", basePricesM2: "Prețuri de bază (preț / m²)", surcharges: "Suprataxe", colorSurcharges: "Suprataxe Culoare - Aluminiu (%)", externalColorSurcharges: "Suprataxe Culoare - Exterior (%)", screenBasePricesM2: "Prețuri de bază (preț / m²)", screenColorSurcharges: "Suprataxe Culoare (%)", unit_currency_pc: " / buc", quoteHeading: "Ofertă", settingsHeading: "Setări", companyNameLabel: "Nume Companie:", companyLogoLabel: "Logo Companie:", saveSettingsBtn: "Salvează Setările", settingsSavedMessage: "Setările au fost salvate cu succes!", tableProductTh: "Produs", tableSizeTh: "Dimensiune (mm)", tableQuantityTh: "Bucăți", tablePriceTh: "Preț Unitar", tableSubtotalTh: "Subtotal", tableActionsTh: "Acțiuni", subtotalText: "Subtotal:", discountLabel: "Reducere (%):", discountAmountText: "Reducere:", totalText: "Total Final:", saveQuoteBtn: "Salvează Oferta", loadQuotesBtn: "Încarcă Oferte", newQuoteBtn: "Ofertă Nouă", quoteNameLabel: "Nume Ofertă:", loadQuoteHeading: "Oferte Salvate", deleteBtn: "Șterge", editBtn: "Editare", savePriceBtn: "Salvează Prețurile", priceSavedMessage: "Prețurile au fost salvate cu succes!", productAddedMessage: "Produsul a fost adăugat cu succes la ofertă!", productUpdatedMessage: "Articolul a fost modificat cu succes!", emptyFieldsError: "Vă rugăm să completați câmpurile obligatorii!", invalidSizeError: "Vă rugăm să introduceți dimensiuni valide (număr pozitiv).", invalidQuantityError: "Vă rugăm să introduceți o cantitate validă (număr întreg pozitiv).", invalidDivisionWidthError: "Lățimea diviziunii nu poate fi mai mare decât lățimea totală.", quoteSaved: "Oferta a fost salvată!", quoteLoaded: "Oferta a fost încărcată cu succes!", quoteDeleted: "Oferta a fost ștearsă cu succes!", quoteNameRequired: "Vă rugăm să introduceți un nume pentru ofertă!", noQuotesFound: "Nicio ofertă salvată.", noItemsInQuote: "Oferta este goală.", deleteQuotePromptTitle: "Șterge Oferta", deleteQuotePromptText: "Sigur doriți să ștergeți oferta '{{name}}'?", newQuotePromptTitle: "Începe Ofertă Nouă", newQuotePromptText: "Sigur doriți să începeți o ofertă nouă, goală? Modificările nesalvate se vor pierde.", newQuoteStarted: "O nouă ofertă goală a fost începută.", minAreaWarning: "Atenție: Suprafața minimă facturată este de {{area}} m².", pvcColorError: "Jaluzelele din PVC sunt disponibile doar pe alb.", logoUploadText: "Faceți clic pentru a încărca logo-ul", deleteLogoBtn: "Șterge Logo", logoDeletedMessage: "Logo-ul a fost șters cu succes!",
                 dataManagementHeading: "Gestionarea Datelor", dataManagementDesc: "Toate datele sunt stocate în browser. Ștergerea memoriei cache a browserului poate duce la pierderea tuturor ofertelor și setărilor salvate. **Recomandăm exportarea regulată a datelor!**",
                 exportDataBtn: "Export Date", importDataBtn: "Import Date", importSuccess: "Datele au fost importate cu succes! Pagina se va reîncărca în 2 secunde.",
                 importError: "Eroare la import. Vă rugăm să verificați formatul fișierului.",
@@ -825,7 +834,7 @@
                 productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie" }
             },
             en: {
-                title: "Quote Generator", languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", pricesTab: "Prices", quoteTab: "Quote", settingsTab: "Settings", blindsHeading: "Add Blind", blindsTypeLabel: "Type:", blindsWidthLabel: "Width (mm):", blindsHeightLabel: "Height (mm):", blindsQuantityLabel: "Quantity:", blindsColorLabel: "Color:", blindsControlLabel: "Control:", blindsDividedLabel: "Divided", blindsIntegratedScreenLabel: "Integrated insect screen", screenOptionNone: "None", screenOptionFull: "Full", screenOptionHalf: "Half", addBlindBtn: "Add Blind", screensHeading: "Add Insect Screen", screensTypeLabel: "Type:", screensWidthLabel: "Width (mm):", screensHeightLabel: "Height (mm):", screensQuantityLabel: "Quantity:", screensColorLabel: "Color:", addScreenBtn: "Add Screen", pricesHeading: "Price Settings", blindsPrices: "Blinds Prices", screensPrices: "Insect Screen Prices", basePricesM2: "Base Prices (price / m²)", surcharges: "Surcharges", colorSurcharges: "Color Surcharges - Aluminium (%)", externalColorSurcharges: "Color Surcharges - External (%)", screenBasePricesM2: "Base Prices (price / m²)", screenColorSurcharges: "Color Surcharges (%)", unit_currency_pc: " / pc", quoteHeading: "Quote", settingsHeading: "Settings", companyNameLabel: "Company Name:", companyLogoLabel: "Company Logo:", saveSettingsBtn: "Save Settings", settingsSavedMessage: "Settings saved successfully!", tableProductTh: "Product", tableSizeTh: "Size (mm)", tableQuantityTh: "Quantity", tablePriceTh: "Unit Price", tableSubtotalTh: "Subtotal", tableActionsTh: "Actions", subtotalText: "Subtotal:", discountLabel: "Discount (%):", discountAmountText: "Discount:", totalText: "Grand Total:", saveQuoteBtn: "Save Quote", loadQuotesBtn: "Load Quotes", quoteNameLabel: "Quote Name:", loadQuoteHeading: "Saved Quotes", deleteBtn: "Delete", editBtn: "Edit", savePriceBtn: "Save Prices", priceSavedMessage: "Prices saved successfully!", productAddedMessage: "Product successfully added to the quote!", productUpdatedMessage: "Item successfully updated!", emptyFieldsError: "Please fill in the required fields!", invalidSizeError: "Please enter valid dimensions (positive number).", invalidQuantityError: "Please enter a valid quantity (positive integer).", invalidDivisionWidthError: "Division width cannot be greater than the total width.", quoteSaved: "Quote saved!", quoteLoaded: "Quote loaded successfully!", quoteDeleted: "Quote deleted successfully!", quoteNameRequired: "Please enter a name for the quote!", noQuotesFound: "No saved quotes.", noItemsInQuote: "The quote is empty.", deleteQuotePromptTitle: "Delete Quote", deleteQuotePromptText: "Are you sure you want to delete the quote '{{name}}'?", minAreaWarning: "Warning: The minimum billed area is {{area}} m².", pvcColorError: "PVC blinds are only available in white.", logoUploadText: "Click to upload logo", deleteLogoBtn: "Delete Logo", logoDeletedMessage: "Logo deleted successfully!",
+                title: "Quote Generator", languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", pricesTab: "Prices", quoteTab: "Quote", settingsTab: "Settings", blindsHeading: "Add Blind", blindsTypeLabel: "Type:", blindsWidthLabel: "Width (mm):", blindsHeightLabel: "Height (mm):", blindsQuantityLabel: "Quantity:", blindsColorLabel: "Color:", blindsControlLabel: "Control:", blindsDividedLabel: "Divided", blindsIntegratedScreenLabel: "Integrated insect screen", screenOptionNone: "None", screenOptionFull: "Full", screenOptionHalf: "Half", addBlindBtn: "Add Blind", screensHeading: "Add Insect Screen", screensTypeLabel: "Type:", screensWidthLabel: "Width (mm):", screensHeightLabel: "Height (mm):", screensQuantityLabel: "Quantity:", screensColorLabel: "Color:", addScreenBtn: "Add Screen", pricesHeading: "Price Settings", blindsPrices: "Blinds Prices", screensPrices: "Insect Screen Prices", basePricesM2: "Base Prices (price / m²)", surcharges: "Surcharges", colorSurcharges: "Color Surcharges - Aluminium (%)", externalColorSurcharges: "Color Surcharges - External (%)", screenBasePricesM2: "Base Prices (price / m²)", screenColorSurcharges: "Color Surcharges (%)", unit_currency_pc: " / pc", quoteHeading: "Quote", settingsHeading: "Settings", companyNameLabel: "Company Name:", companyLogoLabel: "Company Logo:", saveSettingsBtn: "Save Settings", settingsSavedMessage: "Settings saved successfully!", tableProductTh: "Product", tableSizeTh: "Size (mm)", tableQuantityTh: "Quantity", tablePriceTh: "Unit Price", tableSubtotalTh: "Subtotal", tableActionsTh: "Actions", subtotalText: "Subtotal:", discountLabel: "Discount (%):", discountAmountText: "Discount:", totalText: "Grand Total:", saveQuoteBtn: "Save Quote", loadQuotesBtn: "Load Quotes", newQuoteBtn: "New Quote", quoteNameLabel: "Quote Name:", loadQuoteHeading: "Saved Quotes", deleteBtn: "Delete", editBtn: "Edit", savePriceBtn: "Save Prices", priceSavedMessage: "Prices saved successfully!", productAddedMessage: "Product successfully added to the quote!", productUpdatedMessage: "Item successfully updated!", emptyFieldsError: "Please fill in the required fields!", invalidSizeError: "Please enter valid dimensions (positive number).", invalidQuantityError: "Please enter a valid quantity (positive integer).", invalidDivisionWidthError: "Division width cannot be greater than the total width.", quoteSaved: "Quote saved!", quoteLoaded: "Quote loaded successfully!", quoteDeleted: "Quote deleted successfully!", quoteNameRequired: "Please enter a name for the quote!", noQuotesFound: "No saved quotes.", noItemsInQuote: "The quote is empty.", deleteQuotePromptTitle: "Delete Quote", deleteQuotePromptText: "Are you sure you want to delete the quote '{{name}}'?", newQuotePromptTitle: "Start New Quote", newQuotePromptText: "Are you sure you want to start a new, empty quote? Any unsaved changes will be lost.", newQuoteStarted: "Started a new, empty quote.", minAreaWarning: "Warning: The minimum billed area is {{area}} m².", pvcColorError: "PVC blinds are only available in white.", logoUploadText: "Click to upload logo", deleteLogoBtn: "Delete Logo", logoDeletedMessage: "Logo deleted successfully!",
                 dataManagementHeading: "Data Management", dataManagementDesc: "All data is stored in your browser. Clearing your browser's cache may result in the loss of all saved quotes and settings. **We recommend exporting your data regularly!**",
                 exportDataBtn: "Export Data", importDataBtn: "Import Data", importSuccess: "Data imported successfully! The page will reload in 2 seconds.",
                 importError: "Error during import. Please check the file format.",
@@ -911,20 +920,34 @@
             setTimeout(() => toast.remove(), 5000); 
         }
 
-        function showConfirmationModal(title, text) {
+        function showConfirmationModal({ title, text, confirmText, confirmClass = 'btn-danger' }) {
             return new Promise((resolve) => {
                 const modal = $('#confirmation-modal');
+                const confirmBtn = $('#modal-confirm-btn');
+                const cancelBtn = $('#modal-cancel-btn');
+                const t = translations[currentLanguage];
+
                 $('#modal-title').textContent = title;
                 $('#modal-text').textContent = text;
+                
+                confirmBtn.textContent = confirmText;
+                confirmBtn.className = 'btn ' + confirmClass;
+
+                cancelBtn.textContent = t.cancelEditBtn;
+
                 modal.classList.add('active');
-                const confirmHandler = () => { modal.classList.remove('active'); cleanup(); resolve(true); };
-                const cancelHandler = () => { modal.classList.remove('active'); cleanup(); resolve(false); };
+                
+                const confirmHandler = () => { cleanup(); resolve(true); };
+                const cancelHandler = () => { cleanup(); resolve(false); };
+                
                 const cleanup = () => {
-                    $('#modal-confirm-btn').removeEventListener('click', confirmHandler);
-                    $('#modal-cancel-btn').removeEventListener('click', cancelHandler);
+                    modal.classList.remove('active');
+                    confirmBtn.removeEventListener('click', confirmHandler);
+                    cancelBtn.removeEventListener('click', cancelHandler);
                 };
-                $('#modal-confirm-btn').addEventListener('click', confirmHandler);
-                $('#modal-cancel-btn').addEventListener('click', cancelHandler);
+
+                confirmBtn.addEventListener('click', confirmHandler);
+                cancelBtn.addEventListener('click', cancelHandler);
             });
         }
 
@@ -977,7 +1000,8 @@
 
             document.title = t.title + " (Offline)";
             const textContentMap = { 
-                'app-title': 'title', 'language-label': 'languageLabel', 'currency-label': 'currencyLabel', 'blinds-heading': 'blindsHeading', 
+                'app-title': 'title', 'language-label': 'languageLabel', 'currency-label': 'currencyLabel', 
+                'blinds-heading': 'blindsHeading', 
                 'blinds-width-label': 'blindsWidthLabel', 'blinds-height-label': 'blindsHeightLabel', 'blinds-quantity-label': 'blindsQuantityLabel', 
                 'blinds-type-label': 'blindsTypeLabel', 'blinds-color-label': 'blindsColorLabel', 'blinds-control-label': 'blindsControlLabel', 
                 'blinds-divided-label': 'blindsDividedLabel', 'blinds-integrated-screen-label': 'blindsIntegratedScreenLabel', 
@@ -1033,6 +1057,7 @@
             const t = translations[currentLanguage];
             $('#save-quote-btn').textContent = t.saveQuoteBtn;
             $('#load-quotes-btn').textContent = t.loadQuotesBtn;
+            $('#new-quote-btn').textContent = t.newQuoteBtn;
 
             $('#add-blind-btn').textContent = editingItemIndex !== null ? t.updateItemBtn : t.addBlindBtn;
             $('#add-screen-btn').textContent = editingItemIndex !== null ? t.updateItemBtn : t.addScreenBtn;
@@ -1274,8 +1299,27 @@
                 const listItem = document.createElement('li');
                 listItem.className = "saved-quote-item flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-xl shadow-sm";
                 listItem.style.animationDelay = `${index * 50}ms`;
+                
+                const savedDate = new Date(quote.createdAt);
+                const locale = currentLanguage === 'hu' ? 'hu-HU' : (currentLanguage === 'ro' ? 'ro-RO' : 'en-US');
+                const formattedDate = savedDate.toLocaleString(locale, {
+                    year: 'numeric', month: '2-digit', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit'
+                }).replace(',', '');
+
                 const clientInfo = quote.clientName ? `<span class="text-sm text-light-text-color">${quote.clientName}</span>` : '';
-                listItem.innerHTML = `<div><p class="font-semibold">${quote.name}</p>${clientInfo}</div><div class="flex space-x-2 w-full sm:w-auto mt-2 sm:mt-0 flex-shrink-0"><button class="btn btn-primary btn-small w-full sm:w-auto" data-action="load">${t.loadQuotesBtn}</button><button class="btn btn-danger btn-small w-full sm:w-auto" data-action="delete">${t.deleteBtn}</button></div>`;
+                const dateInfo = `<span class="text-xs text-light-text-color mt-1 block">${formattedDate}</span>`;
+
+                listItem.innerHTML = `
+                    <div class="flex-grow pr-4">
+                        <p class="font-semibold">${quote.name}</p>
+                        ${clientInfo}
+                        ${dateInfo}
+                    </div>
+                    <div class="flex space-x-2 w-full sm:w-auto mt-2 sm:mt-0 flex-shrink-0">
+                        <button class="btn btn-primary btn-small w-full sm:w-auto" data-action="load">${t.loadQuotesBtn}</button>
+                        <button class="btn btn-danger btn-small w-full sm:w-auto" data-action="delete">${t.deleteBtn}</button>
+                    </div>`;
                 
                 listItem.addEventListener('animationend', () => { listItem.classList.remove('animated'); });
 
@@ -1294,7 +1338,12 @@
                     showToast(t.quoteLoaded);
                 });
                 listItem.querySelector('[data-action="delete"]').addEventListener('click', async () => {
-                    const confirmed = await showConfirmationModal(t.deleteQuotePromptTitle, t.deleteQuotePromptText.replace('{{name}}', quote.name));
+                    const confirmed = await showConfirmationModal({
+                        title: t.deleteQuotePromptTitle,
+                        text: t.deleteQuotePromptText.replace('{{name}}', quote.name),
+                        confirmText: t.deleteBtn,
+                        confirmClass: 'btn-danger'
+                    });
                     if (confirmed) {
                         allSavedQuotes = allSavedQuotes.filter(q => q.id !== quote.id);
                         localStorage.setItem('savedQuotes', JSON.stringify(allSavedQuotes));
@@ -1751,6 +1800,56 @@
             updateButtonStates();
         }
 
+        function clearQuote() {
+            quoteItems = [];
+            $('#quote-name').value = '';
+            $('#client-name').value = '';
+            $('#client-address').value = '';
+            $('#client-phone').value = '';
+            $('#discount-percentage').value = 0;
+            resetEditingState();
+            renderQuote();
+            showToast(translations[currentLanguage].newQuoteStarted, 'info');
+        }
+
+        function saveCurrentQuote(showNotification = true) {
+            const quoteName = $('#quote-name').value.trim();
+
+            if (quoteName === '' || quoteItems.length === 0) {
+                if (showNotification && quoteName === '') {
+                    showToast(translations[currentLanguage].quoteNameRequired, 'error');
+                }
+                return false;
+            }
+
+            const discount = parseFloat($('#discount-percentage').value) || 0;
+            
+            const newQuoteData = {
+                name: quoteName,
+                items: JSON.stringify(quoteItems.map(item => ({...item, unitPrice: undefined, price: undefined }))),
+                discount,
+                clientName: $('#client-name').value.trim(),
+                clientAddress: $('#client-address').value.trim(),
+                clientPhone: $('#client-phone').value.trim(),
+                createdAt: new Date().toISOString() // This is the save date
+            };
+
+            const existingQuoteIndex = allSavedQuotes.findIndex(q => q.name.toLowerCase() === quoteName.toLowerCase());
+
+            if (existingQuoteIndex > -1) {
+                const existingId = allSavedQuotes[existingQuoteIndex].id;
+                allSavedQuotes[existingQuoteIndex] = { ...newQuoteData, id: existingId };
+            } else {
+                allSavedQuotes.push({ ...newQuoteData, id: crypto.randomUUID() });
+            }
+
+            localStorage.setItem('savedQuotes', JSON.stringify(allSavedQuotes));
+            if (showNotification) {
+                showToast(translations[currentLanguage].quoteSaved);
+            }
+            return true;
+        }
+
         function setupListeners() {
             $$('.tab-button').forEach(tab => tab.addEventListener('click', async () => { 
                 if (editingItemIndex !== null) {
@@ -1867,6 +1966,21 @@
             $('#cancel-edit-blind-btn').addEventListener('click', resetEditingState);
             $('#cancel-edit-screen-btn').addEventListener('click', resetEditingState);
 
+            $('#new-quote-btn').addEventListener('click', async () => {
+                saveCurrentQuote(false); // Auto-save without notification
+
+                const t = translations[currentLanguage];
+                const confirmed = await showConfirmationModal({
+                    title: t.newQuotePromptTitle,
+                    text: t.newQuotePromptText,
+                    confirmText: t.newQuoteBtn,
+                    confirmClass: 'btn-primary'
+                });
+                if (confirmed) {
+                    clearQuote();
+                }
+            });
+
             $('#prices-content').addEventListener('input', (e) => { if(e.target.id === 'exchange-rate-input') { const newRate = parseFloat(e.target.value); if (!isNaN(newRate) && newRate > 0) { exchangeRate = newRate; localStorage.setItem('exchangeRate', exchangeRate); renderPrices(); renderQuote(); } } });
             $('#prices-content').addEventListener('change', (e) => {
                 if (e.target.tagName !== 'INPUT' || !e.target.dataset.path) return;
@@ -1878,16 +1992,10 @@
             });
             $('#prices-content').addEventListener('click', e => { if (e.target.id === 'save-prices-btn') { localStorage.setItem('userPrices', JSON.stringify(userPrices)); showToast(translations[currentLanguage].priceSavedMessage); } });
             
-            $('#save-quote-btn').addEventListener('click', () => {
-                const quoteName = $('#quote-name').value.trim(); if (quoteName === '') { showToast(translations[currentLanguage].quoteNameRequired, 'error'); return; }
-                const discount = parseFloat($('#discount-percentage').value) || 0;
-                const newQuote = { id: crypto.randomUUID(), name: quoteName, items: JSON.stringify(quoteItems.map(item => ({...item, unitPrice: undefined, price: undefined }))), discount, clientName: $('#client-name').value.trim(), clientAddress: $('#client-address').value.trim(), clientPhone: $('#client-phone').value.trim(), createdAt: new Date().toISOString() };
-                allSavedQuotes = allSavedQuotes.filter(q => q.name.toLowerCase() !== quoteName.toLowerCase());
-                allSavedQuotes.push(newQuote);
-                localStorage.setItem('savedQuotes', JSON.stringify(allSavedQuotes));
-                showToast(translations[currentLanguage].quoteSaved);
-            });
+            $('#save-quote-btn').addEventListener('click', () => saveCurrentQuote(true));
+
             $('#load-quotes-btn').addEventListener('click', () => { const section = $('#load-quote-section'); section.classList.toggle('hidden'); if (!section.classList.contains('hidden')) { renderSavedQuotesList(); } });
+            $('#close-load-quote-btn').addEventListener('click', () => $('#load-quote-section').classList.add('hidden'));
             $('#quote-search-input').addEventListener('input', (e) => renderSavedQuotesList(e.target.value));
             $('#preview-quote-btn').addEventListener('click', generateQuotePreview);
 
@@ -2006,19 +2114,25 @@
 
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCRNOv3gLYn4Mlkfs2yss2sqTieWLbECqw",
-    authDomain: "arajanlat-83ad3.firebaseapp.com",
-    projectId: "arajanlat-83ad3",
-    storageBucket: "arajanlat-83ad3.firebasestorage.app",
-    messagingSenderId: "794397912831",
-    appId: "1:794397912831:web:784e9dc71f355cc72ea6ca",
-    measurementId: "G-P8JML1W7YY"
-  };
+  // FIX: Switched from a hardcoded Firebase config to the one provided by the environment.
+  // This resolves the "API key not valid" error by ensuring the correct credentials are used.
+  const firebaseConfig = typeof __firebase_config !== 'undefined'
+      ? JSON.parse(__firebase_config)
+      : {};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+  // Initialize Firebase only if a valid configuration is found.
+  // This prevents errors when running outside the intended environment.
+  if (firebaseConfig.apiKey) {
+      try {
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        console.log("Firebase Analytics initialized successfully.");
+      } catch (error) {
+        console.error("Error initializing Firebase:", error);
+      }
+  } else {
+      console.warn("Firebase configuration not found. Analytics will not be initialized.");
+  }
 </script>
 </body>
 </html>
