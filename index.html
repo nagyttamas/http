@@ -70,7 +70,7 @@
             /* Sötét mód színei */
             --background-start-dark: #1A202C;
             --background-end-dark: #2D3748;
-            --surface-glass-dark: rgba(10, 15, 25, 0.65); /* Sötétebb, feketébb üveg hatás */
+            --surface-glass-dark: rgba(10, 15, 25, 0.65);
             --border-glass-dark: rgba(50, 60, 75, 0.5);
             --text-color: #F9FAFB;
             --light-text-color: #9CA3AF;
@@ -79,6 +79,10 @@
             --table-header-bg: #374151;
             --table-row-border: #4B5563;
             --hover-bg-color: #374151;
+        }
+        
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -117,7 +121,7 @@
             border-radius: 12px;
             padding: 0.75rem 1.25rem;
             font-weight: 600;
-            background-color: rgba(148, 163, 184, 0.1); /* Subtle, glassy background */
+            background-color: rgba(148, 163, 184, 0.1);
             color: var(--light-text-color);
             flex-shrink: 0;
         }
@@ -127,13 +131,13 @@
         .tab-button:not(.active-style):hover {
             background-color: rgba(148, 163, 184, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 0 15px rgba(0, 150, 136, 0.15); /* Ragyogás effekt */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 0 15px rgba(0, 150, 136, 0.15);
         }
         body.dark .tab-button:not(.active-style):hover {
             background-color: rgba(71, 85, 105, 0.6);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 0 15px rgba(0, 188, 212, 0.2); /* Sötét mód ragyogás effekt */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 0 15px rgba(0, 188, 212, 0.2);
         }
-        .tab-button:focus-visible { /* A11y focus state */
+        .tab-button:focus-visible {
             outline: none;
             box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.4);
         }
@@ -144,6 +148,10 @@
         }
         .tab-button.active-style:hover {
             background-color: var(--primary-dark);
+        }
+        .tab-button:active {
+            transform: scale(0.96) translateY(1px);
+            filter: brightness(0.95);
         }
         
         .tab-button .icon {
@@ -161,22 +169,21 @@
 
         /* Input and select styling */
         .input-field {
-            -webkit-appearance: none; /* iOS style reset */
+            -webkit-appearance: none;
             appearance: none;
             padding: 0.75rem 1rem;
             border-radius: 12px;
             color: var(--text-color);
             transition: all 0.3s ease;
             width: 100%;
-             /* Glass Effect */
-            background-color: rgba(224, 242, 241, 0.4); /* Finomított áttetsző háttér */
+            background-color: rgba(224, 242, 241, 0.4);
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(178, 222, 219, 0.5);
         }
 
         body.dark .input-field {
-            background-color: rgba(26, 32, 44, 0.5); /* Sötétebb input háttér sötét módban */
+            background-color: rgba(26, 32, 44, 0.5);
             border-color: rgba(74, 85, 104, 0.5);
         }
 
@@ -186,31 +193,22 @@
             box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2);
         }
 
-        body.dark .input-field:focus {
-            /* Nincs szükség külön háttérszín változásra, a keret jelzi a fókuszt */
-        }
-
         .input-field::placeholder {
             color: var(--light-text-color);
         }
 
         select.input-field {
-             /* The glass effect is now inherited from .input-field */
-            /* Just keep the arrow styles */
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
             background-position: right 0.5rem center;
             background-repeat: no-repeat;
             background-size: 1.5em 1.5em;
-            padding-right: 2.5rem; /* Make space for the arrow */
+            padding-right: 2.5rem;
         }
 
         body.dark select.input-field {
-             /* The glass effect is now inherited from .dark .input-field */
-            /* Just update the arrow icon color for dark mode */
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
         }
         
-        /* Specific overrides for the small header selects to fix iOS sizing issue */
         #language-select, #currency-select {
             width: auto;
             padding-top: 0.25rem;
@@ -220,10 +218,10 @@
 
         /* Button styling - iOS Inspired */
         .btn {
-            -webkit-appearance: none; /* iOS style reset */
+            -webkit-appearance: none;
             font-weight: 600;
             padding: 0.9rem 1.75rem;
-            border-radius: 16px; /* Kerekebb gombok */
+            border-radius: 16px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: all 0.2s ease;
             transform: scale(1);
@@ -251,18 +249,23 @@
         .btn-tertiary:hover { background-color: #D97706; }
         .btn-danger { background-color: #EF4444; color: white; border-color: transparent;}
         .btn-danger:hover { background-color: #DC2626; }
-        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 12px; /* Kisebb gombok is kerekebbek */ }
+        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 12px; }
         
         .btn-icon {
              -webkit-appearance: none;
              padding: 0;
-             width: 2.5rem; /* 40px */
-             height: 2.5rem; /* 40px */
+             width: 2.5rem;
+             height: 2.5rem;
              display: inline-flex;
              align-items: center;
              justify-content: center;
-             border-radius: 9999px; /* Circular */
+             border-radius: 9999px;
              font-size: 1rem;
+             transition: all 0.2s ease;
+        }
+        .btn-icon:active, #theme-toggle:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 16px 4px rgba(0, 188, 212, 0.5); /* Türkiz fény */
         }
 
 
@@ -284,7 +287,7 @@
             cursor: pointer;
             transition: color 0.3s, border-color 0.3s;
             border-bottom: 3px solid transparent;
-            margin-bottom: -1px; /* Overlap the main border */
+            margin-bottom: -1px;
         }
         .sub-tab-button.active-sub-style {
             color: var(--primary-color);
@@ -313,8 +316,42 @@
             border-color: var(--table-row-border);
         }
 
+        /* Legördülő szekciók animációja */
         #load-quote-section {
-            background-color: var(--input-bg-color);
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 0;
+            border-width: 0;
+            transition: all 0.5s ease-in-out;
+        }
+        #load-quote-section.visible {
+            max-height: 600px;
+            opacity: 1;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-width: 1px;
+        }
+        #blinds-division-details {
+            display: grid;
+            gap: 1.5rem;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-in-out;
+            margin-top: 0 !important;
+            padding-top: 0;
+        }
+        #blinds-division-details.visible {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 1.5rem !important;
+            padding-top: 1rem;
+        }
+        @media (min-width: 768px) {
+            #blinds-division-details.visible { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
 
         .saved-quote-item {
@@ -322,26 +359,23 @@
             -webkit-backdrop-filter: blur(5px);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(148, 163, 184, 0.15);
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s ease;
+        }
+        .saved-quote-item:active {
+            transform: scale(0.98);
+            filter: brightness(0.95);
         }
         body.dark .saved-quote-item {
             background-color: rgba(71, 85, 105, 0.2);
             border-color: rgba(71, 85, 105, 0.3);
         }
-        .saved-quote-item:not(.animated) {
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
         .saved-quote-item.animated {
             animation: slideInListItem 0.5s ease-out forwards;
             opacity: 0;
             transform: translateY(30px);
         }
-
         @keyframes slideInListItem {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
 
 
@@ -368,7 +402,7 @@
             display: flex; justify-content: center; align-items: center;
             z-index: 2000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
             backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px); /* --- KULCSFONTOSSÁGÚ A KOMPATIBILITÁSHOZ --- */
+            -webkit-backdrop-filter: blur(5px);
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
@@ -382,14 +416,14 @@
         /* --- Eszköz-specifikus rács elrendezések --- */
         .form-grid {
             display: grid;
-            gap: 1.5rem; /* Tailwind's gap-6 */
-            grid-template-columns: 1fr; /* Alapértelmezett: Mobil (1 oszlop) */
+            gap: 1.5rem;
+            grid-template-columns: 1fr;
         }
 
         /* Tablet / iPad (álló) és nagyobb tabletek (768px-től) */
         @media (min-width: 768px) {
             .form-grid {
-                gap: 1.75rem; /* Increased gap for tablets */
+                gap: 1.75rem;
             }
             #blinds-content .form-grid { grid-template-columns: repeat(3, 1fr); }
             #screens-content .form-grid { grid-template-columns: repeat(2, 1fr); }
@@ -420,7 +454,7 @@
                 padding: 0.9rem;
                 font-size: 1rem;
             }
-            .btn:not(.btn-icon) { /* Apply to all buttons except icon-only */
+            .btn:not(.btn-icon) {
                 padding: 1.1rem 2.2rem;
                 font-size: 0.9rem;
             }
@@ -552,7 +586,7 @@
                             <option value="half">Fele</option>
                         </select>
                     </div>
-                    <div id="blinds-division-details" class="hidden col-span-1 md:col-span-2 lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+                    <div id="blinds-division-details" class="col-span-full">
                         <div class="input-group">
                             <label id="blinds-division-side-label">Osztás oldala:</label>
                             <select id="blinds-division-side" class="input-field">
@@ -677,7 +711,7 @@
                         <button id="new-quote-btn" class="btn btn-danger flex-grow sm:flex-grow-0"></button>
                     </div>
                 </div>
-                 <div id="load-quote-section" class="relative mt-6 p-4 rounded-2xl shadow-md hidden transition-all duration-300">
+                 <div id="load-quote-section" class="relative transition-all duration-300 shadow-md rounded-2xl">
                     <h3 id="load-quote-heading" class="text-xl font-bold mb-4">Mentett ajánlatok</h3>
                     <button id="close-load-quote-btn" class="absolute top-3 right-3 btn btn-icon btn-secondary" aria-label="Bezárás"><i class="fa-solid fa-times"></i></button>
                     <div class="relative mb-4">
@@ -1430,7 +1464,7 @@
                     $('#discount-percentage').value = quote.discount || 0;
                     renderQuote();
                     $('#quote-tab').click();
-                    $('#load-quote-section').classList.add('hidden');
+                    $('#load-quote-section').classList.remove('visible');
                     showToast(t.quoteLoaded);
                 });
                 listItem.querySelector('[data-action="delete"]').addEventListener('click', async () => {
@@ -1860,7 +1894,7 @@
                 $('#blinds-color').value = item.options.color;
                 $('#blinds-control').value = item.options.control;
                 $('#blinds-divided').checked = item.options.divided;
-                $('#blinds-division-details').classList.toggle('hidden', !item.options.divided);
+                $('#blinds-division-details').classList.toggle('visible', item.options.divided);
                 if(item.options.divided) {
                     $('#blinds-division-side').value = item.options.divisionSide;
                     $('#blinds-division-width').value = item.options.divisionWidth;
@@ -1883,7 +1917,7 @@
             $('#blinds-height').value = ''; 
             $('#blinds-quantity').value = 1; 
             $('#blinds-divided').checked = false;
-            $('#blinds-division-details').classList.add('hidden');
+            $('#blinds-division-details').classList.remove('visible');
             $('#blinds-division-width').value = '';
             $('#cancel-edit-blind-btn').classList.add('hidden');
 
@@ -1997,7 +2031,7 @@
             $('#blinds-type').addEventListener('change', () => { updateBlindsColors(); updateBlindOptions(); });
             
             $('#blinds-divided').addEventListener('change', (e) => {
-                $('#blinds-division-details').classList.toggle('hidden', !e.target.checked);
+                $('#blinds-division-details').classList.toggle('visible', e.target.checked);
             });
 
             $('#screens-type').addEventListener('change', (e) => {
@@ -2160,8 +2194,8 @@
             
             $('#save-quote-btn').addEventListener('click', () => saveCurrentQuote(true));
 
-            $('#load-quotes-btn').addEventListener('click', () => { const section = $('#load-quote-section'); section.classList.toggle('hidden'); if (!section.classList.contains('hidden')) { renderSavedQuotesList(); } });
-            $('#close-load-quote-btn').addEventListener('click', () => $('#load-quote-section').classList.add('hidden'));
+            $('#load-quotes-btn').addEventListener('click', () => { const section = $('#load-quote-section'); section.classList.toggle('visible'); if (section.classList.contains('visible')) { renderSavedQuotesList(); } });
+            $('#close-load-quote-btn').addEventListener('click', () => $('#load-quote-section').classList.remove('visible'));
             $('#quote-search-input').addEventListener('input', (e) => renderSavedQuotesList(e.target.value));
             $('#preview-quote-btn').addEventListener('click', generateQuotePreview);
 
