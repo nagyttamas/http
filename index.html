@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Árajánlat Készítő (Offline)</title>
 
     <!-- WebKit/iOS Home Screen Ikon és Beállítások -->
@@ -46,387 +46,382 @@
         
         /* --- Alkalmazás Stílusok --- */
         :root {
-            --primary-color: #0d9488; 
-            --primary-dark: #0f766e;
-            --accent-color: #f59e0b;
+            --primary-color: #009688; 
+            --primary-dark: #00796B;
+            --secondary-color: #00BCD4;
+            --secondary-dark: #0097A7;
+            --accent-color: #F59E0B;
             
-            /* Világos mód */
-            --bg-light: #f0fdfa;
-            --surface-light: #ffffff;
-            --text-light: #1f2937;
-            --text-muted-light: #6b7280;
-            --border-light: #cbd5e1;
-            --tab-bg-light: rgba(204, 251, 241, 0.6);
-            --tab-border-light: rgba(13, 148, 136, 0.2);
-            --tab-hover-bg-light: rgba(204, 251, 241, 0.9);
-            --tab-glow-light: rgba(13, 148, 136, 0.7); /* Még intenzívebb fény */
-
-            /* Sötét mód */
-            --bg-dark: #111827;
-            --surface-dark: #1f2937;
-            --text-dark: #f9fafb;
-            --text-muted-dark: #9ca3af;
-            --border-dark: #4b5563;
-            --tab-bg-dark: rgba(28, 41, 58, 0.6);
-            --tab-border-dark: rgba(74, 85, 104, 0.5);
-            --tab-hover-bg-dark: rgba(28, 41, 58, 0.9);
-            --tab-glow-dark: rgba(13, 148, 136, 0.6); /* Még intenzívebb türkiz fény */
-            --input-glow-light: rgba(13, 148, 136, 0.45); /* Még intenzívebb fény */
-            --input-glow-dark: rgba(13, 148, 136, 0.45); /* Még intenzívebb türkiz fény */
-        }
-
-        html {
-            height: 100%;
-        }
-
-        *, *::before, *::after {
-            transition: background-color .3s ease, color .3s ease, border-color .3s ease, opacity .3s ease, transform .2s ease, box-shadow .2s ease;
-        }
-
-        body {
-            min-height: 100%;
-            margin: 0;
-            padding: 1rem; /* Távolság a képernyő szélétől */
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            /* Világos mód színei */
+            --background-start-light: #E0F2F1;
+            --background-end-light: #E0F7FA;
+            --surface-glass-light: rgba(255, 255, 255, 0.6);
+            --border-glass-light: rgba(255, 255, 255, 0.8);
+            --text-color: #1F2937;
+            --light-text-color: #6B7280;
+            --input-bg-color: #F9FAFB;
+            --input-border-color: #D1D5DB;
+            --table-header-bg: #E5E7EB;
+            --table-row-border: #E5E7EB;
+            --hover-bg-color: #E5E7EB;
         }
 
         body.dark {
-            background-color: var(--bg-dark);
-            color: var(--text-dark);
+            /* Sötét mód színei */
+            --background-start-dark: #1A202C;
+            --background-end-dark: #2D3748;
+            --surface-glass-dark: rgba(10, 15, 25, 0.65); /* Sötétebb, feketébb üveg hatás */
+            --border-glass-dark: rgba(50, 60, 75, 0.5);
+            --text-color: #F9FAFB;
+            --light-text-color: #9CA3AF;
+            --input-bg-color: #374151;
+            --input-border-color: #4B5563;
+            --table-header-bg: #374151;
+            --table-row-border: #4B5563;
+            --hover-bg-color: #374151;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-image: linear-gradient(135deg, var(--background-start-light), var(--background-end-light));
+            background-attachment: fixed;
+            transition: color 0.3s;
+        }
+
+        body.dark {
+            background-image: linear-gradient(135deg, var(--background-start-dark), var(--background-end-dark));
         }
 
         .container {
-            max-width: 1280px;
-            width: 100%;
-            height: 100%;
-            background-color: var(--surface-light);
-            border: 1px solid var(--border-light);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-            animation: container-fade-in 0.8s ease-out forwards;
-            opacity: 0;
-            display: flex; /* Flexbox a belső elrendezéshez */
-            flex-direction: column; /* Elemek egymás alatt */
-            overflow: hidden; /* A konténer ne lógjon túl */
+            max-width: 1024px;
+            background-color: var(--surface-glass-light);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass-light);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         body.dark .container {
-             background-color: var(--surface-dark);
-             border-color: var(--border-dark);
-        }
-        
-        @keyframes container-fade-in {
-          from { opacity: 0; transform: translateY(20px) scale(0.98); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
+             background-color: var(--surface-glass-dark);
+             border-color: var(--border-glass-dark);
         }
 
-        /* Tabs - Glass Effect */
+        /* Tabs styling - iOS Glass Effect */
         .tab-button {
-            font-weight: 600;
-            border-radius: 9999px; /* Sokkal kerekebb */
+            -webkit-appearance: none;
+            border: none;
+            transition: all 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+            border-radius: 12px;
             padding: 0.75rem 1.25rem;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            background-color: var(--tab-bg-light);
-            border: 1px solid var(--tab-border-light);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-weight: 600;
+            background-color: rgba(148, 163, 184, 0.1); /* Subtle, glassy background */
+            color: var(--light-text-color);
+            flex-shrink: 0;
         }
-        body.dark .tab-button {
-            background-color: var(--tab-bg-dark);
-            border: 1px solid var(--tab-border-dark);
-            color: var(--text-muted-dark);
+        body.dark .tab-button:not(.active-style) {
+            background-color: rgba(71, 85, 105, 0.2);
         }
-
-        .tab-button .icon {
-            color: var(--primary-color);
+        .tab-button:not(.active-style):hover {
+            background-color: rgba(148, 163, 184, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 0 15px rgba(0, 150, 136, 0.15); /* Ragyogás effekt */
         }
-        body.dark .tab-button .icon {
-            color: var(--primary-color); /* Egységes türkiz ikon szín */
+        body.dark .tab-button:not(.active-style):hover {
+            background-color: rgba(71, 85, 105, 0.6);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 0 15px rgba(0, 188, 212, 0.2); /* Sötét mód ragyogás effekt */
         }
-
-        .tab-button:hover {
-            transform: scale(1.05); /* Nagyítás effekt */
-            background-color: var(--tab-hover-bg-light);
-            box-shadow: 0 0 35px -5px var(--tab-glow-light), 0 5px 10px -5px rgba(0,0,0,0.1); /* Látványosabb Fény effekt */
+        .tab-button:focus-visible { /* A11y focus state */
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.4);
         }
-        body.dark .tab-button:hover {
-            background-color: var(--tab-hover-bg-dark);
-            box-shadow: 0 0 35px -5px var(--tab-glow-dark), 0 5px 15px -5px rgba(0,0,0,0.2); /* Látványosabb Fény effekt */
-        }
-
-        .tab-button:active {
-            transform: scale(0.98); /* Kattintás effekt */
-            box-shadow: none;
-        }
-         body.dark .tab-button:active {
-            box-shadow: none;
-        }
-        
         .tab-button.active-style {
             background-color: var(--primary-color);
             color: white;
-            border-color: transparent;
-            box-shadow: 0 10px 25px -3px rgba(13, 148, 136, 0.4), 0 4px 10px -4px rgba(13, 148, 136, 0.4); /* Erősebb aktív árnyék */
-            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 150, 136, 0.3);
         }
-        body.dark .tab-button.active-style {
-            border-color: transparent;
-            box-shadow: 0 10px 25px -3px rgba(13, 148, 136, 0.5), 0 4px 10px -4px rgba(13, 148, 136, 0.5); /* Erősebb aktív árnyék */
+        .tab-button.active-style:hover {
+            background-color: var(--primary-dark);
         }
-        .tab-button.active-style .icon { color: white; }
+        
+        .tab-button .icon {
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .tab-button:not(.active-style) .icon {
+             color: var(--light-text-color);
+        }
+
+        .tab-button.active-style .icon {
+            color: white;
+        }
 
         /* Input and select styling */
         .input-field {
-            -webkit-appearance: none;
+            -webkit-appearance: none; /* iOS style reset */
             appearance: none;
             padding: 0.75rem 1rem;
-            border-radius: 20px; /* Sokkal kerekebb */
-            color: var(--text-light);
+            border-radius: 12px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
             width: 100%;
-            background-color: var(--bg-light);
-            border: 2px solid var(--border-light);
-        }
-        body.dark .input-field {
-            color: var(--text-dark);
-            background-color: var(--bg-dark);
-            border-color: var(--border-dark);
+             /* Glass Effect */
+            background-color: rgba(224, 242, 241, 0.4); /* Finomított áttetsző háttér */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(178, 222, 219, 0.5);
         }
 
-        .input-field:focus, .input-field:hover {
+        body.dark .input-field {
+            background-color: rgba(26, 32, 44, 0.5); /* Sötétebb input háttér sötét módban */
+            border-color: rgba(74, 85, 104, 0.5);
+        }
+
+        .input-field:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 5px var(--input-glow-light); /* Látványosabb fény */
+            box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2);
         }
-        body.dark .input-field:focus,
-        body.dark .input-field:hover {
-             box-shadow: 0 0 0 5px var(--input-glow-dark); /* Látványosabb fény */
+
+        body.dark .input-field:focus {
+            /* Nincs szükség külön háttérszín változásra, a keret jelzi a fókuszt */
+        }
+
+        .input-field::placeholder {
+            color: var(--light-text-color);
         }
 
         select.input-field {
+             /* The glass effect is now inherited from .input-field */
+            /* Just keep the arrow styles */
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
             background-position: right 0.5rem center;
             background-repeat: no-repeat;
             background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-        }
-        body.dark select.input-field {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            padding-right: 2.5rem; /* Make space for the arrow */
         }
 
-        /* Button styling */
+        body.dark select.input-field {
+             /* The glass effect is now inherited from .dark .input-field */
+            /* Just update the arrow icon color for dark mode */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+        
+        /* Specific overrides for the small header selects to fix iOS sizing issue */
+        #language-select, #currency-select {
+            width: auto;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+
+
+        /* Button styling - iOS Inspired */
         .btn {
-            font-weight: 700;
+            -webkit-appearance: none; /* iOS style reset */
+            font-weight: 600;
             padding: 0.9rem 1.75rem;
-            border-radius: 20px; /* Sokkal kerekebb */
-            box-shadow: 4px 4px 0px #111827;
-            transform: translate(0, 0);
-            border: 2px solid #111827;
-        }
-        body.dark .btn {
-            box-shadow: 4px 4px 0px #f9fafb;
-            border-color: #f9fafb;
-        }
-        .btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px #111827;
-        }
-        body.dark .btn:hover {
-             box-shadow: 6px 6px 0px #f9fafb;
+            border-radius: 16px; /* Kerekebb gombok */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            transform: scale(1);
+            border: 1px solid transparent;
         }
         .btn:active {
-            transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px #111827;
-        }
-        body.dark .btn:active {
-            box-shadow: 0px 0px 0px #f9fafb;
+            transform: scale(0.97);
+            box-shadow: none;
+            filter: brightness(0.95);
         }
         .btn-primary { background-color: var(--primary-color); color: white; }
         .btn-primary:hover { background-color: var(--primary-dark); }
-        .btn-secondary { background-color: #e2e8f0; color: #1f2937; }
-        body.dark .btn-secondary { background-color: #374151; color: #f9fafb; }
-        .btn-tertiary { background-color: var(--accent-color); color: white; }
-        .btn-danger { background-color: #ef4444; color: white; }
+        .btn-secondary { 
+            background-color: var(--hover-bg-color); 
+            color: var(--text-color);
+            border-color: var(--input-border-color);
+        }
+        body.dark .btn-secondary {
+            background-color: var(--input-bg-color);
+        }
+        .btn-secondary:hover { 
+            background-color: var(--input-border-color);
+        }
+        .btn-tertiary { background-color: var(--accent-color); color: white; border-color: transparent; }
+        .btn-tertiary:hover { background-color: #D97706; }
+        .btn-danger { background-color: #EF4444; color: white; border-color: transparent;}
+        .btn-danger:hover { background-color: #DC2626; }
+        .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 12px; /* Kisebb gombok is kerekebbek */ }
+        
         .btn-icon {
-             width: 2.75rem; height: 2.75rem; padding: 0;
-             display: inline-flex; align-items: center; justify-content: center;
-             border-radius: 9999px;
+             -webkit-appearance: none;
+             padding: 0;
+             width: 2.5rem; /* 40px */
+             height: 2.5rem; /* 40px */
+             display: inline-flex;
+             align-items: center;
+             justify-content: center;
+             border-radius: 9999px; /* Circular */
+             font-size: 1rem;
         }
 
-        /* Modern Toggle Switch */
-        .toggle-switch {
-            position: relative; display: inline-block; width: 52px; height: 32px;
-        }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc; border-radius: 34px; transition: .4s;
-            border: 2px solid #a3a3a3;
-        }
-        body.dark .slider { background-color: #4b5563; border-color: #6b7280; }
-        .slider:before {
-            position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px;
-            background-color: white; border-radius: 50%; transition: .4s;
-        }
-        input:checked + .slider { background-color: var(--primary-color); border-color: var(--primary-dark); }
-        input:checked + .slider:before { transform: translateX(20px); }
 
-        .tab-content { display: none; }
+        .tab-content { display: none; animation: fadeIn 0.5s; background-color: transparent; }
         .tab-content.active { display: block; }
         
-        /* Látványos 3D KIBEILLENŐ animáció a mezőknek */
-        @keyframes spectacular-form-in {
-            from {
-                opacity: 0;
-                transform: perspective(800px) translateY(40px) rotateX(-20deg);
-            }
-            to {
-                opacity: 1;
-                transform: perspective(800px) translateY(0) rotateX(0deg);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes spectacular-form-out {
-            from {
-                opacity: 1;
-                transform: perspective(800px) translateY(0) rotateX(0deg);
-            }
-            to {
-                opacity: 0;
-                transform: perspective(800px) translateY(-40px) rotateX(20deg);
-            }
+        .input-with-unit { display: flex; align-items: center; }
+        .input-with-unit .input-field { border-radius: 12px 0 0 12px; }
+        .input-with-unit .unit {
+            background-color: var(--hover-bg-color); color: var(--light-text-color); padding: 0.75rem 1rem;
+            border-radius: 0 12px 12px 0; border: 1px solid var(--input-border-color); border-left: none;
         }
-
-        .tab-content.active .animated-form-group {
-            animation: spectacular-form-in 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-            opacity: 0;
-            transform-style: preserve-3d;
-        }
-
-        .tab-content.exiting .animated-form-group {
-            animation: spectacular-form-out 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
-            opacity: 1; /* Láthatóról indul */
-            transform-style: preserve-3d;
-        }
-
-        /* Lépcsőzetes animáció késleltetés (belépés) */
-        .tab-content.active .animated-form-group:nth-child(1) { animation-delay: 0.05s; }
-        .tab-content.active .animated-form-group:nth-child(2) { animation-delay: 0.1s; }
-        .tab-content.active .animated-form-group:nth-child(3) { animation-delay: 0.15s; }
-        .tab-content.active .animated-form-group:nth-child(4) { animation-delay: 0.2s; }
-        .tab-content.active .animated-form-group:nth-child(5) { animation-delay: 0.25s; }
-        .tab-content.active .animated-form-group:nth-child(6) { animation-delay: 0.3s; }
-        .tab-content.active .animated-form-group:nth-child(7) { animation-delay: 0.35s; }
-        .tab-content.active .animated-form-group:nth-child(8) { animation-delay: 0.4s; }
-
-        /* Lépcsőzetes animáció késleltetés (kilépés - fordított sorrend) */
-        .tab-content.exiting .animated-form-group:nth-last-child(1) { animation-delay: 0.0s; }
-        .tab-content.exiting .animated-form-group:nth-last-child(2) { animation-delay: 0.05s; }
-        .tab-content.exiting .animated-form-group:nth-last-child(3) { animation-delay: 0.1s; }
-        .tab-content.exiting .animated-form-group:nth-last-child(4) { animation-delay: 0.15s; }
-        .tab-content.exiting .animated-form-group:nth-last-child(5) { animation-delay: 0.2s; }
-        .tab-content.exiting .animated-form-group:nth-last-child(6) { animation-delay: 0.25s; }
-        .tab-content.exiting .animated-form-group:nth-last-child(7) { animation-delay: 0.3s; }
-        .tab-content.exiting .animated-form-group:nth-last-child(8) { animation-delay: 0.35s; }
         
-        #tab-content-container {
-            flex-grow: 1; /* Kitölti a maradék helyet */
-            overflow-y: auto; /* Csak ez a rész görgethető */
-            padding-bottom: 1.5rem; /* Tér a görgetősáv alján */
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary-color) transparent;
-        }
-        #tab-content-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        #tab-content-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        #tab-content-container::-webkit-scrollbar-thumb {
-            background-color: var(--primary-color);
-            border-radius: 10px;
-            border: 3px solid transparent;
-            background-clip: content-box;
+        .table-header {
+            background-color: var(--table-header-bg);
+            color: var(--text-color);
         }
 
-        #quote-items-body tr:hover {
-            background-color: #111827;
+        #quote-items-body {
+            border-color: var(--table-row-border);
         }
 
-        /* Modal styling */
+        #load-quote-section {
+            background-color: var(--background-color);
+        }
+
+        .saved-quote-item {
+            background-color: rgba(148, 163, 184, 0.1);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+        }
+        body.dark .saved-quote-item {
+            background-color: rgba(71, 85, 105, 0.2);
+            border-color: rgba(71, 85, 105, 0.3);
+        }
+        .saved-quote-item.animated {
+            animation: slideInListItem 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes slideInListItem {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* Toast Notification */
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 1050; display: flex; flex-direction: column; gap: 10px; }
+        .toast {
+            display: flex; align-items: center; padding: 1rem 1.5rem; border-radius: 12px;
+            color: white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0; transform: translateX(100%);
+            animation: slideInToast 0.5s forwards, fadeOutToast 0.5s 4.5s forwards;
+            min-width: 250px;
+        }
+        .toast-success { background-color: var(--primary-color); }
+        .toast-error { background-color: #EF4444; }
+        .toast-info { background-color: var(--secondary-color); }
+        .toast .icon { margin-right: 0.75rem; font-size: 1.5rem; }
+        @keyframes slideInToast { to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeOutToast { from { opacity: 1; } to { opacity: 0; transform: translateX(100%); } }
+
+        /* Modal styling with Backdrop Blur */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background-color: rgba(0, 0, 0, 0.35);
             display: flex; justify-content: center; align-items: center;
             z-index: 2000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
             backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px); /* --- KULCSFONTOSSÁGÚ A KOMPATIBILITÁSHOZ --- */
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
-            /* ÚJ ÜVEG HATÁS ÉS ANIMÁCIÓ */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            background-color: rgba(255, 255, 255, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-
-            padding: 2rem;
-            border-radius: 32px;
+            background: var(--surface-color); padding: 2rem; border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             width: 90%; max-width: 400px;
-            
-            /* ÚJ, LENDÜLETES ANIMÁCIÓ */
-            transform: scale(0.9) translateY(30px);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
-            opacity: 0;
+            transform: scale(0.95); transition: transform 0.3s ease;
         }
-        body.dark .modal-content {
-            background-color: rgba(31, 41, 55, 0.65);
-            border-color: rgba(255, 255, 255, 0.1);
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+        /* --- Eszköz-specifikus rács elrendezések --- */
+        .form-grid {
+            display: grid;
+            gap: 1.5rem; /* Tailwind's gap-6 */
+            grid-template-columns: 1fr; /* Alapértelmezett: Mobil (1 oszlop) */
         }
-        .modal-overlay.active .modal-content { 
-            transform: scale(1) translateY(0); 
-            opacity: 1;
-        }
-        
-        /* Responsive Overrides */
+
+        /* Tablet / iPad (álló) és nagyobb tabletek (768px-től) */
         @media (min-width: 768px) {
-            .btn:not(.btn-icon) {
+            .form-grid {
+                gap: 1.75rem; /* Increased gap for tablets */
+            }
+            #blinds-content .form-grid { grid-template-columns: repeat(3, 1fr); }
+            #screens-content .form-grid { grid-template-columns: repeat(2, 1fr); }
+            #settings-content .form-grid { grid-template-columns: repeat(2, 1fr); }
+            #quote-content .form-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* PC / iPad (fekvő) és nagyobb képernyők (1024px-től) */
+        @media (min-width: 1024px) {
+            #blinds-content .form-grid { grid-template-columns: repeat(4, 1fr); }
+            #screens-content .form-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* --- Reszponzív beállítások tabletekre (iPad) és nagyobb képenyőkre --- */
+        @media (min-width: 768px) {
+            #app-title {
+                font-size: 2rem;
+            }
+            .tab-button {
+                padding: 0.75rem 1.25rem;
+                font-size: 1rem;
+            }
+            .input-group label {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+            .input-field {
+                padding: 0.9rem;
+                font-size: 1rem;
+            }
+            .btn:not(.btn-icon) { /* Apply to all buttons except icon-only */
                 padding: 1.1rem 2.2rem;
                 font-size: 0.9rem;
             }
+            .btn-small {
+                 padding: 0.6rem 1.2rem;
+                 font-size: 0.8rem;
+            }
+            #quote-items-body td, thead th {
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+                font-size: 0.95rem;
+            }
+            .quote-summary {
+                font-size: 1.2rem;
+            }
+            .quote-summary #discount-percentage {
+                 padding: 0.5rem;
+            }
         }
-
-        /* Toast Notification */
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 2050; display: flex; flex-direction: column; gap: 10px; }
-        .toast {
-            display: flex; align-items: center; padding: 1rem 1.5rem; border-radius: 20px;
-            color: white;
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            opacity: 0; transform: translateX(100%);
-            animation: slideInToast 0.5s forwards, fadeOutToast 0.5s 4.5s forwards;
-            min-width: 250px;
-        }
-        .toast-success { background-color: rgba(13, 148, 136, 0.8); }
-        .toast-error { background-color: rgba(239, 68, 68, 0.8); }
-        .toast-info { background-color: rgba(245, 158, 11, 0.8); }
-        .toast .icon { margin-right: 0.75rem; font-size: 1.5rem; }
-        @keyframes slideInToast { to { opacity: 1; transform: translateX(0); } }
-        @keyframes fadeOutToast { from { opacity: 1; } to { opacity: 0; transform: translateX(100%); } }
     </style>
 </head>
-<body>
+<body class="p-2 sm:p-4 md:p-6 lg:p-8">
     <div id="toast-container"></div>
     
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content text-center">
             <h3 id="modal-title" class="text-xl font-bold mb-4">Megerősítés</h3>
-            <p id="modal-text" class="mb-6 text-muted-light dark:text-muted-dark">Biztosan folytatja?</p>
+            <p id="modal-text" class="mb-6 text-gray-600">Biztosan folytatja?</p>
             <div class="flex justify-center space-x-4">
                 <button id="modal-confirm-btn" class="btn btn-danger">Törlés</button>
                 <button id="modal-cancel-btn" class="btn btn-secondary">Mégse</button>
@@ -434,15 +429,28 @@
         </div>
     </div>
 
-    <div class="container p-4 sm:p-6 lg:p-10 rounded-[2.5rem]"> <!-- Még kerekebb konténer -->
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-y-4">
+    <div id="pin-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h3 id="pin-modal-title" class="text-xl font-bold mb-4">PIN kód szükséges</h3>
+            <p id="pin-modal-text" class="mb-4 text-gray-600">Kérjük, adja meg a PIN kódot az árak megtekintéséhez.</p>
+            <input type="password" id="pin-input" class="input-field text-center mb-4" placeholder="****" inputmode="numeric">
+            <p id="pin-error" class="text-red-500 text-sm mb-4 hidden">Helytelen PIN kód!</p>
+            <div class="flex justify-center space-x-4">
+                <button id="pin-submit-btn" class="btn btn-primary">Belépés</button>
+                <button id="pin-cancel-btn" class="btn btn-secondary">Mégse</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-10 rounded-3xl shadow-2xl">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-y-4">
             <div class="flex items-center space-x-4 min-w-0">
                 <img id="header-logo" src="" alt="Cég logója" class="h-16 w-auto hidden object-contain">
                 <h1 id="app-title" class="text-3xl font-bold truncate">Árajánlat Készítő</h1>
             </div>
             <div class="flex items-center justify-end flex-wrap gap-x-4 gap-y-2 flex-shrink-0">
                 <div class="flex items-center space-x-2">
-                    <label id="language-label" class="text-sm font-medium text-muted-light dark:text-muted-dark flex-shrink-0">Nyelv:</label>
+                    <label id="language-label" class="text-sm font-medium text-light-text-color flex-shrink-0">Nyelv:</label>
                     <select id="language-select" class="input-field py-1 px-2 text-sm w-auto">
                         <option value="hu">Magyar</option>
                         <option value="ro">Română</option>
@@ -450,19 +458,19 @@
                     </select>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <label id="currency-label" class="text-sm font-medium text-muted-light dark:text-muted-dark flex-shrink-0">Pénznem:</label>
+                    <label id="currency-label" class="text-sm font-medium text-light-text-color flex-shrink-0">Pénznem:</label>
                     <select id="currency-select" class="input-field py-1 px-2 text-sm w-auto">
                         <option value="RON">RON</option>
                         <option value="EUR">EUR</option>
                     </select>
                 </div>
-                <button id="theme-toggle" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors" aria-label="Téma váltása">
-                    <i id="theme-icon" class="fa-solid fa-moon text-xl text-muted-light dark:text-muted-dark"></i>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-[var(--hover-bg-color)] transition-colors" aria-label="Téma váltása">
+                    <i id="theme-icon" class="fa-solid fa-moon text-xl text-light-text-color"></i>
                 </button>
             </div>
         </div>
         
-        <div class="flex justify-center md:justify-start gap-3 mb-8 overflow-x-auto pb-4">
+        <div class="flex justify-center md:justify-start gap-3 mb-6 overflow-x-auto pb-2">
             <button id="blinds-tab" class="tab-button active-style flex items-center space-x-2"><i class="fa-solid fa-window-maximize icon"></i><span>Redőnyök</span></button>
             <button id="screens-tab" class="tab-button flex items-center space-x-2"><i class="fa-solid fa-grip-lines-vertical icon"></i><span>Szúnyoghálók</span></button>
             <button id="quote-tab" class="tab-button flex items-center space-x-2"><i class="fa-solid fa-file-invoice icon"></i><span>Ajánlat</span></button>
@@ -471,67 +479,63 @@
         </div>
 
         <div id="tab-content-container">
-            <div id="blinds-content" class="tab-content active">
+            <div id="blinds-content" class="tab-content active p-4 md:p-6 rounded-2xl shadow-inner">
                  <h2 id="blinds-heading" class="text-2xl font-bold mb-4">Redőny hozzáadása</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="input-group animated-form-group">
+                <div class="form-grid">
+                    <div class="input-group">
                         <label id="blinds-width-label">Szélesség (mm):</label>
-                        <input type="number" id="blinds-width" class="input-field mt-1" placeholder="1000" min="0">
+                        <input type="number" id="blinds-width" class="input-field" placeholder="1000" min="0">
                     </div>
-                    <div class="input-group animated-form-group">
+                    <div class="input-group">
                         <label id="blinds-height-label">Magasság (mm):</label>
-                        <input type="number" id="blinds-height" class="input-field mt-1" placeholder="1500" min="0">
+                        <input type="number" id="blinds-height" class="input-field" placeholder="1500" min="0">
                     </div>
-                    <div class="input-group animated-form-group">
+                    <div class="input-group">
                         <label id="blinds-quantity-label">Darab:</label>
-                        <input type="number" id="blinds-quantity" class="input-field mt-1" value="1" min="1">
+                        <input type="number" id="blinds-quantity" class="input-field" value="1" min="1">
                     </div>
-                    <div class="input-group animated-form-group">
+                    <div class="input-group">
                         <label id="blinds-type-label">Típus:</label>
-                        <select id="blinds-type" class="input-field mt-1">
+                        <select id="blinds-type" class="input-field">
                             <option value="pvc">PVC</option>
                             <option value="aluminium">Alumínium</option>
                             <option value="external-aluminium">Külső tokos alumínium</option>
                         </select>
                     </div>
-                    <div class="input-group animated-form-group" id="blinds-color-group">
+                    <div class="input-group" id="blinds-color-group">
                         <label id="blinds-color-label">Szín:</label>
-                        <select id="blinds-color" class="input-field mt-1"></select>
+                        <select id="blinds-color" class="input-field"></select>
                     </div>
-                    <div class="input-group animated-form-group">
+                    <div class="input-group">
                         <label id="blinds-control-label">Vezérlés:</label>
-                        <select id="blinds-control" class="input-field mt-1">
+                        <select id="blinds-control" class="input-field">
                             <option value="string">Zsinóros</option>
                             <option value="motorized">Motoros</option>
                         </select>
                     </div>
-                    <div id="integrated-screen-group" class="input-group animated-form-group">
+                    <div class="input-group flex items-center mt-6">
+                        <input type="checkbox" id="blinds-divided" class="mr-2 h-6 w-6 rounded-lg text-primary-color focus:ring-0">
+                        <label id="blinds-divided-label" for="blinds-divided" class="input-label mb-0 cursor-pointer">Kettéosztott</label>
+                    </div>
+                     <div id="integrated-screen-group" class="input-group mt-1">
                         <label id="blinds-integrated-screen-label" for="blinds-integrated-screen">Beépített szúnyogháló</label>
-                        <select id="blinds-integrated-screen" class="input-field mt-1">
+                        <select id="blinds-integrated-screen" class="input-field">
                             <option value="none">Nincs</option>
                             <option value="full">Teljes</option>
                             <option value="half">Fele</option>
                         </select>
                     </div>
-                    <div class="input-group flex items-center justify-between col-span-1 animated-form-group">
-                        <label id="blinds-divided-label" for="blinds-divided" class="input-label cursor-pointer font-medium">Kettéosztott</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="blinds-divided">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
                     <div id="blinds-division-details" class="hidden col-span-1 md:col-span-2 lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
                         <div class="input-group">
                             <label id="blinds-division-side-label">Osztás oldala:</label>
-                            <select id="blinds-division-side" class="input-field mt-1">
+                            <select id="blinds-division-side" class="input-field">
                                 <option value="right">Jobb</option>
                                 <option value="left">Bal</option>
                             </select>
                         </div>
                         <div class="input-group">
                             <label id="blinds-division-width-label">Mező szélessége (mm):</label>
-                            <input type="number" id="blinds-division-width" class="input-field mt-1" placeholder="500" min="0">
+                            <input type="number" id="blinds-division-width" class="input-field" placeholder="500" min="0">
                         </div>
                     </div>
                 </div>
@@ -539,26 +543,26 @@
                     <button id="add-blind-btn" class="flex-grow btn btn-primary">Redőny Hozzáadása</button>
                     <button id="cancel-edit-blind-btn" class="hidden btn btn-secondary">Mégse</button>
                 </div>
-                <div id="blinds-summary-container" class="mt-8 pt-6 border-t border-[var(--border-light)] dark:border-[var(--border-dark)]"></div>
+                <div id="blinds-summary-container" class="mt-8 pt-6 border-t border-[var(--input-border-color)]"></div>
             </div>
-            <div id="screens-content" class="tab-content">
+            <div id="screens-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
                 <h2 id="screens-heading" class="text-2xl font-bold mb-4">Szúnyogháló hozzáadása</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="input-group animated-form-group">
+                <div class="form-grid">
+                    <div class="input-group">
                         <label id="screens-width-label">Szélesség (mm):</label>
-                        <input type="number" id="screens-width" class="input-field mt-1" placeholder="1000" min="0">
+                        <input type="number" id="screens-width" class="input-field" placeholder="1000" min="0">
                     </div>
-                    <div class="input-group animated-form-group">
+                    <div class="input-group">
                         <label id="screens-height-label">Magasság (mm):</label>
-                        <input type="number" id="screens-height" class="input-field mt-1" placeholder="1500" min="0">
+                        <input type="number" id="screens-height" class="input-field" placeholder="1500" min="0">
                     </div>
-                    <div class="input-group animated-form-group">
+                    <div class="input-group">
                         <label id="screens-quantity-label">Darab:</label>
-                        <input type="number" id="screens-quantity" class="input-field mt-1" value="1" min="1">
+                        <input type="number" id="screens-quantity" class="input-field" value="1" min="1">
                     </div>
-                    <div class="input-group animated-form-group">
+                    <div class="input-group">
                         <label id="screens-type-label">Típus:</label>
-                        <select id="screens-type" class="input-field mt-1">
+                        <select id="screens-type" class="input-field">
                             <option value="fix">Fix háló</option>
                             <option value="balcony">Balamas háló</option>
                             <option value="mobile">Mobil háló</option>
@@ -567,63 +571,60 @@
                             <option value="thin-door">Vékony ajtó háló</option>
                         </select>
                     </div>
-                    <div class="input-group animated-form-group">
+                    <div class="input-group">
                         <label id="screens-color-label">Szín:</label>
-                        <select id="screens-color" class="input-field mt-1"></select>
+                        <select id="screens-color" class="input-field"></select>
                     </div>
-                    <div id="extender-frame-group" class="input-group flex items-center justify-between hidden animated-form-group">
-                        <label id="screens-extender-frame-label" for="screens-extender-frame" class="input-label cursor-pointer font-medium">Kiemelő keret</label>
-                         <label class="toggle-switch">
-                            <input type="checkbox" id="screens-extender-frame">
-                            <span class="slider"></span>
-                        </label>
+                    <div id="extender-frame-group" class="input-group flex items-center mt-2 hidden">
+                        <input type="checkbox" id="screens-extender-frame" class="mr-2 h-6 w-6 rounded-lg text-primary-color focus:ring-0">
+                        <label id="screens-extender-frame-label" for="screens-extender-frame" class="input-label mb-0 cursor-pointer">Kiemelő keret</label>
                     </div>
                 </div>
                 <div id="add-screen-buttons-container" class="w-full mt-6 flex gap-4">
                     <button id="add-screen-btn" class="flex-grow btn btn-primary">Szúnyogháló Hozzáadása</button>
                     <button id="cancel-edit-screen-btn" class="hidden btn btn-secondary">Mégse</button>
                 </div>
-                <div id="screens-summary-container" class="mt-8 pt-6 border-t border-[var(--border-light)] dark:border-[var(--border-dark)]"></div>
+                <div id="screens-summary-container" class="mt-8 pt-6 border-t border-[var(--input-border-color)]"></div>
             </div>
-            <div id="quote-content" class="tab-content">
+            <div id="quote-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
                 <h2 id="quote-heading" class="text-2xl font-bold mb-4">Ajánlat</h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                     <div class="input-group animated-form-group">
+                <div class="form-grid mb-6">
+                     <div class="input-group">
                         <label id="quote-name-label" for="quote-name">Ajánlat neve:</label>
-                        <input type="text" id="quote-name" class="input-field mt-1" placeholder="Pl. Lakásfelújítási projekt">
+                        <input type="text" id="quote-name" class="input-field" placeholder="Pl. Lakásfelújítási projekt">
                     </div>
-                     <div class="input-group animated-form-group">
+                     <div class="input-group">
                         <label id="client-name-label" for="client-name">Ügyfél neve:</label>
-                        <input type="text" id="client-name" class="input-field mt-1" placeholder="Pl. Minta János">
+                        <input type="text" id="client-name" class="input-field" placeholder="Pl. Minta János">
                     </div>
-                     <div class="input-group animated-form-group">
+                     <div class="input-group">
                         <label id="client-address-label" for="client-address">Ügyfél címe:</label>
-                        <input type="text" id="client-address" class="input-field mt-1" placeholder="Pl. 1234 Minta, Fő utca 5.">
+                        <input type="text" id="client-address" class="input-field" placeholder="Pl. 1234 Minta, Fő utca 5.">
                     </div>
-                     <div class="input-group animated-form-group">
+                     <div class="input-group">
                         <label id="client-phone-label" for="client-phone">Ügyfél telefonszáma:</label>
-                        <input type="tel" id="client-phone" class="input-field mt-1" placeholder="Pl. +36 30 123 4567">
+                        <input type="tel" id="client-phone" class="input-field" placeholder="Pl. +36 30 123 4567">
                     </div>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full whitespace-nowrap table-auto">
                         <thead>
-                            <tr class="text-left font-semibold bg-black/5 dark:bg-white/5">
-                                <th id="table-product-th" class="px-4 py-3">Termék</th>
-                                <th id="table-size-th" class="px-4 py-3">Méret (mm)</th>
-                                <th id="table-area-th" class="px-4 py-3">m²</th>
-                                <th id="table-quantity-th" class="px-4 py-3">Darab</th>
-                                <th id="table-price-th" class="px-4 py-3">Egységár</th>
-                                <th id="table-subtotal-th" class="px-4 py-3">Részösszeg</th>
-                                <th id="table-actions-th" class="px-4 py-3 text-right">Műveletek</th>
+                            <tr class="text-left font-semibold table-header">
+                                <th id="table-product-th" class="px-4 py-2">Termék</th>
+                                <th id="table-size-th" class="px-4 py-2">Méret (mm)</th>
+                                <th id="table-area-th" class="px-4 py-2">m²</th>
+                                <th id="table-quantity-th" class="px-4 py-2">Darab</th>
+                                <th id="table-price-th" class="px-4 py-2">Egységár</th>
+                                <th id="table-subtotal-th" class="px-4 py-2">Részösszeg</th>
+                                <th id="table-actions-th" class="px-4 py-2 text-right">Műveletek</th>
                             </tr>
                         </thead>
-                        <tbody id="quote-items-body" class="divide-y divide-black/5 dark:divide-white/10"></tbody>
+                        <tbody id="quote-items-body" class="divide-y"></tbody>
                     </table>
                 </div>
-                <div class="mt-6 border-t-2 pt-4 space-y-2 text-xl font-bold">
+                <div class="mt-6 border-t-2 pt-4 space-y-2 text-xl font-bold quote-summary">
                     <div class="flex justify-between items-center">
                         <span id="subtotal-text">Részösszeg:</span>
                         <span id="subtotal-price">0.00 RON</span>
@@ -636,7 +637,7 @@
                         <span id="discount-amount-text">Kedvezmény:</span>
                         <span id="discount-amount">-0.00 RON</span>
                     </div>
-                    <div class="flex justify-between items-center border-t border-[var(--border-light)] dark:border-[var(--border-dark)] pt-2 mt-2">
+                    <div class="flex justify-between items-center border-t pt-2 mt-2">
                         <span id="total-text">Végösszeg:</span>
                         <span id="total-price">0.00 RON</span>
                     </div>
@@ -646,7 +647,7 @@
                      <button id="load-quotes-btn" class="btn btn-tertiary flex-grow sm:flex-grow-0"></button>
                      <button id="preview-quote-btn" class="btn btn-primary flex-grow sm:flex-grow-0"></button>
                 </div>
-                 <div id="load-quote-section" class="mt-6 p-4 rounded-2xl bg-black/5 dark:bg-black/20 hidden transition-all duration-300">
+                 <div id="load-quote-section" class="mt-6 p-4 rounded-2xl shadow-md hidden transition-all duration-300">
                     <h3 id="load-quote-heading" class="text-xl font-bold mb-4">Mentett ajánlatok</h3>
                     <div class="relative mb-4">
                         <input type="search" id="quote-search-input" class="input-field pl-10" placeholder="Keresés név vagy ügyfél alapján...">
@@ -655,38 +656,38 @@
                     <ul id="saved-quotes-list" class="space-y-2 max-h-80 overflow-y-auto"></ul>
                 </div>
             </div>
-            <div id="prices-content" class="tab-content">
+            <div id="prices-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
                  <h2 id="prices-heading" class="text-2xl font-bold mb-4">Árbeállítások</h2>
                  <div id="prices-container" class="space-y-6"></div>
             </div>
-            <div id="settings-content" class="tab-content">
+            <div id="settings-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
                 <h2 id="settings-heading" class="text-2xl font-bold mb-4">Beállítások</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="form-grid">
                     <div class="space-y-6">
                         <h3 class="text-xl font-bold">Cég adatai</h3>
-                        <div class="input-group animated-form-group">
+                        <div class="input-group">
                             <label id="company-name-label" for="company-name">Cég neve:</label>
-                            <input type="text" id="company-name" class="input-field mt-1" placeholder="Cég Kft.">
+                            <input type="text" id="company-name" class="input-field" placeholder="Cég Kft.">
                         </div>
-                        <div class="input-group animated-form-group">
+                        <div class="input-group">
                             <label id="company-website-label" for="company-website">Weboldal:</label>
-                            <input type="text" id="company-website" class="input-field mt-1" placeholder="www.ceg-oldala.hu">
+                            <input type="text" id="company-website" class="input-field" placeholder="www.ceg-oldala.hu">
                         </div>
-                         <div class="input-group animated-form-group">
+                         <div class="input-group">
                             <label id="company-email-label" for="company-email">Email cím:</label>
-                            <input type="email" id="company-email" class="input-field mt-1" placeholder="info@ceg-oldala.hu">
+                            <input type="email" id="company-email" class="input-field" placeholder="info@ceg-oldala.hu">
                         </div>
-                         <div class="input-group animated-form-group">
+                         <div class="input-group">
                             <label id="company-phone-label" for="company-phone">Telefonszám:</label>
-                            <input type="tel" id="company-phone" class="input-field mt-1" placeholder="+36 30 123 4567">
+                            <input type="tel" id="company-phone" class="input-field" placeholder="+36 30 123 4567">
                         </div>
                     </div>
                      <div class="space-y-6">
                         <h3 class="text-xl font-bold">Vizuális elemek</h3>
-                         <div class="input-group animated-form-group">
+                         <div class="input-group">
                             <label id="company-logo-label">Cég logó:</label>
                             <input type="file" id="company-logo-input" class="hidden" accept="image/*">
-                            <label for="company-logo-input" class="input-field mt-1 cursor-pointer flex items-center justify-center border-dashed border-2 h-48">
+                            <label for="company-logo-input" class="input-field cursor-pointer flex items-center justify-center border-dashed border-2 h-48">
                                 <span id="logo-upload-text">Kattintson a logó feltöltéséhez</span>
                             </label>
                             <img id="logo-preview" src="" class="mt-4 h-24 w-auto hidden rounded-lg shadow-md object-contain" alt="Logó előnézet">
@@ -697,9 +698,9 @@
 
                 <button id="save-settings-btn" class="w-full md:w-auto mt-8 btn btn-primary">Beállítások mentése</button>
                 
-                <div class="mt-8 pt-6 border-t border-[var(--border-light)] dark:border-[var(--border-dark)]">
+                <div class="mt-8 pt-6 border-t border-[var(--input-border-color)]">
                     <h3 id="data-management-heading" class="text-xl font-bold mb-4">Adatkezelés</h3>
-                    <div id="data-loss-warning" class="p-4 mb-4 rounded-lg bg-yellow-100 dark:bg-yellow-900/50 border border-yellow-300 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200 flex items-start gap-3">
+                    <div id="data-loss-warning" class="p-4 mb-4 rounded-lg bg-yellow-100 dark:bg-yellow-900 border border-yellow-300 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200 flex items-start gap-3">
                         <i class="fa-solid fa-triangle-exclamation mt-1"></i>
                         <p id="data-management-desc" class="text-sm">Minden adat a böngészőjében tárolódik. A böngésző gyorsítótárának törlése az összes mentett ajánlat és beállítás elvesztésével járhat. **Javasoljuk az adatok rendszeres exportálását!**</p>
                     </div>
@@ -710,18 +711,6 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </div>
-    <div id="pin-modal" class="modal-overlay">
-        <div class="modal-content text-center">
-            <h3 id="pin-modal-title" class="text-xl font-bold mb-4">PIN kód szükséges</h3>
-            <p id="pin-modal-text" class="mb-4 text-muted-light dark:text-muted-dark">Kérjük, adja meg a PIN kódot az árak megtekintéséhez.</p>
-            <input type="password" id="pin-input" class="input-field text-center mb-4" placeholder="****" inputmode="numeric">
-            <p id="pin-error" class="text-red-500 text-sm mb-4 hidden">Helytelen PIN kód!</p>
-            <div class="flex justify-center space-x-4">
-                <button id="pin-submit-btn" class="btn btn-primary">Belépés</button>
-                <button id="pin-cancel-btn" class="btn btn-secondary">Mégse</button>
             </div>
         </div>
     </div>
@@ -806,23 +795,56 @@
                 pinModalText: "Kérjük, adja meg a PIN kódot az árak megtekintéséhez.",
                 pinSubmitBtn: "Belépés",
                 pinError: "Helytelen PIN kód!",
-                closeBtn: "Bezárás", // ÚJ FORDÍTÁS
                 productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret" }
             },
             ro: {
-                // ... (más fordítások)
+                title: "Creator de Oferte", languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", pricesTab: "Prețuri", quoteTab: "Ofertă", settingsTab: "Setări", blindsHeading: "Adăugare jaluzea", blindsTypeLabel: "Tip:", blindsWidthLabel: "Lățime (mm):", blindsHeightLabel: "Înălțime (mm):", blindsQuantityLabel: "Bucăți:", blindsColorLabel: "Culoare:", blindsControlLabel: "Control:", blindsDividedLabel: "Divizat", blindsIntegratedScreenLabel: "Plasă de insecte integrată", screenOptionNone: "Niciuna", screenOptionFull: "Completă", screenOptionHalf: "Jumătate", addBlindBtn: "Adaugă Jaluzea", screensHeading: "Adăugare plasă de insecte", screensTypeLabel: "Tip:", screensWidthLabel: "Lățime (mm):", screensHeightLabel: "Înălțime (mm):", screensQuantityLabel: "Bucăți:", screensColorLabel: "Culoare:", addScreenBtn: "Adaugă Plasă", pricesHeading: "Setări Prețuri", blindsPrices: "Prețuri Jaluzele", screensPrices: "Prețuri Plase de Insecte", basePricesM2: "Prețuri de bază (preț / m²)", surcharges: "Suprataxe", colorSurcharges: "Suprataxe Culoare - Aluminiu (%)", externalColorSurcharges: "Suprataxe Culoare - Exterior (%)", screenBasePricesM2: "Prețuri de bază (preț / m²)", screenColorSurcharges: "Suprataxe Culoare (%)", unit_currency_pc: " / buc", quoteHeading: "Ofertă", settingsHeading: "Setări", companyNameLabel: "Nume Companie:", companyLogoLabel: "Logo Companie:", saveSettingsBtn: "Salvează Setările", settingsSavedMessage: "Setările au fost salvate cu succes!", tableProductTh: "Produs", tableSizeTh: "Dimensiune (mm)", tableQuantityTh: "Bucăți", tablePriceTh: "Preț Unitar", tableSubtotalTh: "Subtotal", tableActionsTh: "Acțiuni", subtotalText: "Subtotal:", discountLabel: "Reducere (%):", discountAmountText: "Reducere:", totalText: "Total Final:", saveQuoteBtn: "Salvează Oferta", loadQuotesBtn: "Încarcă Oferte", quoteNameLabel: "Nume Ofertă:", loadQuoteHeading: "Oferte Salvate", deleteBtn: "Șterge", editBtn: "Editare", savePriceBtn: "Salvează Prețurile", priceSavedMessage: "Prețurile au fost salvate cu succes!", productAddedMessage: "Produsul a fost adăugat cu succes la ofertă!", productUpdatedMessage: "Articolul a fost modificat cu succes!", emptyFieldsError: "Vă rugăm să completați câmpurile obligatorii!", invalidSizeError: "Vă rugăm să introduceți dimensiuni valide (număr pozitiv).", invalidQuantityError: "Vă rugăm să introduceți o cantitate validă (număr întreg pozitiv).", invalidDivisionWidthError: "Lățimea diviziunii nu poate fi mai mare decât lățimea totală.", quoteSaved: "Oferta a fost salvată!", quoteLoaded: "Oferta a fost încărcată cu succes!", quoteDeleted: "Oferta a fost ștearsă cu succes!", quoteNameRequired: "Vă rugăm să introduceți un nume pentru ofertă!", noQuotesFound: "Nicio ofertă salvată.", noItemsInQuote: "Oferta este goală.", deleteQuotePromptTitle: "Șterge Oferta", deleteQuotePromptText: "Sigur doriți să ștergeți oferta '{{name}}'?", minAreaWarning: "Atenție: Suprafața minimă facturată este de {{area}} m².", pvcColorError: "Jaluzelele din PVC sunt disponibile doar pe alb.", logoUploadText: "Faceți clic pentru a încărca logo-ul", deleteLogoBtn: "Șterge Logo", logoDeletedMessage: "Logo-ul a fost șters cu succes!",
+                dataManagementHeading: "Gestionarea Datelor", dataManagementDesc: "Toate datele sunt stocate în browser. Ștergerea memoriei cache a browserului poate duce la pierderea tuturor ofertelor și setărilor salvate. **Recomandăm exportarea regulată a datelor!**",
+                exportDataBtn: "Export Date", importDataBtn: "Import Date", importSuccess: "Datele au fost importate cu succes! Pagina se va reîncărca în 2 secunde.",
+                importError: "Eroare la import. Vă rugăm să verificați formatul fișierului.",
+                previewQuoteBtn: "Vizualizare Ofertă", quotePreviewTitle: "Previzualizare Ofertă",
+                generatePdfBtn: "Generează PDF",
+                generateJpgBtn: "Generează JPG",
+                sharePdfBtn: "Partajare PDF",
+                shareJpgBtn: "Partajare JPG",
+                sendQuoteBtn: "Trimite Email",
+                sendQuoteEmailBody: "Stimate Domn/Doamnă,\n\nVă trimitem atașat oferta '{{quoteName}}'.\n\nValoarea totală a ofertei este: {{totalPrice}}\n\nDacă aveți întrebări, nu ezitați să ne contactați.\n\nCu respect,\n{{companyName}}",
+                exchangeRateTitle: "Curs Valutar EUR/RON", vatIncludedText: "Prețul include TVA.", quoteSummaryTitle: "Rezumat Ofertă",
+                summaryTotal: "Total", divisionSideLabel: "Partea divizată", divisionWidthLabel: "Lățime secțiune (mm)",
+                sideLeft: "Stânga", sideRight: "Dreapta", companyWebsiteLabel: "Site web:", companyEmailLabel: "Email:", companyPhoneLabel: "Telefon:",
+                clientNameLabel: "Nume Client:", clientAddressLabel: "Adresă Client:", clientPhoneLabel: "Telefon Client:",
+                tableAreaTh: "m²", updateItemBtn: "Modifică Articol", cancelEditBtn: "Anulează",
+                searchPlaceholder: "Căutare după nume sau client...",
+                extenderFrameLabel: "Cadru de extensie", extenderFramePrice: "Cadru de extensie (preț / m)",
+                pinModalTitle: "Cod PIN necesar",
                 pinModalText: "Vă rugăm să introduceți codul PIN pentru a vizualiza prețurile.",
                 pinSubmitBtn: "Intră",
                 pinError: "Cod PIN incorect!",
-                closeBtn: "Închide", // ÚJ FORDÍTÁS
                 productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie" }
             },
             en: {
-                // ... (más fordítások)
+                title: "Quote Generator", languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", pricesTab: "Prices", quoteTab: "Quote", settingsTab: "Settings", blindsHeading: "Add Blind", blindsTypeLabel: "Type:", blindsWidthLabel: "Width (mm):", blindsHeightLabel: "Height (mm):", blindsQuantityLabel: "Quantity:", blindsColorLabel: "Color:", blindsControlLabel: "Control:", blindsDividedLabel: "Divided", blindsIntegratedScreenLabel: "Integrated insect screen", screenOptionNone: "None", screenOptionFull: "Full", screenOptionHalf: "Half", addBlindBtn: "Add Blind", screensHeading: "Add Insect Screen", screensTypeLabel: "Type:", screensWidthLabel: "Width (mm):", screensHeightLabel: "Height (mm):", screensQuantityLabel: "Quantity:", screensColorLabel: "Color:", addScreenBtn: "Add Screen", pricesHeading: "Price Settings", blindsPrices: "Blinds Prices", screensPrices: "Insect Screen Prices", basePricesM2: "Base Prices (price / m²)", surcharges: "Surcharges", colorSurcharges: "Color Surcharges - Aluminium (%)", externalColorSurcharges: "Color Surcharges - External (%)", screenBasePricesM2: "Base Prices (price / m²)", screenColorSurcharges: "Color Surcharges (%)", unit_currency_pc: " / pc", quoteHeading: "Quote", settingsHeading: "Settings", companyNameLabel: "Company Name:", companyLogoLabel: "Company Logo:", saveSettingsBtn: "Save Settings", settingsSavedMessage: "Settings saved successfully!", tableProductTh: "Product", tableSizeTh: "Size (mm)", tableQuantityTh: "Quantity", tablePriceTh: "Unit Price", tableSubtotalTh: "Subtotal", tableActionsTh: "Actions", subtotalText: "Subtotal:", discountLabel: "Discount (%):", discountAmountText: "Discount:", totalText: "Grand Total:", saveQuoteBtn: "Save Quote", loadQuotesBtn: "Load Quotes", quoteNameLabel: "Quote Name:", loadQuoteHeading: "Saved Quotes", deleteBtn: "Delete", editBtn: "Edit", savePriceBtn: "Save Prices", priceSavedMessage: "Prices saved successfully!", productAddedMessage: "Product successfully added to the quote!", productUpdatedMessage: "Item successfully updated!", emptyFieldsError: "Please fill in the required fields!", invalidSizeError: "Please enter valid dimensions (positive number).", invalidQuantityError: "Please enter a valid quantity (positive integer).", invalidDivisionWidthError: "Division width cannot be greater than the total width.", quoteSaved: "Quote saved!", quoteLoaded: "Quote loaded successfully!", quoteDeleted: "Quote deleted successfully!", quoteNameRequired: "Please enter a name for the quote!", noQuotesFound: "No saved quotes.", noItemsInQuote: "The quote is empty.", deleteQuotePromptTitle: "Delete Quote", deleteQuotePromptText: "Are you sure you want to delete the quote '{{name}}'?", minAreaWarning: "Warning: The minimum billed area is {{area}} m².", pvcColorError: "PVC blinds are only available in white.", logoUploadText: "Click to upload logo", deleteLogoBtn: "Delete Logo", logoDeletedMessage: "Logo deleted successfully!",
+                dataManagementHeading: "Data Management", dataManagementDesc: "All data is stored in your browser. Clearing your browser's cache may result in the loss of all saved quotes and settings. **We recommend exporting your data regularly!**",
+                exportDataBtn: "Export Data", importDataBtn: "Import Data", importSuccess: "Data imported successfully! The page will reload in 2 seconds.",
+                importError: "Error during import. Please check the file format.",
+                previewQuoteBtn: "Preview Quote", quotePreviewTitle: "Quote Preview",
+                generatePdfBtn: "Generate PDF",
+                generateJpgBtn: "Generate JPG",
+                sharePdfBtn: "Share PDF",
+                shareJpgBtn: "Share JPG",
+                sendQuoteBtn: "Send Email",
+                sendQuoteEmailBody: "Dear Sir/Madam,\n\nPlease find the quote '{{quoteName}}' attached.\n\nThe total amount for the offer is: {{totalPrice}}\n\nIf you have any questions, please feel free to contact us.\n\nBest regards,\n{{companyName}}",
+                exchangeRateTitle: "EUR/RON Exchange Rate", vatIncludedText: "The price includes VAT.", quoteSummaryTitle: "Quote Summary",
+                summaryTotal: "Total", divisionSideLabel: "Division Side", divisionWidthLabel: "Section Width (mm)",
+                sideLeft: "Left", sideRight: "Right", companyWebsiteLabel: "Website:", companyEmailLabel: "Email:", companyPhoneLabel: "Phone:",
+                clientNameLabel: "Client Name:", clientAddressLabel: "Client Address:", clientPhoneLabel: "Client Phone:",
+                tableAreaTh: "m²", updateItemBtn: "Update Item", cancelEditBtn: "Cancel",
+                searchPlaceholder: "Search by name or client...",
+                extenderFrameLabel: "Extender frame", extenderFramePrice: "Extender frame (price / m)",
+                pinModalTitle: "PIN Code Required",
                 pinModalText: "Please enter the PIN code to view prices.",
                 pinSubmitBtn: "Enter",
                 pinError: "Incorrect PIN code!",
-                closeBtn: "Close", // ÚJ FORDÍTÁS
                 productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", wood: "Wood imitation", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahogany", extender_frame: "Extender frame" }
             }
         };
@@ -904,31 +926,10 @@
         }
 
         function switchToTab(tabId) {
-            const newTabContentId = tabId.replace('-tab', '-content');
-            const newTabContent = $(`#${newTabContentId}`);
-            const currentActiveContent = $('.tab-content.active');
-
-            if (currentActiveContent && currentActiveContent.id !== newTabContentId) {
-                // Kilépő animáció hozzáadása
-                currentActiveContent.classList.add('exiting');
-                
-                // Időzítő a kilépő animáció végére
-                setTimeout(() => {
-                    currentActiveContent.classList.remove('active');
-                    currentActiveContent.classList.remove('exiting');
-                    
-                    // Új fül aktiválása a kilépés után
-                    $$('.tab-button').forEach(t => t.classList.remove('active-style'));
-                    $(`#${tabId}`).classList.add('active-style');
-                    newTabContent.classList.add('active');
-                }, 400); // Ennek meg kell egyeznie a kilépő animáció idejével (0.4s)
-
-            } else if (!currentActiveContent) {
-                 // Első betöltéskor nincs kilépő animáció
-                 $$('.tab-button').forEach(t => t.classList.remove('active-style'));
-                 $(`#${tabId}`).classList.add('active-style');
-                 newTabContent.classList.add('active');
-            }
+            $$('.tab-button').forEach(t => t.classList.remove('active-style'));
+            $(`#${tabId}`).classList.add('active-style');
+            $$('.tab-content').forEach(content => content.classList.remove('active'));
+            $(`#${tabId.replace('-tab', '-content')}`).classList.add('active');
         }
 
         function applyTheme(theme) {
@@ -1142,7 +1143,7 @@
             const tbody = $('#quote-items-body'), t = translations[currentLanguage];
             tbody.innerHTML = '';
             let subtotal = 0;
-            if (quoteItems.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted-light dark:text-muted-dark">${t.noItemsInQuote}</td></tr>`;
+            if (quoteItems.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-light-text-color">${t.noItemsInQuote}</td></tr>`;
             } else {
                 quoteItems.forEach((item, index) => {
                     const row = document.createElement('tr');
@@ -1176,10 +1177,10 @@
                 let summarySubtotal = 0;
                 const itemsHtml = items.map(item => {
                     summarySubtotal += item.price;
-                    return `<li class="flex justify-between items-center py-2 border-b border-black/5 dark:border-white/10"><span class="text-sm">${item.product[currentLanguage] || item.product.hu} (${item.width}x${item.height}) x${item.quantity}</span><span class="font-semibold text-sm">${item.price.toFixed(2)} ${currentCurrency}</span></li>`;
+                    return `<li class="flex justify-between items-center py-2 border-b border-[var(--table-row-border)]"><span class="text-sm">${item.product[currentLanguage] || item.product.hu} (${item.width}x${item.height}) x${item.quantity}</span><span class="font-semibold text-sm">${item.price.toFixed(2)} ${currentCurrency}</span></li>`;
                 }).join('');
 
-                container.innerHTML = `<h3 class="text-lg font-bold mb-3">${title}</h3><ul class="space-y-1">${itemsHtml}</ul><div class="flex justify-between items-center mt-4 pt-3 border-t border-[var(--border-light)] dark:border-[var(--border-dark)]"><span class="font-bold">${t.summaryTotal}:</span><span class="font-bold text-lg">${summarySubtotal.toFixed(2)} ${currentCurrency}</span></div>`;
+                container.innerHTML = `<h3 class="text-lg font-bold mb-3">${title}</h3><ul class="space-y-1">${itemsHtml}</ul><div class="flex justify-between items-center mt-4 pt-3 border-t border-[var(--input-border-color)]"><span class="font-bold">${t.summaryTotal}:</span><span class="font-bold text-lg">${summarySubtotal.toFixed(2)} ${currentCurrency}</span></div>`;
             };
             renderFullSummary('#blinds-summary-container');
             renderFullSummary('#screens-summary-container');
@@ -1190,8 +1191,8 @@
             container.innerHTML = '';
 
             const exchangeRateContainer = document.createElement('div');
-            exchangeRateContainer.className = "p-4 rounded-xl border-2 border-black/10 dark:border-white/10 mb-6";
-            exchangeRateContainer.innerHTML = `<h3 class="text-xl font-semibold mb-4">${t.exchangeRateTitle}</h3><div class="flex items-center space-x-4 mb-2"><label class="w-2/3">1 EUR =</label><div class="flex items-center w-1/3"><input type="number" id="exchange-rate-input" class="input-field text-right" value="${exchangeRate.toFixed(2)}" min="0" step="0.01"><span class="ml-2">RON</span></div></div>`;
+            exchangeRateContainer.className = "p-4 rounded-2xl shadow-md mb-6 saved-quote-item";
+            exchangeRateContainer.innerHTML = `<h3 class="text-xl font-semibold mb-4">${t.exchangeRateTitle}</h3><div class="flex items-center space-x-4 mb-2"><label class="w-2/3">1 EUR =</label><div class="input-with-unit w-1/3"><input type="number" id="exchange-rate-input" class="input-field text-right" value="${exchangeRate.toFixed(2)}" min="0" step="0.01"><span class="unit">RON</span></div></div>`;
             container.appendChild(exchangeRateContainer);
 
             const structure = [
@@ -1204,7 +1205,7 @@
                 categoryWrapper.innerHTML = `<h2 class="text-2xl font-bold mb-4">${category.title}</h2>`;
                 category.sections.forEach(section => {
                     const sectionContainer = document.createElement('div');
-                    sectionContainer.className = "p-4 rounded-xl border-2 border-black/10 dark:border-white/10 mb-4";
+                    sectionContainer.className = "p-4 rounded-2xl shadow-md mb-4 saved-quote-item";
                     sectionContainer.innerHTML = `<h3 class="text-xl font-semibold mb-4">${section.subtitle}</h3>`;
                     section.items.forEach(item => {
                         let priceValue = item.path.split('.').reduce((o, i) => o?.[i], pricesInRon) || 0;
@@ -1215,7 +1216,7 @@
 
                         const priceItem = document.createElement('div');
                         priceItem.className = "flex items-center space-x-4 mb-2";
-                        priceItem.innerHTML = `<label class="w-2/3">${t.productNames[item.key] || t[item.key]}:</label><div class="flex items-center w-1/3"><input type="number" data-path="${item.path}" class="input-field text-right" value="${isPercentage ? priceValue : priceValue.toFixed(2)}" min="0" step="any"><span class="ml-2">${item.unit || currentCurrency}</span></div>`;
+                        priceItem.innerHTML = `<label class="w-2/3">${t.productNames[item.key] || t[item.key]}:</label><div class="input-with-unit w-1/3"><input type="number" data-path="${item.path}" class="input-field text-right" value="${isPercentage ? priceValue : priceValue.toFixed(2)}" min="0" step="any"><span class="unit">${item.unit || currentCurrency}</span></div>`;
                         sectionContainer.appendChild(priceItem);
                     });
                     categoryWrapper.appendChild(sectionContainer);
@@ -1264,14 +1265,17 @@
                 (q.clientName && q.clientName.toLowerCase().includes(searchTerm.toLowerCase()))
             );
 
-            if (filteredQuotes.length === 0) { list.innerHTML = `<li class="text-muted-light dark:text-muted-dark p-3">${t.noQuotesFound}</li>`; return; }
+            if (filteredQuotes.length === 0) { list.innerHTML = `<li class="text-light-text-color p-3">${t.noQuotesFound}</li>`; return; }
 
             filteredQuotes.sort((a,b) => b.createdAt.localeCompare(a.createdAt)).forEach((quote, index) => {
                 const listItem = document.createElement('li');
-                listItem.className = "bg-white dark:bg-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-xl shadow-sm border border-black/10 dark:border-white/10";
-                const clientInfo = quote.clientName ? `<span class="text-sm text-muted-light dark:text-muted-dark">${quote.clientName}</span>` : '';
+                listItem.className = "saved-quote-item flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-xl shadow-sm";
+                listItem.style.animationDelay = `${index * 50}ms`;
+                const clientInfo = quote.clientName ? `<span class="text-sm text-light-text-color">${quote.clientName}</span>` : '';
                 listItem.innerHTML = `<div><p class="font-semibold">${quote.name}</p>${clientInfo}</div><div class="flex space-x-2 w-full sm:w-auto mt-2 sm:mt-0 flex-shrink-0"><button class="btn btn-primary btn-small w-full sm:w-auto" data-action="load">${t.loadQuotesBtn}</button><button class="btn btn-danger btn-small w-full sm:w-auto" data-action="delete">${t.deleteBtn}</button></div>`;
                 
+                listItem.addEventListener('animationend', () => { listItem.classList.remove('animated'); });
+
                 listItem.querySelector('[data-action="load"]').addEventListener('click', () => {
                     const loadedItems = JSON.parse(quote.items);
                     const fixedItems = loadedItems.map(item => { if (item.options === undefined) { console.warn('Old quote item format detected, upgrading.'); item.options = { type: item.type || (item.isScreen ? 'fix' : 'pvc'), color: 'white', control: 'string', divided: false, integrated_screen: 'none', divisionSide: null, divisionWidth: null }; } return item; });
@@ -1296,6 +1300,8 @@
                     }
                 });
                 list.appendChild(listItem);
+                // Trigger animation
+                requestAnimationFrame(() => { listItem.classList.add('animated'); });
             });
         }
 
@@ -1435,7 +1441,6 @@
                             <button id="pdf-action-btn" class="bg-red-600 text-white font-bold py-3 px-6 rounded-full hover:bg-red-700 transition duration-300 shadow-lg flex items-center gap-2"></button>
                             <button id="jpg-action-btn" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-700 transition duration-300 shadow-lg flex items-center gap-2"></button>
                             <button id="send-email-btn" class="bg-green-600 text-white font-bold py-3 px-6 rounded-full hover:bg-green-700 transition duration-300 shadow-lg flex items-center gap-2"></button>
-                            <button id="close-preview-btn" class="bg-gray-500 text-white font-bold py-3 px-6 rounded-full hover:bg-gray-600 transition duration-300 shadow-lg flex items-center gap-2"></button>
                             <div class="flex items-center space-x-2">
                                 <label id="preview-language-label" class="text-sm font-medium"></label>
                                 <select id="preview-language-select" class="bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-1 px-2 text-sm">
@@ -1451,11 +1456,8 @@
                         const previewData = ${JSON.stringify(previewData)};
                         
                         function renderPreview(lang) {
-                            const t = previewData.translations[lang] || previewData.translations.hu; // JAVÍTÁS: Biztonsági fordítás
-                            if (!t) {
-                                console.error("Fordítási hiba: A kiválasztott nyelv nem található.");
-                                return;
-                            }
+                            const t = previewData.translations[lang];
+                            if (!t) return;
                             
                             document.documentElement.lang = lang;
                             document.getElementById('preview-title').textContent = \`\${t.quotePreviewTitle}: \${previewData.quoteName}\`;
@@ -1522,7 +1524,6 @@
                             const pdfBtn = document.getElementById('pdf-action-btn');
                             const jpgBtn = document.getElementById('jpg-action-btn');
                             const emailBtn = document.getElementById('send-email-btn');
-                            const closeBtn = document.getElementById('close-preview-btn'); // ÚJ GOMB
 
                             if (navigator.share) {
                                 pdfBtn.innerHTML = \`<i class="fas fa-share-alt"></i> \${t.sharePdfBtn}\`;
@@ -1532,16 +1533,11 @@
                                 jpgBtn.innerHTML = \`<i class="fas fa-file-image"></i> \${t.generateJpgBtn}\`;
                             }
                             emailBtn.innerHTML = \`<i class="fas fa-paper-plane"></i> \${t.sendQuoteBtn}\`;
-                            closeBtn.innerHTML = \`<i class="fas fa-times"></i> \${t.closeBtn}\`; // ÚJ GOMB SZÖVEGE
                             document.getElementById('preview-language-label').textContent = \`\${t.languageLabel}\`;
                         }
                         
                         function generatePdfBlob(lang) {
-                            const t = previewData.translations[lang] || previewData.translations.hu; // JAVÍTÁS: Biztonsági fordítás
-                            if (!t) {
-                                console.error("PDF generálási hiba: Fordítás nem található.");
-                                return null;
-                            }
+                            const t = previewData.translations[lang];
                             const { jsPDF } = window.jspdf;
                             const doc = new jsPDF();
                             
@@ -1612,14 +1608,12 @@
                             const pdfBtn = document.getElementById('pdf-action-btn');
                             const jpgBtn = document.getElementById('jpg-action-btn');
                             const emailBtn = document.getElementById('send-email-btn');
-                            const closeBtn = document.getElementById('close-preview-btn'); // ÚJ GOMB
 
                             langSelect.value = '${defaultPreviewLanguage}';
                             renderPreview('${defaultPreviewLanguage}');
                             
                             langSelect.addEventListener('change', (e) => renderPreview(e.target.value));
                             emailBtn.addEventListener('click', () => sendEmail(langSelect.value));
-                            closeBtn.addEventListener('click', () => window.close()); // ÚJ ESEMÉNYKEZELŐ
 
                             pdfBtn.addEventListener('click', async () => {
                                 const lang = langSelect.value;
@@ -1807,43 +1801,23 @@
 
                 const productText = {};
                 for (const lang in translations) { 
-                    const names = translations[lang].productNames;
-                    const t = translations[lang];
-
-                    const parts = [];
-                    parts.push(names[type] || type);
-                    parts.push(`(${(names[color] || color)})`);
-
-                    if (control === 'string') {
-                        parts.push(`(${(names.automata || 'automata')} x${divided ? 2 : 1})`);
-                    } else {
-                        parts.push(`(${(names.motorized || 'motorized')})`);
-                    }
-
-                    if (divided) {
-                        const sideText = t[divisionSide === 'right' ? 'sideRight' : 'sideLeft'] || divisionSide;
-                        parts.push(`(${(names.divided_blind || 'osztás')} ${sideText}: ${divisionWidth}mm)`);
-                    }
-
-                    if (integrated_screen === 'full') {
-                        parts.push(`(+${(names.integrated_screen_full || 'teljes szúnyogháló')})`);
-                    } else if (integrated_screen === 'half') {
-                        parts.push(`(+${(names.integrated_screen_half || 'fél szúnyogháló')})`);
-                    }
-                    
-                    productText[lang] = parts.filter(p => p).join(' '); // Biztonságos összefűzés
+                    const names = translations[lang].productNames; let text = `${names[type]} (${names[color]})`; 
+                    if (control === 'string') text += ` (${names.automata} x${divided ? 2 : 1})`; else text += ` (${names.motorized})`; 
+                    if (divided) { const sideText = translations[lang][divisionSide === 'right' ? 'sideRight' : 'sideLeft']; text += ` (${names.divided_blind} ${sideText}: ${divisionWidth}mm)`; }
+                    if (integrated_screen === 'full') text += ` (+${names.integrated_screen_full})`; else if (integrated_screen === 'half') text += ` (+${names.integrated_screen_half})`; 
+                    productText[lang] = text; 
                 }
-                const newItem = { isScreen: false, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity, isNew: true };
+                const newItem = { isScreen: false, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity };
                 
                 if (editingItemIndex !== null) {
                     quoteItems[editingItemIndex] = newItem;
-                    delete newItem.isNew; // A módosítás ne animáljon
                     showToast(translations[currentLanguage].productUpdatedMessage);
                 } else {
                     quoteItems.push(newItem);
                     showToast(translations[currentLanguage].productAddedMessage);
                 }
-                resetEditingState(); renderQuote();
+                resetEditingState();
+                renderQuote();
             };
 
             const handleScreenSubmit = () => {
@@ -1861,27 +1835,23 @@
 
                 const productText = {};
                 for (const lang in translations) { 
-                    const names = translations[lang].productNames;
-                    const parts = [];
-                    parts.push(names[type] || type);
-                    parts.push(`(${(names[color] || color)})`);
-
+                    let text = `${translations[lang].productNames[type]} (${translations[lang].productNames[color]})`;
                     if (extenderFrame) {
-                        parts.push(`(+${(names.extender_frame || 'kiemelő keret')})`);
+                        text += ` (+${translations[lang].productNames.extender_frame})`;
                     }
-                    productText[lang] = parts.filter(p => p).join(' '); // Biztonságos összefűzés
+                    productText[lang] = text;
                 }
-                const newItem = { isScreen: true, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity, isNew: true };
+                const newItem = { isScreen: true, type, product: productText, width, height, quantity, options: itemOptions, billableArea: priceData.billableArea, unitPrice: priceData.price, price: priceData.price * quantity };
                 
                 if (editingItemIndex !== null) {
                     quoteItems[editingItemIndex] = newItem;
-                    delete newItem.isNew; // A módosítás ne animáljon
                     showToast(translations[currentLanguage].productUpdatedMessage);
                 } else {
                     quoteItems.push(newItem);
                     showToast(translations[currentLanguage].productAddedMessage);
                 }
-                resetEditingState(); renderQuote();
+                resetEditingState();
+                renderQuote();
             };
 
             $('#add-blind-btn').addEventListener('click', handleBlindSubmit);
@@ -1942,23 +1912,12 @@
                 const pinInput = $('#pin-input');
                 const errorMsg = $('#pin-error');
                 const t = translations[currentLanguage];
-                const modalTitle = $('#pin-modal-title');
-                const modalText = $('#pin-modal-text');
-                const submitBtn = $('#pin-submit-btn');
-                const cancelBtn = $('#pin-cancel-btn');
-
-                // Hiba megelőzése: Ellenőrizzük, hogy az elemek léteznek-e
-                if (!modal || !pinInput || !errorMsg || !modalTitle || !modalText || !submitBtn || !cancelBtn) {
-                    console.error("A PIN bekérő ablak elemei hiányoznak a DOM-ból.");
-                    resolve(false); // A Promise-t 'false'-al oldjuk fel, hogy elkerüljük a további hibákat
-                    return;
-                }
 
                 // Update modal text with current language
-                modalTitle.textContent = t.pinModalTitle;
-                modalText.textContent = t.pinModalText;
-                submitBtn.textContent = t.pinSubmitBtn;
-                cancelBtn.textContent = t.cancelEditBtn; // Reuse translation
+                $('#pin-modal-title').textContent = t.pinModalTitle;
+                $('#pin-modal-text').textContent = t.pinModalText;
+                $('#pin-submit-btn').textContent = t.pinSubmitBtn;
+                $('#pin-cancel-btn').textContent = t.cancelEditBtn; // Reuse translation
                 errorMsg.textContent = t.pinError;
 
                 pinInput.value = '';
@@ -1993,13 +1952,13 @@
                 };
 
                 const cleanup = () => {
-                    submitBtn.removeEventListener('click', submitHandler);
-                    cancelBtn.removeEventListener('click', cancelHandler);
+                    $('#pin-submit-btn').removeEventListener('click', submitHandler);
+                    $('#pin-cancel-btn').removeEventListener('click', cancelHandler);
                     pinInput.removeEventListener('keypress', keypressHandler);
                 };
 
-                submitBtn.addEventListener('click', submitHandler);
-                cancelBtn.addEventListener('click', cancelHandler);
+                $('#pin-submit-btn').addEventListener('click', submitHandler);
+                $('#pin-cancel-btn').addEventListener('click', cancelHandler);
                 pinInput.addEventListener('keypress', keypressHandler);
             });
         }
@@ -2055,18 +2014,6 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
