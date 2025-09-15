@@ -273,6 +273,29 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Sub-tab styles */
+        .sub-tab-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background-color: transparent;
+            color: var(--light-text-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s, border-color 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -1px; /* Overlap the main border */
+        }
+        .sub-tab-button.active-sub-style {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        .sub-tab-button:not(.active-sub-style):hover {
+            color: var(--text-color);
+        }
+        .sub-tab-content { display: none; }
+        .sub-tab-content.active { display: block; animation: fadeIn 0.5s; }
+
 
         .input-with-unit { display: flex; align-items: center; }
         .input-with-unit .input-field { border-radius: 12px 0 0 12px; }
@@ -478,7 +501,6 @@
             <button id="blinds-tab" class="tab-button active-style flex items-center space-x-2"><i class="fa-solid fa-window-maximize icon"></i><span>Redőnyök</span></button>
             <button id="screens-tab" class="tab-button flex items-center space-x-2"><i class="fa-solid fa-grip-lines-vertical icon"></i><span>Szúnyoghálók</span></button>
             <button id="quote-tab" class="tab-button flex items-center space-x-2"><i class="fa-solid fa-file-invoice icon"></i><span>Ajánlat</span></button>
-            <button id="prices-tab" class="tab-button flex items-center space-x-2"><i class="fa-solid fa-tags icon"></i><span>Árak</span></button>
             <button id="settings-tab" class="tab-button flex items-center space-x-2"><i class="fa-solid fa-cog icon"></i><span>Beállítások</span></button>
         </div>
 
@@ -662,61 +684,72 @@
                     <ul id="saved-quotes-list" class="space-y-2 max-h-80 overflow-y-auto"></ul>
                 </div>
             </div>
-            <div id="prices-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
-                 <h2 id="prices-heading" class="text-2xl font-bold mb-4">Árbeállítások</h2>
-                 <div id="prices-container" class="space-y-6"></div>
-            </div>
+            
             <div id="settings-content" class="tab-content p-4 md:p-6 rounded-2xl shadow-inner">
                 <h2 id="settings-heading" class="text-2xl font-bold mb-4">Beállítások</h2>
-                <div class="form-grid">
-                    <div class="space-y-6">
-                        <h3 class="text-xl font-bold">Cég adatai</h3>
-                        <div class="input-group">
-                            <label id="company-name-label" for="company-name">Cég neve:</label>
-                            <input type="text" id="company-name" class="input-field" placeholder="Cég Kft.">
+
+                <!-- Sub-tabs for Settings -->
+                <div id="settings-sub-tabs" class="flex border-b border-[var(--input-border-color)] mb-6">
+                    <button id="general-settings-sub-tab" class="sub-tab-button active-sub-style"></button>
+                    <button id="prices-settings-sub-tab" class="sub-tab-button"></button>
+                </div>
+        
+                <!-- General Settings Content -->
+                <div id="general-settings-content" class="sub-tab-content active">
+                    <div class="form-grid">
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-bold">Cég adatai</h3>
+                            <div class="input-group">
+                                <label id="company-name-label" for="company-name">Cég neve:</label>
+                                <input type="text" id="company-name" class="input-field" placeholder="Cég Kft.">
+                            </div>
+                            <div class="input-group">
+                                <label id="company-website-label" for="company-website">Weboldal:</label>
+                                <input type="text" id="company-website" class="input-field" placeholder="www.ceg-oldala.hu">
+                            </div>
+                             <div class="input-group">
+                                <label id="company-email-label" for="company-email">Email cím:</label>
+                                <input type="email" id="company-email" class="input-field" placeholder="info@ceg-oldala.hu">
+                            </div>
+                             <div class="input-group">
+                                <label id="company-phone-label" for="company-phone">Telefonszám:</label>
+                                <input type="tel" id="company-phone" class="input-field" placeholder="+36 30 123 4567">
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <label id="company-website-label" for="company-website">Weboldal:</label>
-                            <input type="text" id="company-website" class="input-field" placeholder="www.ceg-oldala.hu">
-                        </div>
-                         <div class="input-group">
-                            <label id="company-email-label" for="company-email">Email cím:</label>
-                            <input type="email" id="company-email" class="input-field" placeholder="info@ceg-oldala.hu">
-                        </div>
-                         <div class="input-group">
-                            <label id="company-phone-label" for="company-phone">Telefonszám:</label>
-                            <input type="tel" id="company-phone" class="input-field" placeholder="+36 30 123 4567">
+                         <div class="space-y-6">
+                            <h3 class="text-xl font-bold">Vizuális elemek</h3>
+                             <div class="input-group">
+                                <label id="company-logo-label">Cég logó:</label>
+                                <input type="file" id="company-logo-input" class="hidden" accept="image/*">
+                                <label for="company-logo-input" class="input-field cursor-pointer flex items-center justify-center border-dashed border-2 h-48">
+                                    <span id="logo-upload-text">Kattintson a logó feltöltéséhez</span>
+                                </label>
+                                <img id="logo-preview" src="" class="mt-4 h-24 w-auto hidden rounded-lg shadow-md object-contain" alt="Logó előnézet">
+                                <button id="delete-logo-btn" class="btn btn-danger btn-small mt-2 hidden">Logó törlése</button>
+                            </div>
                         </div>
                     </div>
-                     <div class="space-y-6">
-                        <h3 class="text-xl font-bold">Vizuális elemek</h3>
-                         <div class="input-group">
-                            <label id="company-logo-label">Cég logó:</label>
-                            <input type="file" id="company-logo-input" class="hidden" accept="image/*">
-                            <label for="company-logo-input" class="input-field cursor-pointer flex items-center justify-center border-dashed border-2 h-48">
-                                <span id="logo-upload-text">Kattintson a logó feltöltéséhez</span>
-                            </label>
-                            <img id="logo-preview" src="" class="mt-4 h-24 w-auto hidden rounded-lg shadow-md object-contain" alt="Logó előnézet">
-                            <button id="delete-logo-btn" class="btn btn-danger btn-small mt-2 hidden">Logó törlése</button>
+    
+                    <button id="save-settings-btn" class="w-full md:w-auto mt-8 btn btn-primary">Beállítások mentése</button>
+                    
+                    <div class="mt-8 pt-6 border-t border-[var(--input-border-color)]">
+                        <h3 id="data-management-heading" class="text-xl font-bold mb-4">Adatkezelés</h3>
+                        <div id="data-loss-warning" class="p-4 mb-4 rounded-lg bg-yellow-100 dark:bg-yellow-900 border border-yellow-300 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200 flex items-start gap-3">
+                            <i class="fa-solid fa-triangle-exclamation mt-1"></i>
+                            <p id="data-management-desc" class="text-sm">Minden adat a böngészőjében tárolódik. A böngésző gyorsítótárának törlése az összes mentett ajánlat és beállítás elvesztésével járhat. **Javasoljuk az adatok rendszeres exportálását!**</p>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            <button id="export-data-btn" class="btn btn-secondary">Adatok Exportálása</button>
+                            <button id="import-data-btn" class="btn btn-tertiary">Adatok Importálása</button>
+                            <input type="file" id="import-file-input" class="hidden" accept=".json,application/json">
                         </div>
                     </div>
                 </div>
 
-                <button id="save-settings-btn" class="w-full md:w-auto mt-8 btn btn-primary">Beállítások mentése</button>
-                
-                <div class="mt-8 pt-6 border-t border-[var(--input-border-color)]">
-                    <h3 id="data-management-heading" class="text-xl font-bold mb-4">Adatkezelés</h3>
-                    <div id="data-loss-warning" class="p-4 mb-4 rounded-lg bg-yellow-100 dark:bg-yellow-900 border border-yellow-300 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200 flex items-start gap-3">
-                        <i class="fa-solid fa-triangle-exclamation mt-1"></i>
-                        <p id="data-management-desc" class="text-sm">Minden adat a böngészőjében tárolódik. A böngésző gyorsítótárának törlése az összes mentett ajánlat és beállítás elvesztésével járhat. **Javasoljuk az adatok rendszeres exportálását!**</p>
-                    </div>
-                    <div class="flex flex-wrap gap-4">
-                        <button id="export-data-btn" class="btn btn-secondary">Adatok Exportálása</button>
-                        <button id="import-data-btn" class="btn btn-tertiary">Adatok Importálása</button>
-                        <input type="file" id="import-file-input" class="hidden" accept=".json,application/json">
-                    </div>
+                <!-- Prices Settings Content -->
+                <div id="prices-settings-content" class="sub-tab-content">
+                    <div id="prices-container" class="space-y-6"></div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -732,7 +765,8 @@
         const translations = {
              hu: {
                 title: "Árajánlat Készítő", languageLabel: "Nyelv:", currencyLabel: "Pénznem:",
-                blindsTab: "Redőnyök", screensTab: "Szúnyoghálók", pricesTab: "Árak", quoteTab: "Ajánlat", settingsTab: "Beállítások",
+                blindsTab: "Redőnyök", screensTab: "Szúnyoghálók", quoteTab: "Ajánlat", settingsTab: "Beállítások",
+                generalSettingsSubTab: "Általános", pricesSettingsSubTab: "Árak",
                 blindsHeading: "Redőny hozzáadása", blindsTypeLabel: "Típus:", blindsWidthLabel: "Szélesség (mm):",
                 blindsHeightLabel: "Magasság (mm):", blindsQuantityLabel: "Darab:", blindsColorLabel: "Szín:",
                 blindsControlLabel: "Vezérlés:", blindsDividedLabel: "Kettéosztott",
@@ -817,7 +851,9 @@
                 productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret" }
             },
             ro: {
-                title: "Creator de Oferte", languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", pricesTab: "Prețuri", quoteTab: "Ofertă", settingsTab: "Setări", blindsHeading: "Adăugare jaluzea", blindsTypeLabel: "Tip:", blindsWidthLabel: "Lățime (mm):", blindsHeightLabel: "Înălțime (mm):", blindsQuantityLabel: "Bucăți:", blindsColorLabel: "Culoare:", blindsControlLabel: "Control:", blindsDividedLabel: "Divizat", blindsIntegratedScreenLabel: "Plasă de insecte integrată", screenOptionNone: "Niciuna", screenOptionFull: "Completă", screenOptionHalf: "Jumătate", addBlindBtn: "Adaugă Jaluzea", screensHeading: "Adăugare plasă de insecte", screensTypeLabel: "Tip:", screensWidthLabel: "Lățime (mm):", screensHeightLabel: "Înălțime (mm):", screensQuantityLabel: "Bucăți:", screensColorLabel: "Culoare:", addScreenBtn: "Adaugă Plasă", pricesHeading: "Setări Prețuri", blindsPrices: "Prețuri Jaluzele", screensPrices: "Prețuri Plase de Insecte", basePricesM2: "Prețuri de bază (preț / m²)", surcharges: "Suprataxe", colorSurcharges: "Suprataxe Culoare - Aluminiu (%)", externalColorSurcharges: "Suprataxe Culoare - Exterior (%)", screenBasePricesM2: "Prețuri de bază (preț / m²)", screenColorSurcharges: "Suprataxe Culoare (%)", unit_currency_pc: " / buc", quoteHeading: "Ofertă", settingsHeading: "Setări", companyNameLabel: "Nume Companie:", companyLogoLabel: "Logo Companie:", saveSettingsBtn: "Salvează Setările", settingsSavedMessage: "Setările au fost salvate cu succes!", tableProductTh: "Produs", tableSizeTh: "Dimensiune (mm)", tableQuantityTh: "Bucăți", tablePriceTh: "Preț Unitar", tableSubtotalTh: "Subtotal", tableActionsTh: "Acțiuni", subtotalText: "Subtotal:", discountLabel: "Reducere (%):", discountAmountText: "Reducere:", totalText: "Total Final:", saveQuoteBtn: "Salvează Oferta", loadQuotesBtn: "Încarcă Oferte", newQuoteBtn: "Ofertă Nouă", quoteNameLabel: "Nume Ofertă:", loadQuoteHeading: "Oferte Salvate", deleteBtn: "Șterge", editBtn: "Editare", savePriceBtn: "Salvează Prețurile", priceSavedMessage: "Prețurile au fost salvate cu succes!", productAddedMessage: "Produsul a fost adăugat cu succes la ofertă!", productUpdatedMessage: "Articolul a fost modificat cu succes!", emptyFieldsError: "Vă rugăm să completați câmpurile obligatorii!", invalidSizeError: "Vă rugăm să introduceți dimensiuni valide (număr pozitiv).", invalidQuantityError: "Vă rugăm să introduceți o cantitate validă (număr întreg pozitiv).", invalidDivisionWidthError: "Lățimea diviziunii nu poate fi mai mare decât lățimea totală.", quoteSaved: "Oferta a fost salvată!", quoteLoaded: "Oferta a fost încărcată cu succes!", quoteDeleted: "Oferta a fost ștearsă cu succes!", quoteNameRequired: "Vă rugăm să introduceți un nume pentru ofertă pentru a o salva!", noQuotesFound: "Nicio ofertă salvată.", noItemsInQuote: "Oferta este goală.", deleteQuotePromptTitle: "Șterge Oferta", deleteQuotePromptText: "Sigur doriți să ștergeți oferta '{{name}}'?", newQuotePromptTitle: "Începe Ofertă Nouă", newQuotePromptText: "Sigur doriți să începeți o ofertă nouă, goală? Modificările nesalvate se vor pierde.", newQuoteStarted: "O nouă ofertă goală a fost începută.", minAreaWarning: "Atenție: Suprafața minimă facturată este de {{area}} m².", pvcColorError: "Jaluzelele din PVC sunt disponibile doar pe alb.", logoUploadText: "Faceți clic pentru a încărca logo-ul", deleteLogoBtn: "Șterge Logo", logoDeletedMessage: "Logo-ul a fost șters cu succes!",
+                title: "Creator de Oferte", languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", quoteTab: "Ofertă", settingsTab: "Setări", 
+                generalSettingsSubTab: "Generale", pricesSettingsSubTab: "Prețuri",
+                blindsHeading: "Adăugare jaluzea", blindsTypeLabel: "Tip:", blindsWidthLabel: "Lățime (mm):", blindsHeightLabel: "Înălțime (mm):", blindsQuantityLabel: "Bucăți:", blindsColorLabel: "Culoare:", blindsControlLabel: "Control:", blindsDividedLabel: "Divizat", blindsIntegratedScreenLabel: "Plasă de insecte integrată", screenOptionNone: "Niciuna", screenOptionFull: "Completă", screenOptionHalf: "Jumătate", addBlindBtn: "Adaugă Jaluzea", screensHeading: "Adăugare plasă de insecte", screensTypeLabel: "Tip:", screensWidthLabel: "Lățime (mm):", screensHeightLabel: "Înălțime (mm):", screensQuantityLabel: "Bucăți:", screensColorLabel: "Culoare:", addScreenBtn: "Adaugă Plasă", pricesHeading: "Setări Prețuri", blindsPrices: "Prețuri Jaluzele", screensPrices: "Prețuri Plase de Insecte", basePricesM2: "Prețuri de bază (preț / m²)", surcharges: "Suprataxe", colorSurcharges: "Suprataxe Culoare - Aluminiu (%)", externalColorSurcharges: "Suprataxe Culoare - Exterior (%)", screenBasePricesM2: "Prețuri de bază (preț / m²)", screenColorSurcharges: "Suprataxe Culoare (%)", unit_currency_pc: " / buc", quoteHeading: "Ofertă", settingsHeading: "Setări", companyNameLabel: "Nume Companie:", companyLogoLabel: "Logo Companie:", saveSettingsBtn: "Salvează Setările", settingsSavedMessage: "Setările au fost salvate cu succes!", tableProductTh: "Produs", tableSizeTh: "Dimensiune (mm)", tableQuantityTh: "Bucăți", tablePriceTh: "Preț Unitar", tableSubtotalTh: "Subtotal", tableActionsTh: "Acțiuni", subtotalText: "Subtotal:", discountLabel: "Reducere (%):", discountAmountText: "Reducere:", totalText: "Total Final:", saveQuoteBtn: "Salvează Oferta", loadQuotesBtn: "Încarcă Oferte", newQuoteBtn: "Ofertă Nouă", quoteNameLabel: "Nume Ofertă:", loadQuoteHeading: "Oferte Salvate", deleteBtn: "Șterge", editBtn: "Editare", savePriceBtn: "Salvează Prețurile", priceSavedMessage: "Prețurile au fost salvate cu succes!", productAddedMessage: "Produsul a fost adăugat cu succes la ofertă!", productUpdatedMessage: "Articolul a fost modificat cu succes!", emptyFieldsError: "Vă rugăm să completați câmpurile obligatorii!", invalidSizeError: "Vă rugăm să introduceți dimensiuni valide (număr pozitiv).", invalidQuantityError: "Vă rugăm să introduceți o cantitate validă (număr întreg pozitiv).", invalidDivisionWidthError: "Lățimea diviziunii nu poate fi mai mare decât lățimea totală.", quoteSaved: "Oferta a fost salvată!", quoteLoaded: "Oferta a fost încărcată cu succes!", quoteDeleted: "Oferta a fost ștearsă cu succes!", quoteNameRequired: "Vă rugăm să introduceți un nume pentru ofertă pentru a o salva!", noQuotesFound: "Nicio ofertă salvată.", noItemsInQuote: "Oferta este goală.", deleteQuotePromptTitle: "Șterge Oferta", deleteQuotePromptText: "Sigur doriți să ștergeți oferta '{{name}}'?", newQuotePromptTitle: "Începe Ofertă Nouă", newQuotePromptText: "Sigur doriți să începeți o ofertă nouă, goală? Modificările nesalvate se vor pierde.", newQuoteStarted: "O nouă ofertă goală a fost începută.", minAreaWarning: "Atenție: Suprafața minimă facturată este de {{area}} m².", pvcColorError: "Jaluzelele din PVC sunt disponibile doar pe alb.", logoUploadText: "Faceți clic pentru a încărca logo-ul", deleteLogoBtn: "Șterge Logo", logoDeletedMessage: "Logo-ul a fost șters cu succes!",
                 dataManagementHeading: "Gestionarea Datelor", dataManagementDesc: "Toate datele sunt stocate în browser. Ștergerea memoriei cache a browserului poate duce la pierderea tuturor ofertelor și setărilor salvate. **Recomandăm exportarea regulată a datelor!**",
                 exportDataBtn: "Export Date", importDataBtn: "Import Date", importSuccess: "Datele au fost importate cu succes! Pagina se va reîncărca în 2 secunde.",
                 importError: "Eroare la import. Vă rugăm să verificați formatul fișierului.",
@@ -852,7 +888,9 @@
                 productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie" }
             },
             en: {
-                title: "Quote Generator", languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", pricesTab: "Prices", quoteTab: "Quote", settingsTab: "Settings", blindsHeading: "Add Blind", blindsTypeLabel: "Type:", blindsWidthLabel: "Width (mm):", blindsHeightLabel: "Height (mm):", blindsQuantityLabel: "Quantity:", blindsColorLabel: "Color:", blindsControlLabel: "Control:", blindsDividedLabel: "Divided", blindsIntegratedScreenLabel: "Integrated insect screen", screenOptionNone: "None", screenOptionFull: "Full", screenOptionHalf: "Half", addBlindBtn: "Add Blind", screensHeading: "Add Insect Screen", screensTypeLabel: "Type:", screensWidthLabel: "Width (mm):", screensHeightLabel: "Height (mm):", screensQuantityLabel: "Quantity:", screensColorLabel: "Color:", addScreenBtn: "Add Screen", pricesHeading: "Price Settings", blindsPrices: "Blinds Prices", screensPrices: "Insect Screen Prices", basePricesM2: "Base Prices (price / m²)", surcharges: "Surcharges", colorSurcharges: "Color Surcharges - Aluminium (%)", externalColorSurcharges: "Color Surcharges - External (%)", screenBasePricesM2: "Base Prices (price / m²)", screenColorSurcharges: "Color Surcharges (%)", unit_currency_pc: " / pc", quoteHeading: "Quote", settingsHeading: "Settings", companyNameLabel: "Company Name:", companyLogoLabel: "Company Logo:", saveSettingsBtn: "Save Settings", settingsSavedMessage: "Settings saved successfully!", tableProductTh: "Product", tableSizeTh: "Size (mm)", tableQuantityTh: "Quantity", tablePriceTh: "Unit Price", tableSubtotalTh: "Subtotal", tableActionsTh: "Actions", subtotalText: "Subtotal:", discountLabel: "Discount (%):", discountAmountText: "Discount:", totalText: "Grand Total:", saveQuoteBtn: "Save Quote", loadQuotesBtn: "Load Quotes", newQuoteBtn: "New Quote", quoteNameLabel: "Quote Name:", loadQuoteHeading: "Saved Quotes", deleteBtn: "Delete", editBtn: "Edit", savePriceBtn: "Save Prices", priceSavedMessage: "Prices saved successfully!", productAddedMessage: "Product successfully added to the quote!", productUpdatedMessage: "Item successfully updated!", emptyFieldsError: "Please fill in the required fields!", invalidSizeError: "Please enter valid dimensions (positive number).", invalidQuantityError: "Please enter a valid quantity (positive integer).", invalidDivisionWidthError: "Division width cannot be greater than the total width.", quoteSaved: "Quote saved!", quoteLoaded: "Quote loaded successfully!", quoteDeleted: "Quote deleted successfully!", quoteNameRequired: "Please enter a name for the quote to save it!", noQuotesFound: "No saved quotes.", noItemsInQuote: "The quote is empty.", deleteQuotePromptTitle: "Delete Quote", deleteQuotePromptText: "Are you sure you want to delete the quote '{{name}}'?", newQuotePromptTitle: "Start New Quote", newQuotePromptText: "Are you sure you want to start a new, empty quote? Any unsaved changes will be lost.", newQuoteStarted: "Started a new, empty quote.", minAreaWarning: "Warning: The minimum billed area is {{area}} m².", pvcColorError: "PVC blinds are only available in white.", logoUploadText: "Click to upload logo", deleteLogoBtn: "Delete Logo", logoDeletedMessage: "Logo deleted successfully!",
+                title: "Quote Generator", languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", quoteTab: "Quote", settingsTab: "Settings",
+                generalSettingsSubTab: "General", pricesSettingsSubTab: "Prices",
+                blindsHeading: "Add Blind", blindsTypeLabel: "Type:", blindsWidthLabel: "Width (mm):", blindsHeightLabel: "Height (mm):", blindsQuantityLabel: "Quantity:", blindsColorLabel: "Color:", blindsControlLabel: "Control:", blindsDividedLabel: "Divided", blindsIntegratedScreenLabel: "Integrated insect screen", screenOptionNone: "None", screenOptionFull: "Full", screenOptionHalf: "Half", addBlindBtn: "Add Blind", screensHeading: "Add Insect Screen", screensTypeLabel: "Type:", screensWidthLabel: "Width (mm):", screensHeightLabel: "Height (mm):", screensQuantityLabel: "Quantity:", screensColorLabel: "Color:", addScreenBtn: "Add Screen", pricesHeading: "Price Settings", blindsPrices: "Blinds Prices", screensPrices: "Insect Screen Prices", basePricesM2: "Base Prices (price / m²)", surcharges: "Surcharges", colorSurcharges: "Color Surcharges - Aluminium (%)", externalColorSurcharges: "Color Surcharges - External (%)", screenBasePricesM2: "Base Prices (price / m²)", screenColorSurcharges: "Color Surcharges (%)", unit_currency_pc: " / pc", quoteHeading: "Quote", settingsHeading: "Settings", companyNameLabel: "Company Name:", companyLogoLabel: "Company Logo:", saveSettingsBtn: "Save Settings", settingsSavedMessage: "Settings saved successfully!", tableProductTh: "Product", tableSizeTh: "Size (mm)", tableQuantityTh: "Quantity", tablePriceTh: "Unit Price", tableSubtotalTh: "Subtotal", tableActionsTh: "Actions", subtotalText: "Subtotal:", discountLabel: "Discount (%):", discountAmountText: "Discount:", totalText: "Grand Total:", saveQuoteBtn: "Save Quote", loadQuotesBtn: "Load Quotes", newQuoteBtn: "New Quote", quoteNameLabel: "Quote Name:", loadQuoteHeading: "Saved Quotes", deleteBtn: "Delete", editBtn: "Edit", savePriceBtn: "Save Prices", priceSavedMessage: "Prices saved successfully!", productAddedMessage: "Product successfully added to the quote!", productUpdatedMessage: "Item successfully updated!", emptyFieldsError: "Please fill in the required fields!", invalidSizeError: "Please enter valid dimensions (positive number).", invalidQuantityError: "Please enter a valid quantity (positive integer).", invalidDivisionWidthError: "Division width cannot be greater than the total width.", quoteSaved: "Quote saved!", quoteLoaded: "Quote loaded successfully!", quoteDeleted: "Quote deleted successfully!", quoteNameRequired: "Please enter a name for the quote to save it!", noQuotesFound: "No saved quotes.", noItemsInQuote: "The quote is empty.", deleteQuotePromptTitle: "Delete Quote", deleteQuotePromptText: "Are you sure you want to delete the quote '{{name}}'?", newQuotePromptTitle: "Start New Quote", newQuotePromptText: "Are you sure you want to start a new, empty quote? Any unsaved changes will be lost.", newQuoteStarted: "Started a new, empty quote.", minAreaWarning: "Warning: The minimum billed area is {{area}} m².", pvcColorError: "PVC blinds are only available in white.", logoUploadText: "Click to upload logo", deleteLogoBtn: "Delete Logo", logoDeletedMessage: "Logo deleted successfully!",
                 dataManagementHeading: "Data Management", dataManagementDesc: "All data is stored in your browser. Clearing your browser's cache may result in the loss of all saved quotes and settings. **We recommend exporting your data regularly!**",
                 exportDataBtn: "Export Data", importDataBtn: "Import Data", importSuccess: "Data imported successfully! The page will reload in 2 seconds.",
                 importError: "Error during import. Please check the file format.",
@@ -1052,7 +1090,8 @@
                 'client-name-label': 'clientNameLabel', 'client-address-label': 'clientAddressLabel', 'client-phone-label': 'clientPhoneLabel',
                 'table-area-th': 'tableAreaTh',
                 'cancel-edit-blind-btn': 'cancelEditBtn', 'cancel-edit-screen-btn': 'cancelEditBtn',
-                'screens-extender-frame-label': 'extenderFrameLabel'
+                'screens-extender-frame-label': 'extenderFrameLabel',
+                'general-settings-sub-tab': 'generalSettingsSubTab', 'prices-settings-sub-tab': 'pricesSettingsSubTab'
             };
             for (const id in textContentMap) {
                 const element = $(`#${id}`);
@@ -1061,7 +1100,7 @@
             
             $('#quote-search-input').placeholder = t.searchPlaceholder;
 
-            const tabMap = { 'blinds-tab': 'blindsTab', 'screens-tab': 'screensTab', 'prices-tab': 'pricesTab', 'quote-tab': 'quoteTab', 'settings-tab': 'settingsTab' };
+            const tabMap = { 'blinds-tab': 'blindsTab', 'screens-tab': 'screensTab', 'quote-tab': 'quoteTab', 'settings-tab': 'settingsTab' };
             for (const id in tabMap) $(`#${id} span`).textContent = t[tabMap[id]];
 
             const screenSelect = $('#blinds-integrated-screen');
@@ -1293,11 +1332,12 @@
             const minAreaSection = document.createElement('div');
             minAreaSection.className = "p-4 rounded-2xl shadow-md mb-4 saved-quote-item grid grid-cols-1 md:grid-cols-2 gap-4";
             
-            Object.keys(minAreas).forEach(key => {
+            Object.keys(defaultMinAreas).forEach(key => {
                 const labelText = t.minAreaLabels[key] || key;
+                const value = minAreas[key] !== undefined ? minAreas[key] : defaultMinAreas[key];
                 const minAreaItem = document.createElement('div');
                 minAreaItem.className = "flex items-center space-x-4";
-                minAreaItem.innerHTML = `<label class="w-2/3">${labelText}:</label><div class="input-with-unit w-1/3"><input type="number" data-min-area-key="${key}" class="input-field text-right" value="${minAreas[key].toFixed(2)}" min="0" step="any"><span class="unit">m²</span></div>`;
+                minAreaItem.innerHTML = `<label class="w-2/3">${labelText}:</label><div class="input-with-unit w-1/3"><input type="number" data-min-area-key="${key}" class="input-field text-right" value="${value.toFixed(2)}" min="0" step="any"><span class="unit">m²</span></div>`;
                 minAreaSection.appendChild(minAreaItem);
             });
             minAreaContainer.appendChild(minAreaSection);
@@ -1906,25 +1946,44 @@
         }
 
         function setupListeners() {
-            $$('.tab-button').forEach(tab => tab.addEventListener('click', async () => { 
+            function switchToSettingsSubTab(activeTab) {
+                $$('#settings-sub-tabs .sub-tab-button').forEach(btn => btn.classList.remove('active-sub-style'));
+                $$('#settings-content .sub-tab-content').forEach(content => content.classList.remove('active'));
+
+                if (activeTab === 'general') {
+                    $('#general-settings-sub-tab').classList.add('active-sub-style');
+                    $('#general-settings-content').classList.add('active');
+                } else if (activeTab === 'prices') {
+                    $('#prices-settings-sub-tab').classList.add('active-sub-style');
+                    $('#prices-settings-content').classList.add('active');
+                }
+            }
+            
+            $$('.tab-button').forEach(tab => tab.addEventListener('click', () => { 
                 if (editingItemIndex !== null) {
                     resetEditingState();
                 }
-
-                if (tab.id === 'prices-tab') {
-                    if (sessionStorage.getItem('pricesUnlocked') === 'true') {
-                        switchToTab('prices-tab');
-                    } else {
-                        const pinCorrect = await promptForPin();
-                        if (pinCorrect) {
-                            sessionStorage.setItem('pricesUnlocked', 'true');
-                            switchToTab('prices-tab');
-                        }
-                    }
-                } else {
-                    switchToTab(tab.id);
+                switchToTab(tab.id);
+                if (tab.id === 'settings-tab') {
+                    switchToSettingsSubTab('general');
                 }
             }));
+
+            $('#general-settings-sub-tab').addEventListener('click', () => {
+                switchToSettingsSubTab('general');
+            });
+    
+            $('#prices-settings-sub-tab').addEventListener('click', async () => {
+                if (sessionStorage.getItem('pricesUnlocked') === 'true') {
+                    switchToSettingsSubTab('prices');
+                } else {
+                    const pinCorrect = await promptForPin();
+                    if (pinCorrect) {
+                        sessionStorage.setItem('pricesUnlocked', 'true');
+                        switchToSettingsSubTab('prices');
+                    }
+                }
+            });
             
             $('#language-select').addEventListener('change', (e) => { currentLanguage = e.target.value; localStorage.setItem('language', currentLanguage); updateLocalization(); });
             $('#currency-select').addEventListener('change', (e) => { currentCurrency = e.target.value; localStorage.setItem('currency', currentCurrency); renderPrices(); renderQuote(); });
@@ -2057,7 +2116,7 @@
                 }
             });
 
-            $('#prices-content').addEventListener('input', (e) => { 
+            $('#prices-container').addEventListener('input', (e) => { 
                 if(e.target.id === 'exchange-rate-input') { 
                     const newRate = parseFloat(e.target.value); 
                     if (!isNaN(newRate) && newRate > 0) { 
@@ -2066,19 +2125,6 @@
                         renderPrices(); 
                         renderQuote(); 
                     } 
-                }
-            });
-            $('#prices-content').addEventListener('change', (e) => {
-                if (e.target.tagName !== 'INPUT') return;
-
-                if (e.target.dataset.path) {
-                    const path = e.target.dataset.path; let value = parseFloat(e.target.value); if (isNaN(value)) return;
-                    const isPercentage = e.target.nextElementSibling?.textContent === '%';
-                    if (currentCurrency === 'EUR' && !isPercentage) { value *= exchangeRate; }
-                    const setNestedValue = (obj, p, v) => { const keys = p.split('.'), lk = keys.pop(), lo = keys.reduce((o, k) => o[k] = o[k] || {}, obj); lo[lk] = v; };
-                    setNestedValue(userPrices, path, value); 
-                    updateCurrentPrices(); 
-                    renderQuote();
                 } else if (e.target.dataset.minAreaKey) {
                     const key = e.target.dataset.minAreaKey;
                     const value = parseFloat(e.target.value);
@@ -2088,7 +2134,18 @@
                     }
                 }
             });
-            $('#prices-content').addEventListener('click', e => { 
+            $('#prices-container').addEventListener('change', (e) => {
+                if (e.target.tagName !== 'INPUT' || !e.target.dataset.path) return;
+                const path = e.target.dataset.path; let value = parseFloat(e.target.value); if (isNaN(value)) return;
+                const isPercentage = e.target.nextElementSibling?.textContent === '%';
+                if (currentCurrency === 'EUR' && !isPercentage) { value *= exchangeRate; }
+                const setNestedValue = (obj, p, v) => { const keys = p.split('.'), lk = keys.pop(), lo = keys.reduce((o, k) => o[k] = o[k] || {}, obj); lo[lk] = v; };
+                setNestedValue(userPrices, path, value); 
+                updateCurrentPrices(); 
+                renderQuote();
+            });
+
+            $('#prices-settings-content').addEventListener('click', e => { 
                 if (e.target.id === 'save-prices-btn') { 
                     localStorage.setItem('userPrices', JSON.stringify(userPrices)); 
                     localStorage.setItem('minAreas', JSON.stringify(minAreas));
