@@ -795,6 +795,7 @@
                 pinModalText: "Kérjük, adja meg a PIN kódot az árak megtekintéséhez.",
                 pinSubmitBtn: "Belépés",
                 pinError: "Helytelen PIN kód!",
+                closeBtn: "Bezárás",
                 productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret" }
             },
             ro: {
@@ -820,6 +821,7 @@
                 pinModalText: "Vă rugăm să introduceți codul PIN pentru a vizualiza prețurile.",
                 pinSubmitBtn: "Intră",
                 pinError: "Cod PIN incorect!",
+                closeBtn: "Închide",
                 productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie" }
             },
             en: {
@@ -845,6 +847,7 @@
                 pinModalText: "Please enter the PIN code to view prices.",
                 pinSubmitBtn: "Enter",
                 pinError: "Incorrect PIN code!",
+                closeBtn: "Close",
                 productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", wood: "Wood imitation", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahogany", extender_frame: "Extender frame" }
             }
         };
@@ -1441,6 +1444,7 @@
                             <button id="pdf-action-btn" class="bg-red-600 text-white font-bold py-3 px-6 rounded-full hover:bg-red-700 transition duration-300 shadow-lg flex items-center gap-2"></button>
                             <button id="jpg-action-btn" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-700 transition duration-300 shadow-lg flex items-center gap-2"></button>
                             <button id="send-email-btn" class="bg-green-600 text-white font-bold py-3 px-6 rounded-full hover:bg-green-700 transition duration-300 shadow-lg flex items-center gap-2"></button>
+                            <button id="close-preview-btn" class="bg-gray-500 text-white font-bold py-3 px-6 rounded-full hover:bg-gray-600 transition duration-300 shadow-lg flex items-center gap-2"></button>
                             <div class="flex items-center space-x-2">
                                 <label id="preview-language-label" class="text-sm font-medium"></label>
                                 <select id="preview-language-select" class="bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md py-1 px-2 text-sm">
@@ -1524,6 +1528,7 @@
                             const pdfBtn = document.getElementById('pdf-action-btn');
                             const jpgBtn = document.getElementById('jpg-action-btn');
                             const emailBtn = document.getElementById('send-email-btn');
+                            const closeBtn = document.getElementById('close-preview-btn');
 
                             if (navigator.share) {
                                 pdfBtn.innerHTML = \`<i class="fas fa-share-alt"></i> \${t.sharePdfBtn}\`;
@@ -1533,6 +1538,7 @@
                                 jpgBtn.innerHTML = \`<i class="fas fa-file-image"></i> \${t.generateJpgBtn}\`;
                             }
                             emailBtn.innerHTML = \`<i class="fas fa-paper-plane"></i> \${t.sendQuoteBtn}\`;
+                            closeBtn.innerHTML = \`<i class="fas fa-times"></i> \${t.closeBtn}\`;
                             document.getElementById('preview-language-label').textContent = \`\${t.languageLabel}\`;
                         }
                         
@@ -1608,12 +1614,14 @@
                             const pdfBtn = document.getElementById('pdf-action-btn');
                             const jpgBtn = document.getElementById('jpg-action-btn');
                             const emailBtn = document.getElementById('send-email-btn');
+                            const closeBtn = document.getElementById('close-preview-btn');
 
                             langSelect.value = '${defaultPreviewLanguage}';
                             renderPreview('${defaultPreviewLanguage}');
                             
                             langSelect.addEventListener('change', (e) => renderPreview(e.target.value));
                             emailBtn.addEventListener('click', () => sendEmail(langSelect.value));
+                            closeBtn.addEventListener('click', () => window.close());
 
                             pdfBtn.addEventListener('click', async () => {
                                 const lang = langSelect.value;
@@ -2014,7 +2022,4 @@
 </script>
 </body>
 </html>
-
-
-
 
