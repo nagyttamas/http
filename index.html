@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Árajánlat Készítő (Offline)</title>
+    <title>EUROPLAST Árajánlat Készítő</title>
 
     <!-- WebKit/iOS Home Screen Ikon és Beállítások -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Árajánlat">
-    <link rel="apple-touch-icon" href="https://placehold.co/180x180/009688/FFFFFF?text=AK&font=inter">
+    <meta name="apple-mobile-web-app-title" content="EUROPLAST">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/009688/FFFFFF?text=EP&font=inter">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -508,7 +508,7 @@
             <div class="flex items-center space-x-4 min-w-0">
                 <button id="refresh-btn" class="btn btn-icon btn-secondary" aria-label="Oldal frissítése" title="Oldal frissítése"><i class="fa-solid fa-arrows-rotate"></i></button>
                 <img id="header-logo" src="" alt="Cég logója" class="h-16 w-auto hidden object-contain">
-                <h1 id="app-title" class="text-3xl font-bold truncate">Árajánlat Készítő</h1>
+                <h1 id="app-title" class="text-3xl font-bold truncate">EUROPLAST</h1>
             </div>
             <div class="flex items-center justify-end flex-wrap gap-x-4 gap-y-2 flex-shrink-0">
                 <div class="flex items-center space-x-2">
@@ -577,6 +577,10 @@
                     <div class="input-group flex items-center mt-6">
                         <input type="checkbox" id="blinds-divided" class="mr-2 h-6 w-6 rounded-lg text-primary-color focus:ring-0">
                         <label id="blinds-divided-label" for="blinds-divided" class="input-label mb-0 cursor-pointer">Kettéosztott</label>
+                    </div>
+                    <div id="blinds-extender-frame-group" class="input-group flex items-center mt-6">
+                        <input type="checkbox" id="blinds-extender-frame" class="mr-2 h-6 w-6 rounded-lg text-primary-color focus:ring-0">
+                        <label id="blinds-extender-frame-label" for="blinds-extender-frame" class="input-label mb-0 cursor-pointer">Kiemelő keret</label>
                     </div>
                      <div id="integrated-screen-group" class="input-group mt-1">
                         <label id="blinds-integrated-screen-label" for="blinds-integrated-screen">Beépített szúnyogháló</label>
@@ -801,7 +805,7 @@
 
         const translations = {
              hu: {
-                title: "Árajánlat Készítő", languageLabel: "Nyelv:", currencyLabel: "Pénznem:",
+                languageLabel: "Nyelv:", currencyLabel: "Pénznem:",
                 blindsTab: "Redőnyök", screensTab: "Szúnyoghálók", quoteTab: "Ajánlat", settingsTab: "Beállítások",
                 generalSettingsSubTab: "Általános", pricesSettingsSubTab: "Árak",
                 blindsHeading: "Redőny hozzáadása", blindsTypeLabel: "Típus:", blindsWidthLabel: "Szélesség (mm):",
@@ -871,6 +875,7 @@
                 updateItemBtn: "Tétel módosítása", cancelEditBtn: "Mégse",
                 searchPlaceholder: "Keresés név vagy ügyfél alapján...",
                 extenderFrameLabel: "Kiemelő keret", extenderFramePrice: "Kiemelő keret (ár / m)",
+                blindsExtenderFrameLabel: "Kiemelő keret", blindsExtenderFramePrice: "Redőny kiemelő (ár / m)",
                 pinModalTitle: "PIN kód szükséges",
                 pinModalText: "Kérjük, adja meg a PIN kódot az árak megtekintéséhez.",
                 pinSubmitBtn: "Belépés",
@@ -885,10 +890,10 @@
                     plisse: "Pliszé szúnyogháló (m²)",
                     mobile: "Mobil szúnyogháló (m²)"
                 },
-                productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret" }
+                productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret", blinds_extender_frame: "Kiemelő keret (redőny)" }
             },
             ro: {
-                title: "Creator de Oferte", languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", quoteTab: "Ofertă", settingsTab: "Setări", 
+                languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", quoteTab: "Ofertă", settingsTab: "Setări", 
                 generalSettingsSubTab: "Generale", pricesSettingsSubTab: "Prețuri",
                 blindsHeading: "Adăugare jaluzea", blindsTypeLabel: "Tip:", blindsWidthLabel: "Lățime (mm):", blindsHeightLabel: "Înălțime (mm):", blindsQuantityLabel: "Bucăți:", blindsColorLabel: "Culoare:", blindsControlLabel: "Control:", blindsDividedLabel: "Divizat", blindsIntegratedScreenLabel: "Plasă de insecte integrată", screenOptionNone: "Niciuna", screenOptionFull: "Completă", screenOptionHalf: "Jumătate", addBlindBtn: "Adaugă Jaluzea", screensHeading: "Adăugare plasă de insecte", screensTypeLabel: "Tip:", screensWidthLabel: "Lățime (mm):", screensHeightLabel: "Înălțime (mm):", screensQuantityLabel: "Bucăți:", screensColorLabel: "Culoare:", addScreenBtn: "Adaugă Plasă", pricesHeading: "Setări Prețuri", blindsPrices: "Prețuri Jaluzele", screensPrices: "Prețuri Plase de Insecte", basePricesM2: "Prețuri de bază (preț / m²)", surcharges: "Suprataxe", colorSurcharges: "Suprataxe Culoare - Aluminiu (%)", externalColorSurcharges: "Suprataxe Culoare - Exterior (%)", screenBasePricesM2: "Prețuri de bază (preț / m²)", screenColorSurcharges: "Suprataxe Culoare (%)", unit_currency_pc: " / buc", quoteHeading: "Ofertă", settingsHeading: "Setări", companyNameLabel: "Nume Companie:", companyLogoLabel: "Logo Companie:", saveSettingsBtn: "Salvează Setările", settingsSavedMessage: "Setările au fost salvate cu succes!", tableProductTh: "Produs", tableSizeTh: "Dimensiune (mm)", tableQuantityTh: "Bucăți", tablePriceTh: "Preț Unitar", tableSubtotalTh: "Subtotal", tableActionsTh: "Acțiuni", subtotalText: "Subtotal:", discountLabel: "Reducere (%):", discountAmountText: "Reducere:", totalText: "Total Final:", saveQuoteBtn: "Salvează Oferta", loadQuotesBtn: "Încarcă Oferte", newQuoteBtn: "Ofertă Nouă", quoteNameLabel: "Nume Ofertă:", loadQuoteHeading: "Oferte Salvate", deleteBtn: "Șterge", editBtn: "Editare", savePriceBtn: "Salvează Prețurile", priceSavedMessage: "Prețurile au fost salvate cu succes!", productAddedMessage: "Produsul a fost adăugat cu succes la ofertă!", productUpdatedMessage: "Articolul a fost modificat cu succes!", emptyFieldsError: "Vă rugăm să completați câmpurile obligatorii!", invalidSizeError: "Vă rugăm să introduceți dimensiuni valide (număr pozitiv).", invalidQuantityError: "Vă rugăm să introduceți o cantitate validă (număr întreg pozitiv).", invalidDivisionWidthError: "Lățimea diviziunii nu poate fi mai mare decât lățimea totală.", quoteSaved: "Oferta a fost salvată!", quoteLoaded: "Oferta a fost încărcată cu succes!", quoteDeleted: "Oferta a fost ștearsă cu succes!", quoteNameRequired: "Vă rugăm să introduceți un nume pentru ofertă pentru a o salva!", noQuotesFound: "Nicio ofertă salvată.", noItemsInQuote: "Oferta este goală.", deleteQuotePromptTitle: "Șterge Oferta", deleteQuotePromptText: "Sigur doriți să ștergeți oferta '{{name}}'?", newQuotePromptTitle: "Începe Ofertă Nouă", newQuotePromptText: "Sigur doriți să începeți o ofertă nouă, goală? Modificările nesalvate se vor pierde.", newQuoteStarted: "O nouă ofertă goală a fost începută.", minAreaWarning: "Atenție: Suprafața minimă facturată este de {{area}} m².", pvcColorError: "Jaluzelele din PVC sunt disponibile doar pe alb.", logoUploadText: "Faceți clic pentru a încărca logo-ul", deleteLogoBtn: "Șterge Logo", logoDeletedMessage: "Logo-ul a fost șters cu succes!",
                 dataManagementHeading: "Gestionarea Datelor", dataManagementDesc: "Toate datele sunt stocate în browser. Ștergerea memoriei cache a browserului poate duce la pierderea tuturor ofertelor și setărilor salvate. **Recomandăm exportarea regulată a datelor!**",
@@ -908,6 +913,7 @@
                 tableAreaTh: "m²", updateItemBtn: "Modifică Articol", cancelEditBtn: "Anulează",
                 searchPlaceholder: "Căutare după nume sau client...",
                 extenderFrameLabel: "Cadru de extensie", extenderFramePrice: "Cadru de extensie (preț / m)",
+                blindsExtenderFrameLabel: "Cadru de extensie", blindsExtenderFramePrice: "Cadru de extensie jaluzea (preț / m)",
                 pinModalTitle: "Cod PIN necesar",
                 pinModalText: "Vă rugăm să introduceți codul PIN pentru a vizualiza prețurile.",
                 pinSubmitBtn: "Intră",
@@ -922,10 +928,10 @@
                     plisse: "Plasă plisse (m²)",
                     mobile: "Plasă mobilă (m²)"
                 },
-                productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie" }
+                productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie", blinds_extender_frame: "Cadru de extensie (jaluzea)" }
             },
             en: {
-                title: "Quote Generator", languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", quoteTab: "Quote", settingsTab: "Settings",
+                languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", quoteTab: "Quote", settingsTab: "Settings",
                 generalSettingsSubTab: "General", pricesSettingsSubTab: "Prices",
                 blindsHeading: "Add Blind", blindsTypeLabel: "Type:", blindsWidthLabel: "Width (mm):", blindsHeightLabel: "Height (mm):", blindsQuantityLabel: "Quantity:", blindsColorLabel: "Color:", blindsControlLabel: "Control:", blindsDividedLabel: "Divided", blindsIntegratedScreenLabel: "Integrated insect screen", screenOptionNone: "None", screenOptionFull: "Full", screenOptionHalf: "Half", addBlindBtn: "Add Blind", screensHeading: "Add Insect Screen", screensTypeLabel: "Type:", screensWidthLabel: "Width (mm):", screensHeightLabel: "Height (mm):", screensQuantityLabel: "Quantity:", screensColorLabel: "Color:", addScreenBtn: "Add Screen", pricesHeading: "Price Settings", blindsPrices: "Blinds Prices", screensPrices: "Insect Screen Prices", basePricesM2: "Base Prices (price / m²)", surcharges: "Surcharges", colorSurcharges: "Color Surcharges - Aluminium (%)", externalColorSurcharges: "Color Surcharges - External (%)", screenBasePricesM2: "Base Prices (price / m²)", screenColorSurcharges: "Color Surcharges (%)", unit_currency_pc: " / pc", quoteHeading: "Quote", settingsHeading: "Settings", companyNameLabel: "Company Name:", companyLogoLabel: "Company Logo:", saveSettingsBtn: "Save Settings", settingsSavedMessage: "Settings saved successfully!", tableProductTh: "Product", tableSizeTh: "Size (mm)", tableQuantityTh: "Quantity", tablePriceTh: "Unit Price", tableSubtotalTh: "Subtotal", tableActionsTh: "Actions", subtotalText: "Subtotal:", discountLabel: "Discount (%):", discountAmountText: "Discount:", totalText: "Grand Total:", saveQuoteBtn: "Save Quote", loadQuotesBtn: "Load Quotes", newQuoteBtn: "New Quote", quoteNameLabel: "Quote Name:", loadQuoteHeading: "Saved Quotes", deleteBtn: "Delete", editBtn: "Edit", savePriceBtn: "Save Prices", priceSavedMessage: "Prices saved successfully!", productAddedMessage: "Product successfully added to the quote!", productUpdatedMessage: "Item successfully updated!", emptyFieldsError: "Please fill in the required fields!", invalidSizeError: "Please enter valid dimensions (positive number).", invalidQuantityError: "Please enter a valid quantity (positive integer).", invalidDivisionWidthError: "Division width cannot be greater than the total width.", quoteSaved: "Quote saved!", quoteLoaded: "Quote loaded successfully!", quoteDeleted: "Quote deleted successfully!", quoteNameRequired: "Please enter a name for the quote to save it!", noQuotesFound: "No saved quotes.", noItemsInQuote: "The quote is empty.", deleteQuotePromptTitle: "Delete Quote", deleteQuotePromptText: "Are you sure you want to delete the quote '{{name}}'?", newQuotePromptTitle: "Start New Quote", newQuotePromptText: "Are you sure you want to start a new, empty quote? Any unsaved changes will be lost.", newQuoteStarted: "Started a new, empty quote.", minAreaWarning: "Warning: The minimum billed area is {{area}} m².", pvcColorError: "PVC blinds are only available in white.", logoUploadText: "Click to upload logo", deleteLogoBtn: "Delete Logo", logoDeletedMessage: "Logo deleted successfully!",
                 dataManagementHeading: "Data Management", dataManagementDesc: "All data is stored in your browser. Clearing your browser's cache may result in the loss of all saved quotes and settings. **We recommend exporting your data regularly!**",
@@ -945,6 +951,7 @@
                 tableAreaTh: "m²", updateItemBtn: "Update Item", cancelEditBtn: "Cancel",
                 searchPlaceholder: "Search by name or client...",
                 extenderFrameLabel: "Extender frame", extenderFramePrice: "Extender frame (price / m)",
+                blindsExtenderFrameLabel: "Extender frame", blindsExtenderFramePrice: "Blind extender frame (price / m)",
                 pinModalTitle: "PIN Code Required",
                 pinModalText: "Please enter the PIN code to view prices.",
                 pinSubmitBtn: "Enter",
@@ -959,12 +966,12 @@
                     plisse: "Plisse Screen (m²)",
                     mobile: "Mobile Screen (m²)"
                 },
-                productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", wood: "Wood imitation", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahogany", extender_frame: "Extender frame" }
+                productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", wood: "Wood imitation", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahogany", extender_frame: "Extender frame", blinds_extender_frame: "Extender frame (blind)" }
             }
         };
 
         const defaultPrices = {
-            blinds: { pvc: 100, aluminium: 150, motorized: 150, divided: 50, integrated_screen: 70 },
+            blinds: { pvc: 100, aluminium: 150, motorized: 150, divided: 50, integrated_screen: 70, extender_frame_price_pm: 30 },
             blinds_percentages: { wood: 15, anthracite: 10, special: 20 },
             blinds_extras: { automata: 25 },
             "external-aluminium": { base: 180, divided: 60 },
@@ -1105,9 +1112,8 @@
             const t = translations[currentLanguage];
             if (!t) return; 
 
-            document.title = t.title + " (Offline)";
             const textContentMap = { 
-                'app-title': 'title', 'language-label': 'languageLabel', 'currency-label': 'currencyLabel', 
+                'language-label': 'languageLabel', 'currency-label': 'currencyLabel', 
                 'blinds-heading': 'blindsHeading', 
                 'blinds-width-label': 'blindsWidthLabel', 'blinds-height-label': 'blindsHeightLabel', 'blinds-quantity-label': 'blindsQuantityLabel', 
                 'blinds-type-label': 'blindsTypeLabel', 'blinds-color-label': 'blindsColorLabel', 'blinds-control-label': 'blindsControlLabel', 
@@ -1128,6 +1134,7 @@
                 'table-area-th': 'tableAreaTh',
                 'cancel-edit-blind-btn': 'cancelEditBtn', 'cancel-edit-screen-btn': 'cancelEditBtn',
                 'screens-extender-frame-label': 'extenderFrameLabel',
+                'blinds-extender-frame-label': 'blindsExtenderFrameLabel',
                 'general-settings-sub-tab': 'generalSettingsSubTab', 'prices-settings-sub-tab': 'pricesSettingsSubTab'
             };
             for (const id in textContentMap) {
@@ -1230,6 +1237,11 @@
                     extrasPrice += dividedPrice; 
                 }
                 
+                if (options.extenderFrame) {
+                    const extenderLength = options.divided ? (height / 1000 * 4) : (height / 1000 * 2);
+                    extrasPrice += extenderLength * (prices.blinds.extender_frame_price_pm || 0);
+                }
+
                 if (options.integrated_screen === 'half') { 
                     let halfScreenArea = ((width / 2) / 1000) * (height / 1000); 
                     const billableHalfArea = Math.max(halfScreenArea, minAreas.half_screen); 
@@ -1334,7 +1346,7 @@
             container.appendChild(exchangeRateContainer);
 
             const structure = [
-                { title: t.blindsPrices, sections: [{ subtitle: t.basePricesM2, items: [ { key: 'pvc', path: 'blinds.pvc' }, { key: 'aluminium', path: 'blinds.aluminium' }, { key: 'external-aluminium', path: 'external-aluminium.base' } ] }, { subtitle: t.surcharges, items: [ { key: 'motorized', path: 'blinds.motorized', unit: t.unit_currency_pc }, { key: 'divided_blind', path: 'blinds.divided' }, { key: 'divided_external', path: 'external-aluminium.divided' }, { key: 'automata', path: 'blinds_extras.automata', unit: t.unit_currency_pc }, { key: 'integrated_screen', path: 'blinds.integrated_screen' } ]}, { subtitle: t.colorSurcharges, items: [ { key: 'wood', path: 'blinds_percentages.wood', unit: '%' }, { key: 'anthracite', path: 'blinds_percentages.anthracite', unit: '%' }, { key: 'special', path: 'blinds_percentages.special', unit: '%' } ] }, { subtitle: t.externalColorSurcharges, items: [ { key: 'gray', path: 'external_aluminium_colors.gray', unit: '%' }, { key: 'dark_brown', path: 'external_aluminium_colors.dark_brown', unit: '%' }, { key: 'light_brown', path: 'external_aluminium_colors.light_brown', unit: '%' }, { key: 'golden_oak', path: 'external_aluminium_colors.golden_oak', unit: '%' }, { key: 'walnut', path: 'external_aluminium_colors.walnut', unit: '%' }, { key: 'mahogany', path: 'external_aluminium_colors.mahogany', unit: '%' }, { key: 'special', path: 'external_aluminium_colors.special', unit: '%' } ] } ] },
+                { title: t.blindsPrices, sections: [{ subtitle: t.basePricesM2, items: [ { key: 'pvc', path: 'blinds.pvc' }, { key: 'aluminium', path: 'blinds.aluminium' }, { key: 'external-aluminium', path: 'external-aluminium.base' } ] }, { subtitle: t.surcharges, items: [ { key: 'motorized', path: 'blinds.motorized', unit: t.unit_currency_pc }, { key: 'divided_blind', path: 'blinds.divided' }, { key: 'divided_external', path: 'external-aluminium.divided' }, { key: 'automata', path: 'blinds_extras.automata', unit: t.unit_currency_pc }, { key: 'integrated_screen', path: 'blinds.integrated_screen' }, { key: 'blindsExtenderFramePrice', path: 'blinds.extender_frame_price_pm' } ]}, { subtitle: t.colorSurcharges, items: [ { key: 'wood', path: 'blinds_percentages.wood', unit: '%' }, { key: 'anthracite', path: 'blinds_percentages.anthracite', unit: '%' }, { key: 'special', path: 'blinds_percentages.special', unit: '%' } ] }, { subtitle: t.externalColorSurcharges, items: [ { key: 'gray', path: 'external_aluminium_colors.gray', unit: '%' }, { key: 'dark_brown', path: 'external_aluminium_colors.dark_brown', unit: '%' }, { key: 'light_brown', path: 'external_aluminium_colors.light_brown', unit: '%' }, { key: 'golden_oak', path: 'external_aluminium_colors.golden_oak', unit: '%' }, { key: 'walnut', path: 'external_aluminium_colors.walnut', unit: '%' }, { key: 'mahogany', path: 'external_aluminium_colors.mahogany', unit: '%' }, { key: 'special', path: 'external_aluminium_colors.special', unit: '%' } ] } ] },
                 { title: t.screensPrices, sections: [ { subtitle: t.screenBasePricesM2, items: [ { key: 'fix', path: 'screens.fix' }, { key: 'balcony', path: 'screens.balcony' }, { key: 'mobile', path: 'screens.mobile' }, { key: 'plisse', path: 'screens.plisse' }, { key: 'door', path: 'screens.door' }, { key: 'thin-door', path: 'screens.thin-door' } ] }, { subtitle: t.surcharges, items: [ { key: 'extenderFramePrice', path: 'screens.extender_frame_price_pm' } ] }, { subtitle: t.screenColorSurcharges, items: [ { key: 'wood', path: 'screens_percentages.wood', unit: '%' }, { key: 'anthracite', path: 'screens_percentages.anthracite', unit: '%' }, { key: 'special', path: 'screens_percentages.special', unit: '%' } ] } ] }
             ];
             
@@ -1455,7 +1467,16 @@
 
                 listItem.querySelector('[data-action="load"]').addEventListener('click', () => {
                     const loadedItems = JSON.parse(quote.items);
-                    const fixedItems = loadedItems.map(item => { if (item.options === undefined) { console.warn('Old quote item format detected, upgrading.'); item.options = { type: item.type || (item.isScreen ? 'fix' : 'pvc'), color: 'white', control: 'string', divided: false, integrated_screen: 'none', divisionSide: null, divisionWidth: null }; } return item; });
+                    const fixedItems = loadedItems.map(item => { 
+                        if (item.options === undefined) { 
+                            console.warn('Old quote item format detected, upgrading.'); 
+                            item.options = { type: item.type || (item.isScreen ? 'fix' : 'pvc'), color: 'white', control: 'string', divided: false, integrated_screen: 'none', divisionSide: null, divisionWidth: null }; 
+                        }
+                        if (item.options.extenderFrame === undefined) {
+                            item.options.extenderFrame = false; // Add default value for old items
+                        }
+                        return item; 
+                    });
                     quoteItems = fixedItems;
                     $('#quote-name').value = quote.name || '';
                     $('#client-name').value = quote.clientName || '';
@@ -1663,7 +1684,7 @@
                                 <header class="flex flex-col md:flex-row justify-between mb-12 gap-y-8">
                                     <div>
                                         \${previewData.companyLogo ? \`<img src="\${previewData.companyLogo}" alt="Cég logó" class="max-h-20 mb-4 object-contain">\` : ''}
-                                        <h1 class="text-3xl font-bold">\${previewData.companyName || t.title}</h1>
+                                        <h1 class="text-3xl font-bold">\${previewData.companyName || 'EUROPLAST'}</h1>
                                         <div class="text-sm text-light-text-color mt-2">
                                             \${previewData.companyWebsite ? \`<p>\${previewData.companyWebsite}</p>\` : ''}
                                             \${previewData.companyEmail ? \`<p>\${previewData.companyEmail}</p>\` : ''}
@@ -1729,7 +1750,7 @@
                             const doc = new jsPDF();
                             
                             if (previewData.companyLogo) { try { doc.addImage(previewData.companyLogo, 'PNG', 15, 15, 40, 15); } catch(e) { console.error("PDF Logo Error:", e); } }
-                            doc.setFontSize(20); doc.text(previewData.companyName || t.title, 15, 40);
+                            doc.setFontSize(20); doc.text(previewData.companyName || 'EUROPLAST', 15, 40);
                             doc.setFontSize(10); 
                             doc.text(previewData.companyWebsite || '', 15, 45);
                             doc.text(previewData.companyEmail || '', 15, 50);
@@ -1894,6 +1915,7 @@
                 $('#blinds-color').value = item.options.color;
                 $('#blinds-control').value = item.options.control;
                 $('#blinds-divided').checked = item.options.divided;
+                $('#blinds-extender-frame').checked = !!item.options.extenderFrame;
                 $('#blinds-division-details').classList.toggle('visible', item.options.divided);
                 if(item.options.divided) {
                     $('#blinds-division-side').value = item.options.divisionSide;
@@ -1917,6 +1939,7 @@
             $('#blinds-height').value = ''; 
             $('#blinds-quantity').value = 1; 
             $('#blinds-divided').checked = false;
+            $('#blinds-extender-frame').checked = false;
             $('#blinds-division-details').classList.remove('visible');
             $('#blinds-division-width').value = '';
             $('#cancel-edit-blind-btn').classList.add('hidden');
@@ -2046,7 +2069,7 @@
 
 
             const handleBlindSubmit = () => {
-                const type = $('#blinds-type').value, width = parseFloat($('#blinds-width').value), height = parseFloat($('#blinds-height').value), quantity = parseInt($('#blinds-quantity').value, 10), color = $('#blinds-color').value, control = $('#blinds-control').value, divided = $('#blinds-divided').checked, integrated_screen = type === 'pvc' ? 'none' : $('#blinds-integrated-screen').value;
+                const type = $('#blinds-type').value, width = parseFloat($('#blinds-width').value), height = parseFloat($('#blinds-height').value), quantity = parseInt($('#blinds-quantity').value, 10), color = $('#blinds-color').value, control = $('#blinds-control').value, divided = $('#blinds-divided').checked, extenderFrame = $('#blinds-extender-frame').checked, integrated_screen = type === 'pvc' ? 'none' : $('#blinds-integrated-screen').value;
                 const divisionSide = divided ? $('#blinds-division-side').value : null, divisionWidth = divided ? parseFloat($('#blinds-division-width').value) : null;
                 
                 if (isNaN(width) || isNaN(height) || isNaN(quantity) || (divided && isNaN(divisionWidth))) { showToast(translations[currentLanguage].emptyFieldsError, 'error'); return; }
@@ -2055,7 +2078,7 @@
                 if (quantity <= 0) { showToast(translations[currentLanguage].invalidQuantityError, 'error'); return; }
                 if (type === 'pvc' && color !== 'white') { showToast(translations[currentLanguage].pvcColorError, 'error'); return; }
                 
-                const itemOptions = { type, color, control, divided, integrated_screen, divisionSide, divisionWidth };
+                const itemOptions = { type, color, control, divided, integrated_screen, divisionSide, divisionWidth, extenderFrame };
                 const priceData = calculatePrice('blinds', width, height, itemOptions);
                 if (priceData.minAreaApplied) { showToast(translations[currentLanguage].minAreaWarning.replace('{{area}}', minAreas.blinds), 'info'); }
 
@@ -2064,6 +2087,7 @@
                     const names = translations[lang].productNames; let text = `${names[type]} (${names[color]})`; 
                     if (control === 'string') text += ` (${names.automata} x${divided ? 2 : 1})`; else text += ` (${names.motorized})`; 
                     if (divided) { const sideText = translations[lang][divisionSide === 'right' ? 'sideRight' : 'sideLeft']; text += ` (${names.divided_blind} ${sideText}: ${divisionWidth}mm)`; }
+                    if (extenderFrame) text += ` (+${names.blinds_extender_frame})`;
                     if (integrated_screen === 'full') text += ` (+${names.integrated_screen_full})`; else if (integrated_screen === 'half') text += ` (+${names.integrated_screen_half})`; 
                     productText[lang] = text; 
                 }
@@ -2291,6 +2315,8 @@
                 
                 $('#language-select').value = currentLanguage;
                 $('#currency-select').value = currentCurrency;
+                document.title = "EUROPLAST Árajánlat Készítő";
+                $('#app-title').textContent = "EUROPLAST";
 
                 initializeTheme();
                 updateCurrentPrices();
