@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="https://placehold.co/180x180/009688/FFFFFF?text=EP&font=inter">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     
@@ -611,6 +611,13 @@
                             <option value="motorized">Motoros</option>
                         </select>
                     </div>
+                    <div class="input-group" id="blinds-side-group">
+                        <label id="blinds-side-label">Oldal:</label>
+                        <select id="blinds-side" class="input-field">
+                            <option value="right">Jobbos</option>
+                            <option value="left">Balos</option>
+                        </select>
+                    </div>
                     <div class="input-group hidden" id="blinds-exit-type-group">
                         <label id="blinds-exit-type-label">Kivezetés:</label>
                         <select id="blinds-exit-type" class="input-field">
@@ -786,7 +793,7 @@
                                 <tr class="text-left font-semibold table-header">
                                     <th id="order-table-product-th" class="px-4 py-2"></th>
                                     <th id="order-table-size-th" class="px-4 py-2"></th>
-                                    <th id="order-table-division-th" class="px-4 py-2"></th>
+                                    <th id="order-table-details-th" class="px-4 py-2"></th>
                                     <th id="order-table-color-th" class="px-4 py-2"></th>
                                     <th id="order-table-quantity-th" class="px-4 py-2"></th>
                                 </tr>
@@ -895,7 +902,7 @@
                 orderHeading: "Redőnyök Megrendelése",
                 orderDescription: "Itt legenerálhatja a gyártáshoz szükséges megrendelőlapot a jelenlegi ajánlatban szereplő összes redőnyről.",
                 generateOrderPdfBtn: "Megrendelő PDF Generálása",
-                orderTableProductTh: "Termék", orderTableSizeTh: "Méret", orderTableDivisionTh: "Osztás", orderTableColorTh: "Szín", orderTableQuantityTh: "Darab",
+                orderTableProductTh: "Termék", orderTableSizeTh: "Méret", orderTableDetailsTh: "Részletek", orderTableColorTh: "Szín", orderTableQuantityTh: "Darab",
                 orderPdfTitle: "Redőny Megrendelés", noBlindsInQuote: "Nincsenek redőnyök az ajánlatban.",
                 blindsHeading: "Redőny hozzáadása", blindsTypeLabel: "Típus:", blindsWidthLabel: "Szélesség (mm):",
                 blindsHeightLabel: "Magasság (mm):", blindsQuantityLabel: "Darab:", blindsColorLabel: "Szín:",
@@ -957,7 +964,7 @@
                 quoteSummaryTitle: "Ajánlat Összegzés",
                 summaryTotal: "Összesen",
                 divisionSideLabel: "Osztás oldala", divisionWidthLabel: "Mező szélessége (mm)",
-                sideLeft: "Bal", sideRight: "Jobb",
+                sideLeft: "Balos", sideRight: "Jobbos",
                 companyWebsiteLabel: "Weboldal:", companyEmailLabel: "Email cím:", companyPhoneLabel: "Telefonszám:",
                 clientNameLabel: "Ügyfél neve:", clientAddressLabel: "Ügyfél címe:", clientPhoneLabel: "Ügyfél telefonszáma:",
                 tableAreaTh: "m²",
@@ -972,6 +979,7 @@
                 closeBtn: "Bezárás",
                 minAreaSettings: "Minimális Terület Számítás",
                 blindsExitTypeLabel: "Kivezetés:",
+                blindsSideLabel: "Oldal:",
                 exitTypeBottom: "Alsó kivezetés",
                 exitTypeTop: "Felső kivezetés",
                 minAreaLabels: {
@@ -982,7 +990,7 @@
                     plisse: "Pliszé szúnyogháló (m²)",
                     mobile: "Mobil szúnyogháló (m²)"
                 },
-                productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret", blinds_extender_frame: "Kiemelő keret (redőny)", string: "Zsinóros", strap: "Gurtnis", bottom_exit: "Alsó kivezetés", top_exit: "Felső kivezetés" }
+                productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret", blinds_extender_frame: "Kiemelő keret (redőny)", string: "Zsinóros", strap: "Gurtnis", bottom_exit: "Alsó kivezetés", top_exit: "Felső kivezetés" }
             },
             ro: {
                 languageLabel: "Limbă:", currencyLabel: "Monedă:", orderLanguageLabel: "Limbă PDF:",
@@ -992,7 +1000,7 @@
                 orderHeading: "Comandă Jaluzele",
                 orderDescription: "Aici puteți genera formularul de comandă pentru producție pentru toate jaluzelele din oferta curentă.",
                 generateOrderPdfBtn: "Generează PDF Comandă",
-                orderTableProductTh: "Produs", orderTableSizeTh: "Dimensiune", orderTableDivisionTh: "Diviziune", orderTableColorTh: "Culoare", orderTableQuantityTh: "Bucăți",
+                orderTableProductTh: "Produs", orderTableSizeTh: "Dimensiune", orderTableDetailsTh: "Detalii", orderTableColorTh: "Culoare", orderTableQuantityTh: "Bucăți",
                 orderPdfTitle: "Comandă Jaluzele", noBlindsInQuote: "Nu există jaluzele în ofertă.",
                 blindsHeading: "Adăugare jaluzea", blindsTypeLabel: "Tip:", blindsWidthLabel: "Lățime (mm):", blindsHeightLabel: "Înălțime (mm):", blindsQuantityLabel: "Bucăți:", blindsColorLabel: "Culoare:", blindsControlLabel: "Control:", blindsDividedLabel: "Divizat", blindsIntegratedScreenLabel: "Plasă de insecte integrată", screenOptionNone: "Niciuna", screenOptionFull: "Completă", screenOptionHalf: "Jumătate", addBlindBtn: "Adaugă Jaluzea", screensHeading: "Adăugare plasă de insecte", screensTypeLabel: "Tip:", screensWidthLabel: "Lățime (mm):", screensHeightLabel: "Înălțime (mm):", screensQuantityLabel: "Bucăți:", screensColorLabel: "Culoare:", addScreenBtn: "Adaugă Plasă", pricesHeading: "Setări Prețuri", blindsPrices: "Prețuri Jaluzele", screensPrices: "Prețuri Plase de Insecte", basePricesM2: "Prețuri de bază (preț / m²)", surcharges: "Suprataxe", colorSurcharges: "Suprataxe Culoare - Aluminiu (%)", externalColorSurcharges: "Suprataxe Culoare - Exterior (%)", screenBasePricesM2: "Prețuri de bază (preț / m²)", screenColorSurcharges: "Suprataxe Culoare (%)", unit_currency_pc: " / buc", quoteHeading: "Ofertă", settingsHeading: "Setări", companyNameLabel: "Nume Companie:", companyLogoLabel: "Logo Companie:", saveSettingsBtn: "Salvează Setările", settingsSavedMessage: "Setările au fost salvate cu succes!", tableProductTh: "Produs", tableSizeTh: "Dimensiune (mm)", tableQuantityTh: "Bucăți", tablePriceTh: "Preț Unitar", tableSubtotalTh: "Subtotal", tableActionsTh: "Acțiuni", subtotalText: "Subtotal:", discountLabel: "Reducere (%):", discountAmountText: "Reducere:", totalText: "Total Final:", saveQuoteBtn: "Salvează Oferta", loadQuotesBtn: "Încarcă Oferte", newQuoteBtn: "Ofertă Nouă", quoteNameLabel: "Nume Ofertă:", loadQuoteHeading: "Oferte Salvate", deleteBtn: "Șterge", editBtn: "Editare", savePriceBtn: "Salvează Prețurile", priceSavedMessage: "Prețurile au fost salvate cu succes!", productAddedMessage: "Produsul a fost adăugat cu succes la ofertă!", productUpdatedMessage: "Articolul a fost modificat cu succes!", emptyFieldsError: "Vă rugăm să completați câmpurile obligatorii!", invalidSizeError: "Vă rugăm să introduceți dimensiuni valide (număr pozitiv).", invalidQuantityError: "Vă rugăm să introduceți o cantitate validă (număr întreg pozitiv).", invalidDivisionWidthError: "Lățimea diviziunii nu poate fi mai mare decât lățimea totală.", quoteSaved: "Oferta a fost salvată!", quoteLoaded: "Oferta a fost încărcată cu succes!", quoteDeleted: "Oferta a fost ștearsă cu succes!", quoteNameRequired: "Vă rugăm să introduceți un nume pentru ofertă pentru a o salva!", noQuotesFound: "Nicio ofertă salvată.", noItemsInQuote: "Oferta este goală.", deleteQuotePromptTitle: "Șterge Oferta", deleteQuotePromptText: "Sigur doriți să ștergeți oferta '{{name}}'?", newQuotePromptTitle: "Începe Ofertă Nouă", newQuotePromptText: "Sigur doriți să începeți o ofertă nouă, goală? Modificările nesalvate se vor pierde.", newQuoteStarted: "O nouă ofertă goală a fost începută.", minAreaWarning: "Atenție: Suprafața minimă facturată este de {{area}} m².", pvcColorError: "Jaluzelele din PVC sunt disponibile doar pe alb.", logoUploadText: "Faceți clic pentru a încărca logo-ul", deleteLogoBtn: "Șterge Logo", logoDeletedMessage: "Logo-ul a fost șters cu succes!",
                 dataManagementHeading: "Gestionarea Datelor", dataManagementDesc: "Toate datele sunt stocate în browser. Ștergerea memoriei cache a browserului poate duce la pierderea tuturor ofertelor și setărilor salvate. **Recomandăm exportarea regulată a datelor!**",
@@ -1020,6 +1028,7 @@
                 closeBtn: "Închide",
                  minAreaSettings: "Calcul Suprafață Minimă",
                  blindsExitTypeLabel: "Tip ieșire:",
+                 blindsSideLabel: "Partea:",
                  exitTypeBottom: "Ieșire inferioară",
                  exitTypeTop: "Ieșire superioară",
                 minAreaLabels: {
@@ -1030,7 +1039,7 @@
                     plisse: "Plasă plisse (m²)",
                     mobile: "Plasă mobilă (m²)"
                 },
-                productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie", blinds_extender_frame: "Cadru de extensie (jaluzea)", string: "Cu șnur", strap: "Cu chingă", bottom_exit: "Ieșire inferioară", top_exit: "Ieșire superioară" }
+                productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie", blinds_extender_frame: "Cadru de extensie (jaluzea)", string: "Cu șnur", strap: "Cu chingă", bottom_exit: "Ieșire inferioară", top_exit: "Ieșire superioară" }
             },
             en: {
                 languageLabel: "Language:", currencyLabel: "Currency:", orderLanguageLabel: "PDF Language:",
@@ -1040,7 +1049,7 @@
                 orderHeading: "Order Blinds",
                 orderDescription: "Here you can generate the production order form for all blinds in the current quote.",
                 generateOrderPdfBtn: "Generate Order PDF",
-                orderTableProductTh: "Product", orderTableSizeTh: "Size", orderTableDivisionTh: "Division", orderTableColorTh: "Color", orderTableQuantityTh: "Quantity",
+                orderTableProductTh: "Product", orderTableSizeTh: "Size", orderTableDetailsTh: "Details", orderTableColorTh: "Color", orderTableQuantityTh: "Quantity",
                 orderPdfTitle: "Blinds Order", noBlindsInQuote: "There are no blinds in the quote.",
                 blindsHeading: "Add Blind", blindsTypeLabel: "Type:", blindsWidthLabel: "Width (mm):", blindsHeightLabel: "Height (mm):", blindsQuantityLabel: "Quantity:", blindsColorLabel: "Color:", blindsControlLabel: "Control:", blindsDividedLabel: "Divided", blindsIntegratedScreenLabel: "Integrated insect screen", screenOptionNone: "None", screenOptionFull: "Full", screenOptionHalf: "Half", addBlindBtn: "Add Blind", screensHeading: "Add Insect Screen", screensTypeLabel: "Type:", screensWidthLabel: "Width (mm):", screensHeightLabel: "Height (mm):", screensQuantityLabel: "Quantity:", screensColorLabel: "Color:", addScreenBtn: "Add Screen", pricesHeading: "Price Settings", blindsPrices: "Blinds Prices", screensPrices: "Insect Screen Prices", basePricesM2: "Base Prices (price / m²)", surcharges: "Surcharges", colorSurcharges: "Color Surcharges - Aluminium (%)", externalColorSurcharges: "Color Surcharges - External (%)", screenBasePricesM2: "Base Prices (price / m²)", screenColorSurcharges: "Color Surcharges (%)", unit_currency_pc: " / pc", quoteHeading: "Quote", settingsHeading: "Settings", companyNameLabel: "Company Name:", companyLogoLabel: "Company Logo:", saveSettingsBtn: "Save Settings", settingsSavedMessage: "Settings saved successfully!", tableProductTh: "Product", tableSizeTh: "Size (mm)", tableQuantityTh: "Quantity", tablePriceTh: "Unit Price", tableSubtotalTh: "Subtotal", tableActionsTh: "Actions", subtotalText: "Subtotal:", discountLabel: "Discount (%):", discountAmountText: "Discount:", totalText: "Grand Total:", saveQuoteBtn: "Save Quote", loadQuotesBtn: "Load Quotes", newQuoteBtn: "New Quote", quoteNameLabel: "Quote Name:", loadQuoteHeading: "Saved Quotes", deleteBtn: "Delete", editBtn: "Edit", savePriceBtn: "Save Prices", priceSavedMessage: "Prices saved successfully!", productAddedMessage: "Product successfully added to the quote!", productUpdatedMessage: "Item successfully updated!", emptyFieldsError: "Please fill in the required fields!", invalidSizeError: "Please enter valid dimensions (positive number).", invalidQuantityError: "Please enter a valid quantity (positive integer).", invalidDivisionWidthError: "Division width cannot be greater than the total width.", quoteSaved: "Quote saved!", quoteLoaded: "Quote loaded successfully!", quoteDeleted: "Quote deleted successfully!", quoteNameRequired: "Please enter a name for the quote to save it!", noQuotesFound: "No saved quotes.", noItemsInQuote: "The quote is empty.", deleteQuotePromptTitle: "Delete Quote", deleteQuotePromptText: "Are you sure you want to delete the quote '{{name}}'?", newQuotePromptTitle: "Start New Quote", newQuotePromptText: "Are you sure you want to start a new, empty quote? Any unsaved changes will be lost.", newQuoteStarted: "Started a new, empty quote.", minAreaWarning: "Warning: The minimum billed area is {{area}} m².", pvcColorError: "PVC blinds are only available in white.", logoUploadText: "Click to upload logo", deleteLogoBtn: "Delete Logo", logoDeletedMessage: "Logo deleted successfully!",
                 dataManagementHeading: "Data Management", dataManagementDesc: "All data is stored in your browser. Clearing your browser's cache may result in the loss of all saved quotes and settings. **We recommend exporting your data regularly!**",
@@ -1068,6 +1077,7 @@
                 closeBtn: "Close",
                 minAreaSettings: "Minimum Area Calculation",
                 blindsExitTypeLabel: "Exit Type:",
+                blindsSideLabel: "Side:",
                 exitTypeBottom: "Bottom Exit",
                 exitTypeTop: "Top Exit",
                 minAreaLabels: {
@@ -1078,18 +1088,18 @@
                     plisse: "Plisse Screen (m²)",
                     mobile: "Mobile Screen (m²)"
                 },
-                productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", wood: "Wood imitation", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahogany", extender_frame: "Extender frame", blinds_extender_frame: "Extender frame (blind)", string: "String", strap: "Strap", bottom_exit: "Bottom exit", top_exit: "Top exit" }
+                productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahogany", extender_frame: "Extender frame", blinds_extender_frame: "Extender frame (blind)", string: "String", strap: "Strap", bottom_exit: "Bottom exit", top_exit: "Top exit" }
             }
         };
 
         const defaultPrices = {
             blinds: { pvc: 100, aluminium: 150, motorized: 150, divided: 50, integrated_screen: 70, extender_frame_price_pm: 30 },
-            blinds_percentages: { wood: 15, anthracite: 10, special: 20 },
+            blinds_percentages: { golden_oak: 15, walnut: 15, anthracite: 10, special: 20 },
             blinds_extras: { automata: 25 },
             "external-aluminium": { base: 180, divided: 60 },
             external_aluminium_colors: { gray: 5, dark_brown: 5, light_brown: 5, golden_oak: 15, walnut: 15, mahogany: 15, special: 25 },
             screens: { fix: 50, balcony: 70, mobile: 80, plisse: 120, door: 100, "thin-door": 110, extender_frame_price_pm: 25 },
-            screens_percentages: { wood: 25, anthracite: 20, special: 30 }
+            screens_percentages: { golden_oak: 25, walnut: 25, anthracite: 20, special: 30 }
         };
 
         const defaultMinAreas = { 
@@ -1249,9 +1259,10 @@
                 'blinds-extender-frame-label': 'blindsExtenderFrameLabel',
                 'general-settings-sub-tab': 'generalSettingsSubTab', 'prices-settings-sub-tab': 'pricesSettingsSubTab',
                 'blinds-exit-type-label': 'blindsExitTypeLabel',
+                'blinds-side-label': 'blindsSideLabel',
                 'quote-details-sub-tab': 'quoteDetailsSubTab', 'order-sub-tab': 'orderSubTab', 'order-heading': 'orderHeading',
                 'order-description': 'orderDescription', 'generate-order-pdf-btn': 'generateOrderPdfBtn',
-                'order-table-product-th': 'orderTableProductTh', 'order-table-size-th': 'orderTableSizeTh', 'order-table-division-th': 'orderTableDivisionTh',
+                'order-table-product-th': 'orderTableProductTh', 'order-table-size-th': 'orderTableSizeTh', 'order-table-details-th': 'orderTableDetailsTh',
                 'order-table-color-th': 'orderTableColorTh', 'order-table-quantity-th': 'orderTableQuantityTh',
                 'order-language-label': 'orderLanguageLabel'
             };
@@ -1278,6 +1289,12 @@
                 exitTypeSelect.querySelector('option[value="top"]').textContent = t.exitTypeTop;
             }
             
+            const sideSelect = $('#blinds-side');
+            if (sideSelect) {
+                sideSelect.querySelector('option[value="right"]').textContent = t.sideRight;
+                sideSelect.querySelector('option[value="left"]').textContent = t.sideLeft;
+            }
+
             const divisionSideSelect = $('#blinds-division-side');
             if (divisionSideSelect) {
                 divisionSideSelect.querySelector('option[value="right"]').textContent = t.sideRight;
@@ -1316,7 +1333,7 @@
             const currentProductNames = translations[currentLanguage].productNames;
             let colorOptions = [];
             if (type === 'pvc') colorOptions = ["white"];
-            else if (type === 'aluminium') colorOptions = ["white", "brown", "wood", "anthracite", "special"];
+            else if (type === 'aluminium') colorOptions = ["white", "brown", "golden_oak", "walnut", "anthracite", "special"];
             else if (type === 'external-aluminium') colorOptions = ["white", "brown", "gray", "dark_brown", "light_brown", "golden_oak", "walnut", "mahogany", "special"];
             colorSelect.innerHTML = colorOptions.map(color => `<option value="${color}">${currentProductNames[color] || color}</option>`).join('');
         }
@@ -1324,7 +1341,7 @@
         function updateScreensColors() {
             const colorSelect = $('#screens-color');
             const currentProductNames = translations[currentLanguage].productNames;
-            const colorOptions = ["white", "brown", "wood", "anthracite", "special"];
+            const colorOptions = ["white", "brown", "golden_oak", "walnut", "anthracite", "special"];
             colorSelect.innerHTML = colorOptions.map(color => `<option value="${color}">${currentProductNames[color] || color}</option>`).join('');
         }
 
@@ -1474,8 +1491,8 @@
             container.appendChild(exchangeRateContainer);
 
             const structure = [
-                { title: t.blindsPrices, sections: [{ subtitle: t.basePricesM2, items: [ { key: 'pvc', path: 'blinds.pvc' }, { key: 'aluminium', path: 'blinds.aluminium' }, { key: 'external-aluminium', path: 'external-aluminium.base' } ] }, { subtitle: t.surcharges, items: [ { key: 'motorized', path: 'blinds.motorized', unit: t.unit_currency_pc }, { key: 'divided_blind', path: 'blinds.divided' }, { key: 'divided_external', path: 'external-aluminium.divided' }, { key: 'automata', path: 'blinds_extras.automata', unit: t.unit_currency_pc }, { key: 'integrated_screen', path: 'blinds.integrated_screen' }, { key: 'blindsExtenderFramePrice', path: 'blinds.extender_frame_price_pm' } ]}, { subtitle: t.colorSurcharges, items: [ { key: 'wood', path: 'blinds_percentages.wood', unit: '%' }, { key: 'anthracite', path: 'blinds_percentages.anthracite', unit: '%' }, { key: 'special', path: 'blinds_percentages.special', unit: '%' } ] }, { subtitle: t.externalColorSurcharges, items: [ { key: 'gray', path: 'external_aluminium_colors.gray', unit: '%' }, { key: 'dark_brown', path: 'external_aluminium_colors.dark_brown', unit: '%' }, { key: 'light_brown', path: 'external_aluminium_colors.light_brown', unit: '%' }, { key: 'golden_oak', path: 'external_aluminium_colors.golden_oak', unit: '%' }, { key: 'walnut', path: 'external_aluminium_colors.walnut', unit: '%' }, { key: 'mahogany', path: 'external_aluminium_colors.mahogany', unit: '%' }, { key: 'special', path: 'external_aluminium_colors.special', unit: '%' } ] } ] },
-                { title: t.screensPrices, sections: [ { subtitle: t.screenBasePricesM2, items: [ { key: 'fix', path: 'screens.fix' }, { key: 'balcony', path: 'screens.balcony' }, { key: 'mobile', path: 'screens.mobile' }, { key: 'plisse', path: 'screens.plisse' }, { key: 'door', path: 'screens.door' }, { key: 'thin-door', path: 'screens.thin-door' } ] }, { subtitle: t.surcharges, items: [ { key: 'extenderFramePrice', path: 'screens.extender_frame_price_pm' } ] }, { subtitle: t.screenColorSurcharges, items: [ { key: 'wood', path: 'screens_percentages.wood', unit: '%' }, { key: 'anthracite', path: 'screens_percentages.anthracite', unit: '%' }, { key: 'special', path: 'screens_percentages.special', unit: '%' } ] } ] }
+                { title: t.blindsPrices, sections: [{ subtitle: t.basePricesM2, items: [ { key: 'pvc', path: 'blinds.pvc' }, { key: 'aluminium', path: 'blinds.aluminium' }, { key: 'external-aluminium', path: 'external-aluminium.base' } ] }, { subtitle: t.surcharges, items: [ { key: 'motorized', path: 'blinds.motorized', unit: t.unit_currency_pc }, { key: 'divided_blind', path: 'blinds.divided' }, { key: 'divided_external', path: 'external-aluminium.divided' }, { key: 'automata', path: 'blinds_extras.automata', unit: t.unit_currency_pc }, { key: 'integrated_screen', path: 'blinds.integrated_screen' }, { key: 'blindsExtenderFramePrice', path: 'blinds.extender_frame_price_pm' } ]}, { subtitle: t.colorSurcharges, items: [ { key: 'golden_oak', path: 'blinds_percentages.golden_oak', unit: '%' }, { key: 'walnut', path: 'blinds_percentages.walnut', unit: '%' }, { key: 'anthracite', path: 'blinds_percentages.anthracite', unit: '%' }, { key: 'special', path: 'blinds_percentages.special', unit: '%' } ] }, { subtitle: t.externalColorSurcharges, items: [ { key: 'gray', path: 'external_aluminium_colors.gray', unit: '%' }, { key: 'dark_brown', path: 'external_aluminium_colors.dark_brown', unit: '%' }, { key: 'light_brown', path: 'external_aluminium_colors.light_brown', unit: '%' }, { key: 'golden_oak', path: 'external_aluminium_colors.golden_oak', unit: '%' }, { key: 'walnut', path: 'external_aluminium_colors.walnut', unit: '%' }, { key: 'mahogany', path: 'external_aluminium_colors.mahogany', unit: '%' }, { key: 'special', path: 'external_aluminium_colors.special', unit: '%' } ] } ] },
+                { title: t.screensPrices, sections: [ { subtitle: t.screenBasePricesM2, items: [ { key: 'fix', path: 'screens.fix' }, { key: 'balcony', path: 'screens.balcony' }, { key: 'mobile', path: 'screens.mobile' }, { key: 'plisse', path: 'screens.plisse' }, { key: 'door', path: 'screens.door' }, { key: 'thin-door', path: 'screens.thin-door' } ] }, { subtitle: t.surcharges, items: [ { key: 'extenderFramePrice', path: 'screens.extender_frame_price_pm' } ] }, { subtitle: t.screenColorSurcharges, items: [ { key: 'golden_oak', path: 'screens_percentages.golden_oak', unit: '%' }, { key: 'walnut', path: 'screens_percentages.walnut', unit: '%' }, { key: 'anthracite', path: 'screens_percentages.anthracite', unit: '%' }, { key: 'special', path: 'screens_percentages.special', unit: '%' } ] } ] }
             ];
             
             structure.forEach(category => {
@@ -2052,6 +2069,12 @@
                     $('#blinds-division-side').value = item.options.divisionSide;
                     $('#blinds-division-width').value = item.options.divisionWidth;
                 }
+                $('#blinds-division-details').classList.toggle('visible', item.options.divided);
+                $('#blinds-side-group').style.display = item.options.divided ? 'none' : 'block';
+                 if (!item.options.divided) {
+                    $('#blinds-side').value = item.options.side || 'right';
+                }
+
                 updateBlindOptions();
                 updateControlOptionsVisibility(); // Show/hide exit type field
                 $('#blinds-exit-type').value = item.options.exitType || 'bottom';
@@ -2216,7 +2239,9 @@
             $('#blinds-control').addEventListener('change', updateControlOptionsVisibility);
             
             $('#blinds-divided').addEventListener('change', (e) => {
-                $('#blinds-division-details').classList.toggle('visible', e.target.checked);
+                const isDivided = e.target.checked;
+                $('#blinds-division-details').classList.toggle('visible', isDivided);
+                $('#blinds-side-group').style.display = isDivided ? 'none' : 'block';
             });
 
             $('#screens-type').addEventListener('change', (e) => {
@@ -2234,6 +2259,7 @@
                 const type = $('#blinds-type').value, width = parseFloat($('#blinds-width').value), height = parseFloat($('#blinds-height').value), quantity = parseInt($('#blinds-quantity').value, 10), color = $('#blinds-color').value, control = $('#blinds-control').value, divided = $('#blinds-divided').checked, extenderFrame = $('#blinds-extender-frame').checked, integrated_screen = type === 'pvc' ? 'none' : $('#blinds-integrated-screen').value;
                 const divisionSide = divided ? $('#blinds-division-side').value : null, divisionWidth = divided ? parseFloat($('#blinds-division-width').value) : null;
                 const exitType = (control === 'string' || control === 'strap') && type === 'aluminium' ? $('#blinds-exit-type').value : null;
+                const side = !divided ? $('#blinds-side').value : null;
                 
                 if (isNaN(width) || isNaN(height) || isNaN(quantity) || (divided && isNaN(divisionWidth))) { showToast(translations[currentLanguage].emptyFieldsError, 'error'); return; }
                 if ((divided && divisionWidth <= 0) || width <= 0 || height <= 0) { showToast(translations[currentLanguage].invalidSizeError, 'error'); return; }
@@ -2241,7 +2267,7 @@
                 if (quantity <= 0) { showToast(translations[currentLanguage].invalidQuantityError, 'error'); return; }
                 if (type === 'pvc' && color !== 'white') { showToast(translations[currentLanguage].pvcColorError, 'error'); return; }
                 
-                const itemOptions = { type, color, control, divided, integrated_screen, divisionSide, divisionWidth, extenderFrame, exitType };
+                const itemOptions = { type, color, control, divided, integrated_screen, divisionSide, divisionWidth, extenderFrame, exitType, side };
                 const priceData = calculatePrice('blinds', width, height, itemOptions);
                 if (priceData.minAreaApplied) { showToast(translations[currentLanguage].minAreaWarning.replace('{{area}}', minAreas.blinds), 'info'); }
 
@@ -2255,7 +2281,11 @@
                     } else if (control === 'string' || control === 'strap') {
                         text += ` (${names[control]})`;
                     }
-                    if (divided) { const sideText = translations[lang][divisionSide === 'right' ? 'sideRight' : 'sideLeft']; text += ` (${names.divided_blind} ${sideText}: ${divisionWidth}mm)`; }
+                    if (divided) { 
+                        const sideText = translations[lang][divisionSide === 'right' ? 'sideRight' : 'sideLeft']; text += ` (${names.divided_blind} ${sideText}: ${divisionWidth}mm)`; 
+                    } else if (side) {
+                        text += ` (${translations[lang][side === 'right' ? 'sideRight' : 'sideLeft']})`;
+                    }
                     if (extenderFrame) text += ` (+${names.blinds_extender_frame})`;
                     if (integrated_screen === 'full') text += ` (+${names.integrated_screen_full})`; else if (integrated_screen === 'half') text += ` (+${names.integrated_screen_half})`; 
                     productText[lang] = text; 
@@ -2449,14 +2479,21 @@
 
             tbody.innerHTML = blinds.map(item => {
                 const names = t.productNames;
-                const divisionText = item.options.divided ? `${t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft']} (${item.options.divisionWidth}mm)` : '-';
+                // Exclude division from details if it's there
+                const details = getBlindOrderDetailsString(item, currentLanguage, false, true); 
                 const colorText = names[item.options.color] || item.options.color;
                 const productDescription = `${names[item.options.type]}`;
 
+                let sizeText = `${item.width} x ${item.height}`;
+                if (item.options.divided) {
+                    const sideText = t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'];
+                    sizeText += ` / ${item.options.divisionWidth}mm (${sideText})`;
+                }
+
                 return `<tr>
                     <td class="px-4 py-2">${productDescription}</td>
-                    <td class="px-4 py-2">${item.width} x ${item.height}</td>
-                    <td class="px-4 py-2">${divisionText}</td>
+                    <td class="px-4 py-2">${sizeText}</td>
+                    <td class="px-4 py-2">${details}</td>
                     <td class="px-4 py-2">${colorText}</td>
                     <td class="px-4 py-2">${item.quantity}</td>
                 </tr>`;
@@ -2473,7 +2510,7 @@
             }
 
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            const doc = new jsPDF({ orientation: 'landscape' });
             const quoteName = $('#quote-name').value.trim() || 'Névtelen';
             const clientName = $('#client-name').value.trim();
 
@@ -2484,20 +2521,27 @@
                  doc.text(`${t.clientNameLabel} ${clientName}`, 15, 28);
             }
             doc.setFontSize(10);
-            doc.text(`${new Date().toLocaleDateString(lang)}`, 200, 20, { align: 'right' });
+            doc.text(`${new Date().toLocaleDateString(lang)}`, 282, 20, { align: 'right' }); // Adjusted for landscape x-pos
 
 
-            const tableColumn = [t.orderTableProductTh, t.orderTableSizeTh, t.orderTableDivisionTh, t.orderTableColorTh, t.orderTableQuantityTh];
+            const tableColumn = [t.orderTableProductTh, t.orderTableSizeTh, t.orderTableDetailsTh, t.orderTableColorTh, t.orderTableQuantityTh];
             const tableRows = blinds.map(item => {
                 const names = t.productNames;
-                 const divisionText = item.options.divided ? `${t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft']} (${item.options.divisionWidth}mm)` : '-';
+                const detailsText = getBlindOrderDetailsString(item, lang, true, true); // for PDF, exclude division
                 const colorText = names[item.options.color] || item.options.color;
                 const productDescription = `${names[item.options.type]}`;
 
+                let sizeText = `${item.width} x ${item.height}`;
+                if (item.options.divided) {
+                    const sideText = t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'];
+                    // Match the on-screen format: 2000x1250 / 700mm (Jobbos)
+                    sizeText += ` / ${item.options.divisionWidth}mm (${sideText})`; 
+                }
+
                 return [
                     productDescription,
-                    `${item.width} x ${item.height}`,
-                    divisionText,
+                    sizeText,
+                    detailsText,
                     colorText,
                     item.quantity
                 ];
@@ -2508,7 +2552,7 @@
                 body: tableRows,
                 startY: 35,
                 headStyles: { fillColor: [0, 150, 136], textColor: [255, 255, 255] },
-                styles: { cellPadding: 2, fontSize: 9 }
+                styles: { cellPadding: 2, fontSize: 9, valign: 'middle' }
             });
 
             doc.save(`${t.orderPdfTitle}_${quoteName}.pdf`);
@@ -2569,6 +2613,42 @@
                 $('#pin-cancel-btn').addEventListener('click', cancelHandler);
                 pinInput.addEventListener('keypress', keypressHandler);
             });
+        }
+        
+        function getBlindOrderDetailsString(item, lang, forPdf = false, excludeDivision = false) {
+            const t = translations[lang];
+            const names = t.productNames;
+            if (!item || !item.options) return '';
+            
+            const separator = forPdf ? '\n' : ', ';
+
+            let details = [];
+            
+            // Control
+            details.push(names[item.options.control]);
+
+            // Exit Type (if applicable)
+            if (item.options.exitType) {
+                details.push(names[item.options.exitType === 'top' ? 'top_exit' : 'bottom_exit']);
+            }
+
+            // Side (if not divided)
+            if (!item.options.divided && item.options.side) {
+                details.push(t[item.options.side === 'right' ? 'sideRight' : 'sideLeft']);
+            }
+
+            // Division (only if not excluded)
+            if (item.options.divided && !excludeDivision) {
+                const sideText = t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'];
+                details.push(`${names.divided_blind} (${sideText}: ${item.options.divisionWidth}mm)`);
+            }
+            
+            // Extras
+            if (item.options.extenderFrame) { details.push(`+${names.blinds_extender_frame}`); }
+            if (item.options.integrated_screen === 'full') { details.push(`+${names.integrated_screen_full}`); }
+            else if (item.options.integrated_screen === 'half') { details.push(`+${names.integrated_screen_half}`); }
+
+            return details.join(separator);
         }
         
         document.addEventListener('DOMContentLoaded', () => {
@@ -2632,4 +2712,8 @@
 </script>
 </body>
 </html>
+
+
+
+
 
