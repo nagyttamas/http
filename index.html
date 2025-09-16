@@ -462,7 +462,7 @@
             #blinds-content .form-grid { grid-template-columns: repeat(3, 1fr); }
             #screens-content .form-grid { grid-template-columns: repeat(2, 1fr); }
             #settings-content .form-grid { grid-template-columns: repeat(2, 1fr); }
-            #quote-content .form-grid { grid-template-columns: repeat(2, 1fr); }
+            #quote-details-content .form-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* PC / iPad (fekvő) és nagyobb képernyők (1024px-től) */
@@ -694,78 +694,107 @@
                 <div id="screens-summary-container" class="mt-8 pt-6 border-t border-[var(--input-border-color)]"></div>
             </div>
             <div id="quote-content" class="tab-content">
-                <h2 id="quote-heading" class="text-2xl font-bold mb-4">Ajánlat</h2>
-                
-                <div class="form-grid mb-6">
-                     <div class="input-group">
-                        <label id="quote-name-label" for="quote-name">Ajánlat neve:</label>
-                        <input type="text" id="quote-name" class="input-field" placeholder="Pl. Lakásfelújítási projekt">
+                <!-- Sub-tabs for Quote/Order -->
+                <div id="quote-sub-tabs" class="flex border-b border-[var(--input-border-color)] mb-6">
+                    <button id="quote-details-sub-tab" class="sub-tab-button active-sub-style"></button>
+                    <button id="order-sub-tab" class="sub-tab-button"></button>
+                </div>
+
+                <div id="quote-details-content" class="sub-tab-content active">
+                    <h2 id="quote-heading" class="text-2xl font-bold mb-4">Ajánlat</h2>
+                    
+                    <div class="form-grid mb-6">
+                         <div class="input-group">
+                            <label id="quote-name-label" for="quote-name">Ajánlat neve:</label>
+                            <input type="text" id="quote-name" class="input-field" placeholder="Pl. Lakásfelújítási projekt">
+                        </div>
+                         <div class="input-group">
+                            <label id="client-name-label" for="client-name">Ügyfél neve:</label>
+                            <input type="text" id="client-name" class="input-field" placeholder="Pl. Minta János">
+                        </div>
+                         <div class="input-group">
+                            <label id="client-address-label" for="client-address">Ügyfél címe:</label>
+                            <input type="text" id="client-address" class="input-field" placeholder="Pl. 1234 Minta, Fő utca 5.">
+                        </div>
+                         <div class="input-group">
+                            <label id="client-phone-label" for="client-phone">Ügyfél telefonszáma:</label>
+                            <input type="tel" id="client-phone" class="input-field" placeholder="Pl. +36 30 123 4567">
+                        </div>
                     </div>
-                     <div class="input-group">
-                        <label id="client-name-label" for="client-name">Ügyfél neve:</label>
-                        <input type="text" id="client-name" class="input-field" placeholder="Pl. Minta János">
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full whitespace-nowrap table-auto">
+                            <thead>
+                                <tr class="text-left font-semibold table-header">
+                                    <th id="table-product-th" class="px-4 py-2">Termék</th>
+                                    <th id="table-size-th" class="px-4 py-2">Méret (mm)</th>
+                                    <th id="table-area-th" class="px-4 py-2">m²</th>
+                                    <th id="table-quantity-th" class="px-4 py-2">Darab</th>
+                                    <th id="table-price-th" class="px-4 py-2">Egységár</th>
+                                    <th id="table-subtotal-th" class="px-4 py-2">Részösszeg</th>
+                                    <th id="table-actions-th" class="px-4 py-2 text-right">Műveletek</th>
+                                </tr>
+                            </thead>
+                            <tbody id="quote-items-body" class="divide-y"></tbody>
+                        </table>
                     </div>
-                     <div class="input-group">
-                        <label id="client-address-label" for="client-address">Ügyfél címe:</label>
-                        <input type="text" id="client-address" class="input-field" placeholder="Pl. 1234 Minta, Fő utca 5.">
+                    <div class="mt-6 border-t-2 pt-4 space-y-2 text-xl font-bold quote-summary">
+                        <div class="flex justify-between items-center">
+                            <span id="subtotal-text">Részösszeg:</span>
+                            <span id="subtotal-price">0.00 RON</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <label id="discount-label" for="discount-percentage" class="text-base font-medium">Kedvezmény (%):</label>
+                            <input type="number" id="discount-percentage" class="input-field w-24 text-right py-1" value="0" min="0" max="100">
+                        </div>
+                        <div id="discount-row" class="hidden flex justify-between items-center text-red-500">
+                            <span id="discount-amount-text">Kedvezmény:</span>
+                            <span id="discount-amount">-0.00 RON</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t pt-2 mt-2">
+                            <span id="total-text">Végösszeg:</span>
+                            <span id="total-price">0.00 RON</span>
+                        </div>
                     </div>
-                     <div class="input-group">
-                        <label id="client-phone-label" for="client-phone">Ügyfél telefonszáma:</label>
-                        <input type="tel" id="client-phone" class="input-field" placeholder="Pl. +36 30 123 4567">
+                    <div class="mt-8 flex flex-col items-end gap-4">
+                        <button id="preview-quote-btn" class="btn btn-primary w-full sm:w-auto"></button>
+                        <div class="flex flex-wrap gap-3 justify-end">
+                            <button id="save-quote-btn" class="btn btn-secondary flex-grow sm:flex-grow-0"></button>
+                            <button id="load-quotes-btn" class="btn btn-tertiary flex-grow sm:flex-grow-0"></button>
+                            <button id="new-quote-btn" class="btn btn-danger flex-grow sm:flex-grow-0"></button>
+                        </div>
+                    </div>
+                     <div id="load-quote-section" class="relative transition-all duration-300 shadow-md rounded-2xl">
+                        <h3 id="load-quote-heading" class="text-xl font-bold mb-4">Mentett ajánlatok</h3>
+                        <button id="close-load-quote-btn" class="absolute top-3 right-3 btn btn-icon btn-secondary" aria-label="Bezárás"><i class="fa-solid fa-times"></i></button>
+                        <div class="relative mb-4">
+                            <input type="search" id="quote-search-input" class="input-field pl-10" placeholder="Keresés név vagy ügyfél alapján...">
+                            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <ul id="saved-quotes-list" class="space-y-2 max-h-80 overflow-y-auto"></ul>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full whitespace-nowrap table-auto">
-                        <thead>
-                            <tr class="text-left font-semibold table-header">
-                                <th id="table-product-th" class="px-4 py-2">Termék</th>
-                                <th id="table-size-th" class="px-4 py-2">Méret (mm)</th>
-                                <th id="table-area-th" class="px-4 py-2">m²</th>
-                                <th id="table-quantity-th" class="px-4 py-2">Darab</th>
-                                <th id="table-price-th" class="px-4 py-2">Egységár</th>
-                                <th id="table-subtotal-th" class="px-4 py-2">Részösszeg</th>
-                                <th id="table-actions-th" class="px-4 py-2 text-right">Műveletek</th>
-                            </tr>
-                        </thead>
-                        <tbody id="quote-items-body" class="divide-y"></tbody>
-                    </table>
+                <div id="order-content" class="sub-tab-content">
+                    <h3 id="order-heading" class="text-xl font-bold mb-4"></h3>
+                    <p id="order-description" class="mb-6 text-light-text-color"></p>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="w-full whitespace-nowrap table-auto">
+                            <thead>
+                                <tr class="text-left font-semibold table-header">
+                                    <th id="order-table-product-th" class="px-4 py-2"></th>
+                                    <th id="order-table-size-th" class="px-4 py-2"></th>
+                                    <th id="order-table-division-th" class="px-4 py-2"></th>
+                                    <th id="order-table-color-th" class="px-4 py-2"></th>
+                                    <th id="order-table-quantity-th" class="px-4 py-2"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="order-items-body" class="divide-y"></tbody>
+                        </table>
+                    </div>
+                    <button id="generate-order-pdf-btn" class="btn btn-primary w-full sm:w-auto"></button>
                 </div>
-                <div class="mt-6 border-t-2 pt-4 space-y-2 text-xl font-bold quote-summary">
-                    <div class="flex justify-between items-center">
-                        <span id="subtotal-text">Részösszeg:</span>
-                        <span id="subtotal-price">0.00 RON</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <label id="discount-label" for="discount-percentage" class="text-base font-medium">Kedvezmény (%):</label>
-                        <input type="number" id="discount-percentage" class="input-field w-24 text-right py-1" value="0" min="0" max="100">
-                    </div>
-                    <div id="discount-row" class="hidden flex justify-between items-center text-red-500">
-                        <span id="discount-amount-text">Kedvezmény:</span>
-                        <span id="discount-amount">-0.00 RON</span>
-                    </div>
-                    <div class="flex justify-between items-center border-t pt-2 mt-2">
-                        <span id="total-text">Végösszeg:</span>
-                        <span id="total-price">0.00 RON</span>
-                    </div>
-                </div>
-                <div class="mt-8 flex flex-col items-end gap-4">
-                    <button id="preview-quote-btn" class="btn btn-primary w-full sm:w-auto"></button>
-                    <div class="flex flex-wrap gap-3 justify-end">
-                        <button id="save-quote-btn" class="btn btn-secondary flex-grow sm:flex-grow-0"></button>
-                        <button id="load-quotes-btn" class="btn btn-tertiary flex-grow sm:flex-grow-0"></button>
-                        <button id="new-quote-btn" class="btn btn-danger flex-grow sm:flex-grow-0"></button>
-                    </div>
-                </div>
-                 <div id="load-quote-section" class="relative transition-all duration-300 shadow-md rounded-2xl">
-                    <h3 id="load-quote-heading" class="text-xl font-bold mb-4">Mentett ajánlatok</h3>
-                    <button id="close-load-quote-btn" class="absolute top-3 right-3 btn btn-icon btn-secondary" aria-label="Bezárás"><i class="fa-solid fa-times"></i></button>
-                    <div class="relative mb-4">
-                        <input type="search" id="quote-search-input" class="input-field pl-10" placeholder="Keresés név vagy ügyfél alapján...">
-                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    </div>
-                    <ul id="saved-quotes-list" class="space-y-2 max-h-80 overflow-y-auto"></ul>
-                </div>
+
             </div>
             
             <div id="settings-content" class="tab-content">
@@ -850,6 +879,12 @@
                 languageLabel: "Nyelv:", currencyLabel: "Pénznem:",
                 blindsTab: "Redőnyök", screensTab: "Szúnyoghálók", quoteTab: "Ajánlat", settingsTab: "Beállítások",
                 generalSettingsSubTab: "Általános", pricesSettingsSubTab: "Árak",
+                quoteDetailsSubTab: "Ajánlat Részletei", orderSubTab: "Megrendelés",
+                orderHeading: "Redőnyök Megrendelése",
+                orderDescription: "Itt legenerálhatja a gyártáshoz szükséges megrendelőlapot a jelenlegi ajánlatban szereplő összes redőnyről.",
+                generateOrderPdfBtn: "Megrendelő PDF Generálása",
+                orderTableProductTh: "Termék", orderTableSizeTh: "Méret", orderTableDivisionTh: "Osztás", orderTableColorTh: "Szín", orderTableQuantityTh: "Darab",
+                orderPdfTitle: "Redőny Megrendelés", noBlindsInQuote: "Nincsenek redőnyök az ajánlatban.",
                 blindsHeading: "Redőny hozzáadása", blindsTypeLabel: "Típus:", blindsWidthLabel: "Szélesség (mm):",
                 blindsHeightLabel: "Magasság (mm):", blindsQuantityLabel: "Darab:", blindsColorLabel: "Szín:",
                 blindsControlLabel: "Vezérlés:", blindsDividedLabel: "Kettéosztott",
@@ -940,6 +975,12 @@
             ro: {
                 languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", quoteTab: "Ofertă", settingsTab: "Setări", 
                 generalSettingsSubTab: "Generale", pricesSettingsSubTab: "Prețuri",
+                quoteDetailsSubTab: "Detalii Ofertă", orderSubTab: "Comandă",
+                orderHeading: "Comandă Jaluzele",
+                orderDescription: "Aici puteți genera formularul de comandă pentru producție pentru toate jaluzelele din oferta curentă.",
+                generateOrderPdfBtn: "Generează PDF Comandă",
+                orderTableProductTh: "Produs", orderTableSizeTh: "Dimensiune", orderTableDivisionTh: "Diviziune", orderTableColorTh: "Culoare", orderTableQuantityTh: "Bucăți",
+                orderPdfTitle: "Comandă Jaluzele", noBlindsInQuote: "Nu există jaluzele în ofertă.",
                 blindsHeading: "Adăugare jaluzea", blindsTypeLabel: "Tip:", blindsWidthLabel: "Lățime (mm):", blindsHeightLabel: "Înălțime (mm):", blindsQuantityLabel: "Bucăți:", blindsColorLabel: "Culoare:", blindsControlLabel: "Control:", blindsDividedLabel: "Divizat", blindsIntegratedScreenLabel: "Plasă de insecte integrată", screenOptionNone: "Niciuna", screenOptionFull: "Completă", screenOptionHalf: "Jumătate", addBlindBtn: "Adaugă Jaluzea", screensHeading: "Adăugare plasă de insecte", screensTypeLabel: "Tip:", screensWidthLabel: "Lățime (mm):", screensHeightLabel: "Înălțime (mm):", screensQuantityLabel: "Bucăți:", screensColorLabel: "Culoare:", addScreenBtn: "Adaugă Plasă", pricesHeading: "Setări Prețuri", blindsPrices: "Prețuri Jaluzele", screensPrices: "Prețuri Plase de Insecte", basePricesM2: "Prețuri de bază (preț / m²)", surcharges: "Suprataxe", colorSurcharges: "Suprataxe Culoare - Aluminiu (%)", externalColorSurcharges: "Suprataxe Culoare - Exterior (%)", screenBasePricesM2: "Prețuri de bază (preț / m²)", screenColorSurcharges: "Suprataxe Culoare (%)", unit_currency_pc: " / buc", quoteHeading: "Ofertă", settingsHeading: "Setări", companyNameLabel: "Nume Companie:", companyLogoLabel: "Logo Companie:", saveSettingsBtn: "Salvează Setările", settingsSavedMessage: "Setările au fost salvate cu succes!", tableProductTh: "Produs", tableSizeTh: "Dimensiune (mm)", tableQuantityTh: "Bucăți", tablePriceTh: "Preț Unitar", tableSubtotalTh: "Subtotal", tableActionsTh: "Acțiuni", subtotalText: "Subtotal:", discountLabel: "Reducere (%):", discountAmountText: "Reducere:", totalText: "Total Final:", saveQuoteBtn: "Salvează Oferta", loadQuotesBtn: "Încarcă Oferte", newQuoteBtn: "Ofertă Nouă", quoteNameLabel: "Nume Ofertă:", loadQuoteHeading: "Oferte Salvate", deleteBtn: "Șterge", editBtn: "Editare", savePriceBtn: "Salvează Prețurile", priceSavedMessage: "Prețurile au fost salvate cu succes!", productAddedMessage: "Produsul a fost adăugat cu succes la ofertă!", productUpdatedMessage: "Articolul a fost modificat cu succes!", emptyFieldsError: "Vă rugăm să completați câmpurile obligatorii!", invalidSizeError: "Vă rugăm să introduceți dimensiuni valide (număr pozitiv).", invalidQuantityError: "Vă rugăm să introduceți o cantitate validă (număr întreg pozitiv).", invalidDivisionWidthError: "Lățimea diviziunii nu poate fi mai mare decât lățimea totală.", quoteSaved: "Oferta a fost salvată!", quoteLoaded: "Oferta a fost încărcată cu succes!", quoteDeleted: "Oferta a fost ștearsă cu succes!", quoteNameRequired: "Vă rugăm să introduceți un nume pentru ofertă pentru a o salva!", noQuotesFound: "Nicio ofertă salvată.", noItemsInQuote: "Oferta este goală.", deleteQuotePromptTitle: "Șterge Oferta", deleteQuotePromptText: "Sigur doriți să ștergeți oferta '{{name}}'?", newQuotePromptTitle: "Începe Ofertă Nouă", newQuotePromptText: "Sigur doriți să începeți o ofertă nouă, goală? Modificările nesalvate se vor pierde.", newQuoteStarted: "O nouă ofertă goală a fost începută.", minAreaWarning: "Atenție: Suprafața minimă facturată este de {{area}} m².", pvcColorError: "Jaluzelele din PVC sunt disponibile doar pe alb.", logoUploadText: "Faceți clic pentru a încărca logo-ul", deleteLogoBtn: "Șterge Logo", logoDeletedMessage: "Logo-ul a fost șters cu succes!",
                 dataManagementHeading: "Gestionarea Datelor", dataManagementDesc: "Toate datele sunt stocate în browser. Ștergerea memoriei cache a browserului poate duce la pierderea tuturor ofertelor și setărilor salvate. **Recomandăm exportarea regulată a datelor!**",
                 exportDataBtn: "Export Date", importDataBtn: "Import Date", importSuccess: "Datele au fost importate cu succes! Pagina se va reîncărca în 2 secunde.",
@@ -981,6 +1022,12 @@
             en: {
                 languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", quoteTab: "Quote", settingsTab: "Settings",
                 generalSettingsSubTab: "General", pricesSettingsSubTab: "Prices",
+                quoteDetailsSubTab: "Quote Details", orderSubTab: "Order",
+                orderHeading: "Order Blinds",
+                orderDescription: "Here you can generate the production order form for all blinds in the current quote.",
+                generateOrderPdfBtn: "Generate Order PDF",
+                orderTableProductTh: "Product", orderTableSizeTh: "Size", orderTableDivisionTh: "Division", orderTableColorTh: "Color", orderTableQuantityTh: "Quantity",
+                orderPdfTitle: "Blinds Order", noBlindsInQuote: "There are no blinds in the quote.",
                 blindsHeading: "Add Blind", blindsTypeLabel: "Type:", blindsWidthLabel: "Width (mm):", blindsHeightLabel: "Height (mm):", blindsQuantityLabel: "Quantity:", blindsColorLabel: "Color:", blindsControlLabel: "Control:", blindsDividedLabel: "Divided", blindsIntegratedScreenLabel: "Integrated insect screen", screenOptionNone: "None", screenOptionFull: "Full", screenOptionHalf: "Half", addBlindBtn: "Add Blind", screensHeading: "Add Insect Screen", screensTypeLabel: "Type:", screensWidthLabel: "Width (mm):", screensHeightLabel: "Height (mm):", screensQuantityLabel: "Quantity:", screensColorLabel: "Color:", addScreenBtn: "Add Screen", pricesHeading: "Price Settings", blindsPrices: "Blinds Prices", screensPrices: "Insect Screen Prices", basePricesM2: "Base Prices (price / m²)", surcharges: "Surcharges", colorSurcharges: "Color Surcharges - Aluminium (%)", externalColorSurcharges: "Color Surcharges - External (%)", screenBasePricesM2: "Base Prices (price / m²)", screenColorSurcharges: "Color Surcharges (%)", unit_currency_pc: " / pc", quoteHeading: "Quote", settingsHeading: "Settings", companyNameLabel: "Company Name:", companyLogoLabel: "Company Logo:", saveSettingsBtn: "Save Settings", settingsSavedMessage: "Settings saved successfully!", tableProductTh: "Product", tableSizeTh: "Size (mm)", tableQuantityTh: "Quantity", tablePriceTh: "Unit Price", tableSubtotalTh: "Subtotal", tableActionsTh: "Actions", subtotalText: "Subtotal:", discountLabel: "Discount (%):", discountAmountText: "Discount:", totalText: "Grand Total:", saveQuoteBtn: "Save Quote", loadQuotesBtn: "Load Quotes", newQuoteBtn: "New Quote", quoteNameLabel: "Quote Name:", loadQuoteHeading: "Saved Quotes", deleteBtn: "Delete", editBtn: "Edit", savePriceBtn: "Save Prices", priceSavedMessage: "Prices saved successfully!", productAddedMessage: "Product successfully added to the quote!", productUpdatedMessage: "Item successfully updated!", emptyFieldsError: "Please fill in the required fields!", invalidSizeError: "Please enter valid dimensions (positive number).", invalidQuantityError: "Please enter a valid quantity (positive integer).", invalidDivisionWidthError: "Division width cannot be greater than the total width.", quoteSaved: "Quote saved!", quoteLoaded: "Quote loaded successfully!", quoteDeleted: "Quote deleted successfully!", quoteNameRequired: "Please enter a name for the quote to save it!", noQuotesFound: "No saved quotes.", noItemsInQuote: "The quote is empty.", deleteQuotePromptTitle: "Delete Quote", deleteQuotePromptText: "Are you sure you want to delete the quote '{{name}}'?", newQuotePromptTitle: "Start New Quote", newQuotePromptText: "Are you sure you want to start a new, empty quote? Any unsaved changes will be lost.", newQuoteStarted: "Started a new, empty quote.", minAreaWarning: "Warning: The minimum billed area is {{area}} m².", pvcColorError: "PVC blinds are only available in white.", logoUploadText: "Click to upload logo", deleteLogoBtn: "Delete Logo", logoDeletedMessage: "Logo deleted successfully!",
                 dataManagementHeading: "Data Management", dataManagementDesc: "All data is stored in your browser. Clearing your browser's cache may result in the loss of all saved quotes and settings. **We recommend exporting your data regularly!**",
                 exportDataBtn: "Export Data", importDataBtn: "Import Data", importSuccess: "Data imported successfully! The page will reload in 2 seconds.",
@@ -1187,7 +1234,11 @@
                 'screens-extender-frame-label': 'extenderFrameLabel',
                 'blinds-extender-frame-label': 'blindsExtenderFrameLabel',
                 'general-settings-sub-tab': 'generalSettingsSubTab', 'prices-settings-sub-tab': 'pricesSettingsSubTab',
-                'blinds-exit-type-label': 'blindsExitTypeLabel'
+                'blinds-exit-type-label': 'blindsExitTypeLabel',
+                'quote-details-sub-tab': 'quoteDetailsSubTab', 'order-sub-tab': 'orderSubTab', 'order-heading': 'orderHeading',
+                'order-description': 'orderDescription', 'generate-order-pdf-btn': 'generateOrderPdfBtn',
+                'order-table-product-th': 'orderTableProductTh', 'order-table-size-th': 'orderTableSizeTh', 'order-table-division-th': 'orderTableDivisionTh',
+                'order-table-color-th': 'orderTableColorTh', 'order-table-quantity-th': 'orderTableQuantityTh'
             };
             for (const id in textContentMap) {
                 const element = $(`#${id}`);
@@ -1224,6 +1275,7 @@
             updateCurrentPrices(); 
             renderPrices();
             renderQuote();
+            renderOrderList();
         }
         
         function updateButtonStates() {
@@ -1392,6 +1444,7 @@
             };
             renderFullSummary('#blinds-summary-container');
             renderFullSummary('#screens-summary-container');
+            renderOrderList();
         }
         
         function renderPrices() {
@@ -2081,6 +2134,20 @@
                     $('#prices-settings-content').classList.add('active');
                 }
             }
+
+            function switchToQuoteSubTab(activeTab) {
+                $$('#quote-sub-tabs .sub-tab-button').forEach(btn => btn.classList.remove('active-sub-style'));
+                $$('#quote-content .sub-tab-content').forEach(content => content.classList.remove('active'));
+
+                if (activeTab === 'details') {
+                    $('#quote-details-sub-tab').classList.add('active-sub-style');
+                    $('#quote-details-content').classList.add('active');
+                } else if (activeTab === 'order') {
+                    $('#order-sub-tab').classList.add('active-sub-style');
+                    $('#order-content').classList.add('active');
+                    renderOrderList(); 
+                }
+            }
             
             $('#refresh-btn').addEventListener('click', () => window.location.reload());
             
@@ -2089,10 +2156,16 @@
                     resetEditingState();
                 }
                 switchToTab(tab.id);
+                 if (tab.id === 'quote-tab') {
+                    switchToQuoteSubTab('details');
+                }
                 if (tab.id === 'settings-tab') {
                     switchToSettingsSubTab('general');
                 }
             }));
+
+            $('#quote-details-sub-tab').addEventListener('click', () => switchToQuoteSubTab('details'));
+            $('#order-sub-tab').addEventListener('click', () => switchToQuoteSubTab('order'));
 
             $('#general-settings-sub-tab').addEventListener('click', () => {
                 switchToSettingsSubTab('general');
@@ -2139,7 +2212,7 @@
             const handleBlindSubmit = () => {
                 const type = $('#blinds-type').value, width = parseFloat($('#blinds-width').value), height = parseFloat($('#blinds-height').value), quantity = parseInt($('#blinds-quantity').value, 10), color = $('#blinds-color').value, control = $('#blinds-control').value, divided = $('#blinds-divided').checked, extenderFrame = $('#blinds-extender-frame').checked, integrated_screen = type === 'pvc' ? 'none' : $('#blinds-integrated-screen').value;
                 const divisionSide = divided ? $('#blinds-division-side').value : null, divisionWidth = divided ? parseFloat($('#blinds-division-width').value) : null;
-                const exitType = (control === 'string' || control === 'strap') ? $('#blinds-exit-type').value : null;
+                const exitType = (control === 'string' || control === 'strap') && type === 'aluminium' ? $('#blinds-exit-type').value : null;
                 
                 if (isNaN(width) || isNaN(height) || isNaN(quantity) || (divided && isNaN(divisionWidth))) { showToast(translations[currentLanguage].emptyFieldsError, 'error'); return; }
                 if ((divided && divisionWidth <= 0) || width <= 0 || height <= 0) { showToast(translations[currentLanguage].invalidSizeError, 'error'); return; }
@@ -2156,8 +2229,10 @@
                     const names = translations[lang].productNames; let text = `${names[type]} (${names[color]})`; 
                     if (control === 'motorized') {
                         text += ` (${names.motorized})`;
-                    } else if (control === 'string' || control === 'strap') {
+                    } else if ((control === 'string' || control === 'strap') && type === 'aluminium') {
                         text += ` (${names[control]}, ${names[exitType === 'top' ? 'top_exit' : 'bottom_exit']})`;
+                    } else if (control === 'string' || control === 'strap') {
+                        text += ` (${names[control]})`;
                     }
                     if (divided) { const sideText = translations[lang][divisionSide === 'right' ? 'sideRight' : 'sideLeft']; text += ` (${names.divided_blind} ${sideText}: ${divisionWidth}mm)`; }
                     if (extenderFrame) text += ` (+${names.blinds_extender_frame})`;
@@ -2290,6 +2365,7 @@
             });
             
             $('#save-quote-btn').addEventListener('click', () => saveCurrentQuote(true));
+            $('#generate-order-pdf-btn').addEventListener('click', generateOrderPdf);
 
             $('#load-quotes-btn').addEventListener('click', () => { const section = $('#load-quote-section'); section.classList.toggle('visible'); if (section.classList.contains('visible')) { renderSavedQuotesList(); } });
             $('#close-load-quote-btn').addEventListener('click', () => $('#load-quote-section').classList.remove('visible'));
@@ -2335,6 +2411,83 @@
             } else {
                 exitGroup.classList.add('hidden');
             }
+        }
+
+        function renderOrderList() {
+            const tbody = $('#order-items-body');
+            const t = translations[currentLanguage];
+            const blinds = quoteItems.filter(item => !item.isScreen);
+            
+            if (blinds.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-light-text-color">${t.noBlindsInQuote}</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = blinds.map(item => {
+                const names = t.productNames;
+                const divisionText = item.options.divided ? t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'] : '-';
+                const colorText = names[item.options.color] || item.options.color;
+                const productDescription = `${names[item.options.type]}`;
+
+                return `<tr>
+                    <td class="px-4 py-2">${productDescription}</td>
+                    <td class="px-4 py-2">${item.width} x ${item.height}</td>
+                    <td class="px-4 py-2">${divisionText}</td>
+                    <td class="px-4 py-2">${colorText}</td>
+                    <td class="px-4 py-2">${item.quantity}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function generateOrderPdf() {
+            const t = translations[currentLanguage];
+            const blinds = quoteItems.filter(item => !item.isScreen);
+
+            if (blinds.length === 0) {
+                showToast(t.noBlindsInQuote, 'error');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const quoteName = $('#quote-name').value.trim() || 'Névtelen';
+            const clientName = $('#client-name').value.trim();
+
+            doc.setFontSize(18);
+            doc.text(`${t.orderPdfTitle} - ${quoteName}`, 15, 20);
+            doc.setFontSize(12);
+            if (clientName) {
+                 doc.text(`${t.clientNameLabel} ${clientName}`, 15, 28);
+            }
+            doc.setFontSize(10);
+            doc.text(`${new Date().toLocaleDateString(currentLanguage)}`, 200, 20, { align: 'right' });
+
+
+            const tableColumn = [t.orderTableProductTh, t.orderTableSizeTh, t.orderTableDivisionTh, t.orderTableColorTh, t.orderTableQuantityTh];
+            const tableRows = blinds.map(item => {
+                const names = t.productNames;
+                const divisionText = item.options.divided ? t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'] : '-';
+                const colorText = names[item.options.color] || item.options.color;
+                const productDescription = `${names[item.options.type]}`;
+
+                return [
+                    productDescription,
+                    `${item.width} x ${item.height}`,
+                    divisionText,
+                    colorText,
+                    item.quantity
+                ];
+            });
+
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 35,
+                headStyles: { fillColor: [0, 150, 136], textColor: [255, 255, 255] },
+                styles: { cellPadding: 2, fontSize: 9 }
+            });
+
+            doc.save(`${t.orderPdfTitle}_${quoteName}.pdf`);
         }
 
         function promptForPin() {
@@ -2455,5 +2608,4 @@
 </script>
 </body>
 </html>
-
 
