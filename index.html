@@ -13,6 +13,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     
     <style>
         /* --- Beágyazott Google Fonts: Inter --- */
@@ -219,7 +221,7 @@
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
         }
         
-        #language-select, #currency-select {
+        #language-select, #currency-select, #order-language-select {
             width: auto;
             padding-top: 0.25rem;
             padding-bottom: 0.25rem;
@@ -792,7 +794,17 @@
                             <tbody id="order-items-body" class="divide-y"></tbody>
                         </table>
                     </div>
-                    <button id="generate-order-pdf-btn" class="btn btn-primary w-full sm:w-auto"></button>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <button id="generate-order-pdf-btn" class="btn btn-primary w-full sm:w-auto"></button>
+                        <div class="flex items-center space-x-2">
+                            <label id="order-language-label" class="text-sm font-medium"></label>
+                            <select id="order-language-select" class="input-field py-1 px-2 text-sm">
+                                <option value="hu">Magyar</option>
+                                <option value="ro">Română</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -876,7 +888,7 @@
 
         const translations = {
              hu: {
-                languageLabel: "Nyelv:", currencyLabel: "Pénznem:",
+                languageLabel: "Nyelv:", currencyLabel: "Pénznem:", orderLanguageLabel: "PDF Nyelve:",
                 blindsTab: "Redőnyök", screensTab: "Szúnyoghálók", quoteTab: "Ajánlat", settingsTab: "Beállítások",
                 generalSettingsSubTab: "Általános", pricesSettingsSubTab: "Árak",
                 quoteDetailsSubTab: "Ajánlat Részletei", orderSubTab: "Megrendelés",
@@ -973,7 +985,8 @@
                 productNames: { pvc: "PVC redőny", aluminium: "Alumínium redőny", "external-aluminium": "Külső tokos alumínium redőny", motorized: "Motor", automata: "Automata", divided: "Kettéosztott felár", divided_blind: "Redőny osztás", divided_external: "Külső tokos osztás", integrated_screen: "Beépített szúnyogháló (ár/m²)", integrated_screen_full: "Teljes szúnyogháló", integrated_screen_half: "Fél szúnyogháló", wood: "Fa imitáció", anthracite: "Antracit", special: "Speciális szín", fix: "Fix háló", balcony: "Balamas háló", mobile: "Mobil háló", plisse: "Plissé háló", door: "Ajtó háló", "thin-door": "Vékony ajtó háló", white: "Fehér", brown: "Barna", gray: "Szürke", dark_brown: "Sötétbarna", light_brown: "Világosbarna", golden_oak: "Aranytölgy", walnut: "Dió", mahogany: "Mahagóni", extender_frame: "Kiemelő keret", blinds_extender_frame: "Kiemelő keret (redőny)", string: "Zsinóros", strap: "Gurtnis", bottom_exit: "Alsó kivezetés", top_exit: "Felső kivezetés" }
             },
             ro: {
-                languageLabel: "Limbă:", currencyLabel: "Monedă:", blindsTab: "Jaluzele", screensTab: "Plase de insecte", quoteTab: "Ofertă", settingsTab: "Setări", 
+                languageLabel: "Limbă:", currencyLabel: "Monedă:", orderLanguageLabel: "Limbă PDF:",
+                blindsTab: "Jaluzele", screensTab: "Plase de insecte", quoteTab: "Ofertă", settingsTab: "Setări", 
                 generalSettingsSubTab: "Generale", pricesSettingsSubTab: "Prețuri",
                 quoteDetailsSubTab: "Detalii Ofertă", orderSubTab: "Comandă",
                 orderHeading: "Comandă Jaluzele",
@@ -1020,7 +1033,8 @@
                 productNames: { pvc: "Jaluzea PVC", aluminium: "Jaluzea Aluminiu", "external-aluminium": "Jaluzea exterioară din aluminiu", motorized: "Motor", automata: "Automat", divided: "Taxă divizare", divided_blind: "Divizare jaluzea", divided_external: "Divizare jaluzea exterioară", integrated_screen: "Plasă de insecte integrată (preț/m²)", integrated_screen_full: "Plasă de insecte completă", integrated_screen_half: "Jumătate de plasă de insecte", wood: "Imitație lemn", anthracite: "Antracit", special: "Culoare specială", fix: "Plasă fixă", balcony: "Plasă cu balamale", mobile: "Plasă mobilă", plisse: "Plasă plisse", door: "Plasă ușă", "thin-door": "Plasă subțire ușă", white: "Alb", brown: "Maro", gray: "Gri", dark_brown: "Maro închis", light_brown: "Maro deschis", golden_oak: "Stejar auriu", walnut: "Nuc", mahogany: "Mahon", extender_frame: "Cadru de extensie", blinds_extender_frame: "Cadru de extensie (jaluzea)", string: "Cu șnur", strap: "Cu chingă", bottom_exit: "Ieșire inferioară", top_exit: "Ieșire superioară" }
             },
             en: {
-                languageLabel: "Language:", currencyLabel: "Currency:", blindsTab: "Blinds", screensTab: "Insect Screens", quoteTab: "Quote", settingsTab: "Settings",
+                languageLabel: "Language:", currencyLabel: "Currency:", orderLanguageLabel: "PDF Language:",
+                blindsTab: "Blinds", screensTab: "Insect Screens", quoteTab: "Quote", settingsTab: "Settings",
                 generalSettingsSubTab: "General", pricesSettingsSubTab: "Prices",
                 quoteDetailsSubTab: "Quote Details", orderSubTab: "Order",
                 orderHeading: "Order Blinds",
@@ -1238,7 +1252,8 @@
                 'quote-details-sub-tab': 'quoteDetailsSubTab', 'order-sub-tab': 'orderSubTab', 'order-heading': 'orderHeading',
                 'order-description': 'orderDescription', 'generate-order-pdf-btn': 'generateOrderPdfBtn',
                 'order-table-product-th': 'orderTableProductTh', 'order-table-size-th': 'orderTableSizeTh', 'order-table-division-th': 'orderTableDivisionTh',
-                'order-table-color-th': 'orderTableColorTh', 'order-table-quantity-th': 'orderTableQuantityTh'
+                'order-table-color-th': 'orderTableColorTh', 'order-table-quantity-th': 'orderTableQuantityTh',
+                'order-language-label': 'orderLanguageLabel'
             };
             for (const id in textContentMap) {
                 const element = $(`#${id}`);
@@ -1268,6 +1283,8 @@
                 divisionSideSelect.querySelector('option[value="right"]').textContent = t.sideRight;
                 divisionSideSelect.querySelector('option[value="left"]').textContent = t.sideLeft;
             }
+            
+            $('#order-language-select').value = currentLanguage;
 
             updateButtonStates();
             updateBlindsColors();
@@ -2183,7 +2200,11 @@
                 }
             });
             
-            $('#language-select').addEventListener('change', (e) => { currentLanguage = e.target.value; localStorage.setItem('language', currentLanguage); updateLocalization(); });
+            $('#language-select').addEventListener('change', (e) => { 
+                currentLanguage = e.target.value; 
+                localStorage.setItem('language', currentLanguage); 
+                updateLocalization(); 
+            });
             $('#currency-select').addEventListener('change', (e) => { currentCurrency = e.target.value; localStorage.setItem('currency', currentCurrency); renderPrices(); renderQuote(); });
             $('#theme-toggle').addEventListener('click', toggleTheme);
             $('#discount-percentage').addEventListener('input', renderQuote);
@@ -2365,7 +2386,10 @@
             });
             
             $('#save-quote-btn').addEventListener('click', () => saveCurrentQuote(true));
-            $('#generate-order-pdf-btn').addEventListener('click', generateOrderPdf);
+            $('#generate-order-pdf-btn').addEventListener('click', () => {
+                const selectedLang = $('#order-language-select').value;
+                generateOrderPdf(selectedLang);
+            });
 
             $('#load-quotes-btn').addEventListener('click', () => { const section = $('#load-quote-section'); section.classList.toggle('visible'); if (section.classList.contains('visible')) { renderSavedQuotesList(); } });
             $('#close-load-quote-btn').addEventListener('click', () => $('#load-quote-section').classList.remove('visible'));
@@ -2425,7 +2449,7 @@
 
             tbody.innerHTML = blinds.map(item => {
                 const names = t.productNames;
-                const divisionText = item.options.divided ? t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'] : '-';
+                const divisionText = item.options.divided ? `${t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft']} (${item.options.divisionWidth}mm)` : '-';
                 const colorText = names[item.options.color] || item.options.color;
                 const productDescription = `${names[item.options.type]}`;
 
@@ -2439,8 +2463,8 @@
             }).join('');
         }
 
-        function generateOrderPdf() {
-            const t = translations[currentLanguage];
+        function generateOrderPdf(lang) {
+            const t = translations[lang];
             const blinds = quoteItems.filter(item => !item.isScreen);
 
             if (blinds.length === 0) {
@@ -2460,13 +2484,13 @@
                  doc.text(`${t.clientNameLabel} ${clientName}`, 15, 28);
             }
             doc.setFontSize(10);
-            doc.text(`${new Date().toLocaleDateString(currentLanguage)}`, 200, 20, { align: 'right' });
+            doc.text(`${new Date().toLocaleDateString(lang)}`, 200, 20, { align: 'right' });
 
 
             const tableColumn = [t.orderTableProductTh, t.orderTableSizeTh, t.orderTableDivisionTh, t.orderTableColorTh, t.orderTableQuantityTh];
             const tableRows = blinds.map(item => {
                 const names = t.productNames;
-                const divisionText = item.options.divided ? t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'] : '-';
+                 const divisionText = item.options.divided ? `${t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft']} (${item.options.divisionWidth}mm)` : '-';
                 const colorText = names[item.options.color] || item.options.color;
                 const productDescription = `${names[item.options.type]}`;
 
