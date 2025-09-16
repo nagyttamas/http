@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="https://placehold.co/180x180/009688/FFFFFF?text=EP&font=inter">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     
@@ -2098,6 +2098,7 @@
             $('#blinds-extender-frame').checked = false;
             $('#blinds-division-details').classList.remove('visible');
             $('#blinds-division-width').value = '';
+            $('#blinds-side-group').style.display = 'block';
             $('#cancel-edit-blind-btn').classList.add('hidden');
 
             // Reset screens form
@@ -2712,8 +2713,4 @@
 </script>
 </body>
 </html>
-
-
-
-
 
