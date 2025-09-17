@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         /* --- Beágyazott Google Fonts: Inter --- */
@@ -1146,14 +1147,17 @@
             return deepMerge(target, ...sources);
         }
 
-        function showToast(message, type = 'success') {
+        function showToast(message, type = 'success', duration = 5000) {
             const container = $('#toast-container');
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             const iconClass = type === 'success' ? 'fa-solid fa-check-circle' : (type === 'error' ? 'fa-solid fa-exclamation-triangle' : 'fa-solid fa-info-circle');
             toast.innerHTML = `<i class="${iconClass} icon"></i><span>${message}</span>`;
             container.appendChild(toast);
-            setTimeout(() => toast.remove(), 5000); 
+            if (duration > 0) {
+                 setTimeout(() => toast.remove(), duration);
+            }
+            return toast;
         }
 
         function showConfirmationModal({ title, text, confirmText, confirmClass = 'btn-danger' }) {
@@ -1781,9 +1785,9 @@
                     <script src="https://cdn.tailwindcss.com"><\/script>
                     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"><\/script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
                     ${themeStyles}
                 </head>
                 <body class="font-sans ${previewData.isDarkMode ? 'dark' : ''}">
@@ -1893,10 +1897,11 @@
                             document.getElementById('preview-language-label').textContent = \`\${t.languageLabel}\`;
                         }
                         
-                        function generatePdfBlob(lang) {
-                            const t = previewData.translations[lang];
+                        async function generatePdfBlob(lang) {
                             const { jsPDF } = window.jspdf;
                             const doc = new jsPDF();
+                            
+                            const t = previewData.translations[lang];
                             
                             if (previewData.companyLogo) { try { doc.addImage(previewData.companyLogo, 'PNG', 15, 15, 40, 15); } catch(e) { console.error("PDF Logo Error:", e); } }
                             doc.setFontSize(20); doc.text(previewData.companyName || 'EUROPLAST', 15, 40);
@@ -1908,9 +1913,7 @@
                             doc.setFontSize(16); doc.text(t.quoteHeading, 200, 20, { align: 'right' });
                             doc.setFontSize(10); doc.text(new Date().toLocaleDateString(lang), 200, 26, { align: 'right' });
                             
-                            doc.setFont(undefined, 'bold');
                             doc.text(t.clientNameLabel, 200, 35, { align: 'right' });
-                            doc.setFont(undefined, 'normal');
                             doc.text(previewData.clientName || '-', 200, 40, { align: 'right' });
                             doc.text(previewData.clientAddress || '-', 200, 45, { align: 'right' });
                             doc.text(previewData.clientPhone || '-', 200, 50, { align: 'right' });
@@ -1938,7 +1941,7 @@
                                 doc.setTextColor(0, 0, 0);
                                 finalY += 5;
                             }
-                            doc.setFontSize(12); doc.setFont(undefined, 'bold');
+                            doc.setFontSize(12);
                             doc.text(\`\${t.totalText} \${previewData.finalTotal.toFixed(2)} \${previewData.currentCurrency}\`, 200, finalY + 22, { align: 'right' });
                             
                             return doc.output('blob');
@@ -1977,7 +1980,7 @@
                             pdfBtn.addEventListener('click', async () => {
                                 const lang = langSelect.value;
                                 const t = previewData.translations[lang];
-                                const pdfBlob = generatePdfBlob(lang);
+                                const pdfBlob = await generatePdfBlob(lang);
                                 const file = new File([pdfBlob], \`\${previewData.quoteName}.pdf\`, { type: 'application/pdf' });
 
                                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -2486,12 +2489,14 @@
                 exitGroup.classList.add('hidden');
             }
         }
-
+        
         function renderOrderList() {
             const tbody = $('#order-items-body');
             const t = translations[currentLanguage];
             const blinds = quoteItems.filter(item => !item.isScreen);
             
+            if (!tbody) return;
+
             if (blinds.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-light-text-color">${t.noBlindsInQuote}</td></tr>`;
                 return;
@@ -2499,7 +2504,6 @@
 
             tbody.innerHTML = blinds.map(item => {
                 const names = t.productNames;
-                // Exclude division from details if it's there
                 const details = getBlindOrderDetailsString(item, currentLanguage, false, true); 
                 const colorText = names[item.options.color] || item.options.color;
                 const productDescription = `${names[item.options.type]}`;
@@ -2520,7 +2524,7 @@
             }).join('');
         }
 
-        function generateOrderPdf(lang) {
+        async function generateOrderPdf(lang) {
             const t = translations[lang];
             const blinds = quoteItems.filter(item => !item.isScreen);
 
@@ -2531,6 +2535,7 @@
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'landscape' });
+            
             const quoteName = $('#quote-name').value.trim() || 'Névtelen';
             const clientName = $('#client-name').value.trim();
 
@@ -2541,7 +2546,7 @@
                  doc.text(`${t.clientNameLabel} ${clientName}`, 15, 28);
             }
             doc.setFontSize(10);
-            doc.text(`${new Date().toLocaleDateString(lang)}`, 282, 20, { align: 'right' }); // Adjusted for landscape x-pos
+            doc.text(`${new Date().toLocaleDateString(lang)}`, 282, 20, { align: 'right' }); 
 
 
             const tableColumn = [t.orderTableProductTh, t.orderTableSizeTh, t.orderTableDetailsTh, t.orderTableColorTh, t.orderTableQuantityTh];
@@ -2554,7 +2559,6 @@
                 let sizeText = `${item.width} x ${item.height}`;
                 if (item.options.divided) {
                     const sideText = t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'];
-                    // Match the on-screen format: 2000x1250 / 700mm (Jobbos)
                     sizeText += ` / ${item.options.divisionWidth}mm (${sideText})`; 
                 }
 
@@ -2578,63 +2582,6 @@
             doc.save(`${t.orderPdfTitle}_${quoteName}.pdf`);
         }
 
-        function promptForPin() {
-            return new Promise((resolve) => {
-                const modal = $('#pin-modal');
-                const pinInput = $('#pin-input');
-                const errorMsg = $('#pin-error');
-                const t = translations[currentLanguage];
-
-                // Update modal text with current language
-                $('#pin-modal-title').textContent = t.pinModalTitle;
-                $('#pin-modal-text').textContent = t.pinModalText;
-                $('#pin-submit-btn').textContent = t.pinSubmitBtn;
-                $('#pin-cancel-btn').textContent = t.cancelEditBtn; // Reuse translation
-                errorMsg.textContent = t.pinError;
-
-                pinInput.value = '';
-                errorMsg.classList.add('hidden');
-                modal.classList.add('active');
-                pinInput.focus();
-
-                const correctPin = '2009';
-
-                const submitHandler = () => {
-                    if (pinInput.value === correctPin) {
-                        modal.classList.remove('active');
-                        cleanup();
-                        resolve(true);
-                    } else {
-                        errorMsg.classList.remove('hidden');
-                        pinInput.value = '';
-                        pinInput.focus();
-                    }
-                };
-
-                const cancelHandler = () => {
-                    modal.classList.remove('active');
-                    cleanup();
-                    resolve(false);
-                };
-                
-                const keypressHandler = (e) => {
-                    if (e.key === 'Enter') {
-                        submitHandler();
-                    }
-                };
-
-                const cleanup = () => {
-                    $('#pin-submit-btn').removeEventListener('click', submitHandler);
-                    $('#pin-cancel-btn').removeEventListener('click', cancelHandler);
-                    pinInput.removeEventListener('keypress', keypressHandler);
-                };
-
-                $('#pin-submit-btn').addEventListener('click', submitHandler);
-                $('#pin-cancel-btn').addEventListener('click', cancelHandler);
-                pinInput.addEventListener('keypress', keypressHandler);
-            });
-        }
-        
         function getBlindOrderDetailsString(item, lang, forPdf = false, excludeDivision = false) {
             const t = translations[lang];
             const names = t.productNames;
@@ -2644,26 +2591,21 @@
 
             let details = [];
             
-            // Control
             details.push(names[item.options.control]);
 
-            // Exit Type (if applicable)
             if (item.options.exitType) {
                 details.push(names[item.options.exitType === 'top' ? 'top_exit' : 'bottom_exit']);
             }
 
-            // Side (if not divided)
             if (!item.options.divided && item.options.side) {
                 details.push(t[item.options.side === 'right' ? 'sideRight' : 'sideLeft']);
             }
 
-            // Division (only if not excluded)
             if (item.options.divided && !excludeDivision) {
                 const sideText = t[item.options.divisionSide === 'right' ? 'sideRight' : 'sideLeft'];
                 details.push(`${names.divided_blind} (${sideText}: ${item.options.divisionWidth}mm)`);
             }
             
-            // Extras
             if (item.options.extenderFrame) { details.push(`+${names.blinds_extender_frame}`); }
             if (item.options.integrated_screen === 'full') { details.push(`+${names.integrated_screen_full}`); }
             else if (item.options.integrated_screen === 'half') { details.push(`+${names.integrated_screen_half}`); }
@@ -2672,7 +2614,6 @@
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-            // HIBABIZTOS INDÍTÁS: Megvédi az alkalmazást a betöltés közbeni összeomlástól
             try {
                 userPrices = safeJsonParse('userPrices', {});
                 allSavedQuotes = safeJsonParse('savedQuotes', []);
@@ -2683,7 +2624,7 @@
                 
                 $('#language-select').value = currentLanguage;
                 $('#currency-select').value = currentCurrency;
-                $('#quote-name').dataset.autoGenerated = 'true'; // Kezdeti beállítás
+                $('#quote-name').dataset.autoGenerated = 'true'; 
                 document.title = "EUROPLAST Árajánlat Készítő";
                 $('#app-title').textContent = "EUROPLAST";
 
@@ -2697,40 +2638,10 @@
                 setupListeners();
             } catch (error) {
                 console.error("Végzetes hiba az alkalmazás indításakor:", error);
-                // Opcionális: Vizuális hibaüzenet a felhasználónak
                 document.body.innerHTML = '<div style="padding: 2rem; text-align: center;">Hoppá! Egy hiba történt az alkalmazás betöltése közben. Próbálja meg törölni a böngészési adatokat, vagy vegye fel a kapcsolatot a fejlesztővel.</div>';
             }
         });
     </script>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  // FIX: Switched from a hardcoded Firebase config to the one provided by the environment.
-  // This resolves the "API key not valid" error by ensuring the correct credentials are used.
-  const firebaseConfig = typeof __firebase_config !== 'undefined'
-      ? JSON.parse(__firebase_config)
-      : {};
-
-  // Initialize Firebase only if a valid configuration is found.
-  // This prevents errors when running outside the intended environment.
-  if (firebaseConfig.apiKey) {
-      try {
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        console.log("Firebase Analytics initialized successfully.");
-      } catch (error) {
-        console.error("Error initializing Firebase:", error);
-      }
-  } else {
-      console.warn("Firebase configuration not found. Analytics will not be initialized.");
-  }
-</script>
 </body>
 </html>
 
