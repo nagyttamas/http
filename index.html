@@ -13,8 +13,10 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    
+    <!-- pdfmake for all PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -893,6 +895,54 @@
         if (typeof crypto.randomUUID === 'undefined') {
             crypto.randomUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); });
         }
+        
+        // A PIN kódot itt lehet beállítani.
+        const PIN_CODE = "1234";
+
+        function promptForPin() {
+            return new Promise((resolve) => {
+                const modal = $('#pin-modal');
+                const pinInput = $('#pin-input');
+                const pinError = $('#pin-error');
+                const submitBtn = $('#pin-submit-btn');
+                const cancelBtn = $('#pin-cancel-btn');
+
+                pinInput.value = '';
+                pinError.classList.add('hidden');
+                modal.classList.add('active');
+
+                const handlePinSubmit = () => {
+                    if (pinInput.value === PIN_CODE) {
+                        modal.classList.remove('active');
+                        resolve(true);
+                        pinInput.removeEventListener('keydown', handleKeyDown);
+                        submitBtn.removeEventListener('click', handlePinSubmit);
+                        cancelBtn.removeEventListener('click', handlePinCancel);
+                    } else {
+                        pinError.classList.remove('hidden');
+                        pinInput.value = '';
+                    }
+                };
+
+                const handlePinCancel = () => {
+                     modal.classList.remove('active');
+                     resolve(false);
+                     pinInput.removeEventListener('keydown', handleKeyDown);
+                     submitBtn.removeEventListener('click', handlePinSubmit);
+                     cancelBtn.removeEventListener('click', handlePinCancel);
+                };
+
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Enter') {
+                        handlePinSubmit();
+                    }
+                }
+                
+                pinInput.addEventListener('keydown', handleKeyDown);
+                submitBtn.addEventListener('click', handlePinSubmit);
+                cancelBtn.addEventListener('click', handlePinCancel);
+            });
+        }
 
         const translations = {
              hu: {
@@ -903,14 +953,13 @@
                 orderHeading: "Redőnyök Megrendelése",
                 orderDescription: "Itt legenerálhatja a gyártáshoz szükséges megrendelőlapot a jelenlegi ajánlatban szereplő összes redőnyről.",
                 generateOrderPdfBtn: "Megrendelő PDF Generálása",
-                orderTableProductTh: "Termék", orderTableSizeTh: "Méret", orderTableDetailsTh: "Részletek", orderTableColorTh: "Szín", orderTableQuantityTh: "Darab",
                 orderPdfTitle: "Redőny Megrendelés", noBlindsInQuote: "Nincsenek redőnyök az ajánlatban.",
                 blindsHeading: "Redőny hozzáadása", blindsTypeLabel: "Típus:", blindsWidthLabel: "Szélesség (mm):",
                 blindsHeightLabel: "Magasság (mm):", blindsQuantityLabel: "Darab:", blindsColorLabel: "Szín:",
                 blindsControlLabel: "Vezérlés:", blindsDividedLabel: "Kettéosztott",
                 blindsIntegratedScreenLabel: "Beépített szúnyogháló", screenOptionNone: "Nincs", screenOptionFull: "Teljes",
                 screenOptionHalf: "Fele", addBlindBtn: "Redőny Hozzáadása",
-                screensHeading: "Szúnyogháló hozzáadása", screensTypeLabel: "Típus:", screensWidthLabel: "Szélesség (mm):",
+                screensHeading: "Szúnyogháló hozzáadása", screensTypeLabel: "Típus:", screensWidthLabel: "Lățime (mm):",
                 screensHeightLabel: "Magasság (mm):", screensQuantityLabel: "Darab:", screensColorLabel: "Szín:",
                 addScreenBtn: "Szúnyogháló Hozzáadása", pricesHeading: "Árbeállítások", blindsPrices: "Redőny Árak",
                 screensPrices: "Szúnyogháló Árak", basePricesM2: "Alapárak (ár / m²)", surcharges: "Felárak",
@@ -1013,8 +1062,8 @@
                 sharePdfBtn: "Partajare PDF",
                 shareJpgBtn: "Partajare JPG",
                 sendQuoteBtn: "Trimite Email",
-                sendQuoteEmailBody: "Stimate Domn/Doamnă,\n\nVă trimitem atașat oferta '{{quoteName}}'.\n\nValoarea totală a ofertei este: {{totalPrice}}\n\nDacă aveți întrebări, nu ezitați să ne contactați.\n\nCu respect,\n{{companyName}}",
-                exchangeRateTitle: "Curs Valutar EUR/RON", vatIncludedText: "Prețul include TVA.", quoteSummaryTitle: "Rezumat Ofertă",
+                sendQuoteEmailBody: "Dear Sir/Madam,\n\nPlease find the quote '{{quoteName}}' attached.\n\nThe total amount for the offer is: {{totalPrice}}\n\nIf you have any questions, please feel free to contact us.\n\nBest regards,\n{{companyName}}",
+                exchangeRateTitle: "Curs Valutar EUR/RON", vatIncludedText: "The price includes TVA.", quoteSummaryTitle: "Rezumat Ofertă",
                 summaryTotal: "Total", divisionSideLabel: "Partea divizată", divisionWidthLabel: "Lățime secțiune (mm)",
                 sideLeft: "Stânga", sideRight: "Dreapta", companyWebsiteLabel: "Site web:", companyEmailLabel: "Email:", companyPhoneLabel: "Telefon:",
                 clientNameLabel: "Nume Client:", clientAddressLabel: "Adresă Client:", clientPhoneLabel: "Telefon Client:",
@@ -1027,11 +1076,11 @@
                 pinSubmitBtn: "Intră",
                 pinError: "Cod PIN incorect!",
                 closeBtn: "Închide",
-                 minAreaSettings: "Calcul Suprafață Minimă",
-                 blindsExitTypeLabel: "Tip ieșire:",
-                 blindsSideLabel: "Partea:",
-                 exitTypeBottom: "Ieșire inferioară",
-                 exitTypeTop: "Ieșire superioară",
+                minAreaSettings: "Calcul Suprafață Minimă",
+                blindsExitTypeLabel: "Tip ieșire:",
+                blindsSideLabel: "Partea:",
+                exitTypeBottom: "Ieșire inferioară",
+                exitTypeTop: "Ieșire superioară",
                 minAreaLabels: {
                     blinds: "Jaluzele (m²)",
                     screens: "Plase de insecte (general, m²)",
@@ -1089,7 +1138,7 @@
                     plisse: "Plisse Screen (m²)",
                     mobile: "Mobile Screen (m²)"
                 },
-                productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahogany", extender_frame: "Extender frame", blinds_extender_frame: "Extender frame (blind)", string: "String", strap: "Strap", bottom_exit: "Bottom exit", top_exit: "Top exit" }
+                productNames: { pvc: "PVC blind", aluminium: "Aluminium blind", "external-aluminium": "External aluminium blind", motorized: "Motor", automata: "Automatic", divided: "Divided surcharge", divided_blind: "Blind division", divided_external: "External blind division", integrated_screen: "Integrated insect screen (price/m²)", integrated_screen_full: "Full insect screen", integrated_screen_half: "Half insect screen", anthracite: "Antracite", special: "Special color", fix: "Fix screen", balcony: "Hinged screen", mobile: "Mobile screen", plisse: "Plisse screen", door: "Door screen", "thin-door": "Thin door screen", white: "White", brown: "Brown", gray: "Gray", dark_brown: "Dark brown", light_brown: "Light brown", golden_oak: "Golden oak", walnut: "Walnut", mahogany: "Mahagóni", extender_frame: "Extender frame", blinds_extender_frame: "Extender frame (blind)", string: "String", strap: "Strap", bottom_exit: "Bottom exit", top_exit: "Top exit" }
             }
         };
 
@@ -1444,7 +1493,6 @@
             if (quoteItems.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-light-text-color">${t.noItemsInQuote}</td></tr>`;
             } else {
                 quoteItems.forEach((item, index) => {
-                    const row = document.createElement('tr');
                     const priceData = calculatePrice(item.isScreen ? 'screens' : (item.type === 'external-aluminium' ? 'external-aluminium' : 'blinds'), item.width, item.height, item.options);
                     const unitPrice = priceData.price;
                     item.billableArea = priceData.billableArea;
@@ -1452,7 +1500,7 @@
                     item.unitPrice = unitPrice; // Update item with current price
                     item.price = price;         // Update item with current price
                     subtotal += price;
-
+                    const row = document.createElement('tr');
                     row.innerHTML = `<td class="px-4 py-2">${item.product[currentLanguage]||item.product.hu}</td><td class="px-4 py-2">${item.width}x${item.height}</td><td class="px-4 py-2">${item.billableArea.toFixed(2)}</td><td class="px-4 py-2">${item.quantity}</td><td class="px-4 py-2">${unitPrice.toFixed(2)} ${currentCurrency}</td><td class="px-4 py-2"><b>${price.toFixed(2)} ${currentCurrency}</b></td><td class="px-4 py-2 text-right"><div class="flex gap-3 justify-end"><button class="btn btn-secondary btn-icon" title="${t.editBtn}" data-action="edit" data-index="${index}"><i class="fa-solid fa-pencil"></i></button><button class="btn btn-danger btn-icon" title="${t.deleteBtn}" data-action="remove" data-index="${index}"><i class="fa-solid fa-trash"></i></button></div></td>`;
                     tbody.appendChild(row);
                 });
@@ -1720,11 +1768,145 @@
             };
             reader.readAsText(file);
         }
-        
-        function generateQuotePreview() {
+
+        // --- PDF generation for Quote Preview (using pdfmake) ---
+        function generateQuotePdf(lang) {
+            const t = translations[lang];
+            if (quoteItems.length === 0) { 
+                alert(t.noItemsInQuote); 
+                return; 
+            }
+
+            const quoteName = $('#quote-name').value.trim() || 'Névtelen';
+            const clientName = $('#client-name').value.trim();
+            const clientAddress = $('#client-address').value.trim();
+            const clientPhone = $('#client-phone').value.trim();
+            const companyName = localStorage.getItem('companyName') || 'EUROPLAST';
+            const companyLogo = localStorage.getItem('companyLogo');
+            const companyWebsite = localStorage.getItem('companyWebsite') || '';
+            const companyEmail = localStorage.getItem('companyEmail') || '';
+            const companyPhone = localStorage.getItem('companyPhone') || '';
+            const subtotal = quoteItems.reduce((sum, item) => sum + item.price, 0);
+            const discountPercentage = parseFloat($('#discount-percentage').value) || 0;
+            const discountAmount = (subtotal * discountPercentage) / 100;
+            const finalTotal = subtotal - discountAmount;
+
+            const clientDetails = [];
+            if (clientName) clientDetails.push({ text: `${t.clientNameLabel} ${clientName}` });
+            if (clientAddress) clientDetails.push({ text: `${t.clientAddressLabel} ${clientAddress}` });
+            if (clientPhone) clientDetails.push({ text: `${t.clientPhoneLabel} ${clientPhone}` });
+
+            const companyDetails = [];
+            if (companyName) companyDetails.push({ text: companyName, style: 'companyName', alignment: 'right' });
+            if (companyWebsite) companyDetails.push({ text: companyWebsite, style: 'info', alignment: 'right' });
+            if (companyEmail) companyDetails.push({ text: companyEmail, style: 'info', alignment: 'right' });
+            if (companyPhone) companyDetails.push({ text: companyPhone, style: 'info', alignment: 'right' });
+
+            const tableBody = quoteItems.map(item => {
+                const names = t.productNames;
+                const productDescription = `${item.product[lang] || item.product.hu}`;
+                return [
+                    { text: productDescription, style: 'tableCell' },
+                    { text: `${item.width}x${item.height}`, style: 'tableCell' },
+                    { text: item.billableArea.toFixed(2), style: 'tableCell' },
+                    { text: item.quantity.toString(), style: 'tableCell' },
+                    { text: `${item.unitPrice.toFixed(2)} ${currentCurrency}`, style: 'tableCell', alignment: 'right' },
+                    { text: `${item.price.toFixed(2)} ${currentCurrency}`, style: 'tableCell', alignment: 'right' }
+                ];
+            });
+
+            const docDefinition = {
+                pageSize: 'A4',
+                pageMargins: [ 40, 40, 40, 40 ],
+                info: {
+                    title: `${t.quotePreviewTitle}: ${quoteName}`,
+                    author: companyName
+                },
+                header: function() {
+                    const headerContent = [
+                        { text: `${t.quotePreviewTitle}: ${quoteName}`, style: 'title', margin: [40, 30, 0, 0] },
+                        { text: new Date().toLocaleDateString(lang), style: 'info', alignment: 'right', margin: [0, 30, 40, 0] }
+                    ];
+
+                    return {
+                        columns: headerContent
+                    };
+                },
+                content: [
+                    {
+                        columns: [
+                            { stack: clientDetails, width: '50%', margin: [0, 40, 0, 10] },
+                            { stack: companyDetails, width: '50%', alignment: 'right', margin: [0, 40, 0, 10] }
+                        ]
+                    },
+                    {
+                        table: {
+                            headerRows: 1,
+                            widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto'],
+                            body: [
+                                [
+                                    { text: t.tableProductTh, style: 'tableHeader' },
+                                    { text: t.tableSizeTh, style: 'tableHeader' },
+                                    { text: t.tableAreaTh, style: 'tableHeader' },
+                                    { text: t.tableQuantityTh, style: 'tableHeader' },
+                                    { text: t.tablePriceTh, style: 'tableHeader' },
+                                    { text: t.tableSubtotalTh, style: 'tableHeader' }
+                                ],
+                                ...tableBody
+                            ]
+                        },
+                        layout: {
+                            hLineWidth: function (i, node) { return (i === 0 || i === node.table.body.length) ? 2 : 1; },
+                            vLineWidth: function (i, node) { return (i === 0 || i === node.table.widths.length) ? 2 : 1; },
+                            hLineColor: function (i, node) { return (i === 0 || i === node.table.body.length) ? '#009688' : '#e5e7eb'; },
+                            vLineColor: function (i, node) { return (i === 0 || i === node.table.widths.length) ? '#009688' : '#e5e7eb'; },
+                            fillColor: function (rowIndex, node, columnIndex) { return (rowIndex % 2 === 0) ? '#f3f4f6' : null; }
+                        },
+                        margin: [0, 20, 0, 10]
+                    },
+                    {
+                        alignment: 'right',
+                        margin: [0, 10, 0, 0],
+                        stack: [
+                            {
+                                columns: [
+                                    { text: t.subtotalText, alignment: 'right' },
+                                    { text: `${subtotal.toFixed(2)} ${currentCurrency}`, alignment: 'right', width: 'auto' }
+                                ]
+                            },
+                            (discountPercentage > 0) ? {
+                                columns: [
+                                    { text: `${t.discountAmountText} (${discountPercentage}%)`, color: 'red', alignment: 'right' },
+                                    { text: `-${discountAmount.toFixed(2)} ${currentCurrency}`, color: 'red', alignment: 'right', width: 'auto' }
+                                ]
+                            } : null,
+                            {
+                                columns: [
+                                    { text: t.totalText, alignment: 'right', bold: true, fontSize: 12, margin: [0, 5, 0, 0] },
+                                    { text: `${finalTotal.toFixed(2)} ${currentCurrency}`, alignment: 'right', bold: true, fontSize: 12, margin: [0, 5, 0, 0], width: 'auto' }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                styles: {
+                    title: { fontSize: 18, bold: true, color: '#009688' },
+                    companyName: { fontSize: 14, bold: true, color: '#009688' },
+                    info: { fontSize: 10, alignment: 'right' },
+                    date: { fontSize: 10, margin: [0, 5, 0, 0] },
+                    tableHeader: { bold: true, fontSize: 10, fillColor: '#e5e7eb', alignment: 'center' },
+                    tableCell: { fontSize: 9 }
+                },
+                defaultStyle: { fontSize: 10 }
+            };
+            
+            pdfMake.createPdf(docDefinition).download(`${t.quotePreviewTitle}_${quoteName}.pdf`);
+        }
+
+        function openQuotePreviewWindow() {
             if (quoteItems.length === 0) { showToast(translations[currentLanguage].noItemsInQuote, 'error'); return; }
             
-            const defaultPreviewLanguage = 'ro';
+            const defaultPreviewLanguage = 'hu'; // Changed to Hungarian for consistency
 
             const previewData = { 
                 quoteItems,
@@ -1785,8 +1967,8 @@
                     <script src="https://cdn.tailwindcss.com"><\/script>
                     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"><\/script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"><\/script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"><\/script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
                     ${themeStyles}
                 </head>
@@ -1813,6 +1995,117 @@
 
                     <script>
                         const previewData = ${JSON.stringify(previewData)};
+
+                        function generateQuotePdfFromPreview(lang) {
+                            const t = previewData.translations[lang];
+                            const quoteName = previewData.quoteName;
+                            const companyName = previewData.companyName || 'EUROPLAST';
+                            const companyLogo = previewData.companyLogo;
+
+                            const clientDetails = [];
+                            if (previewData.clientName) clientDetails.push({ text: \`\${t.clientNameLabel} \${previewData.clientName}\` });
+                            if (previewData.clientAddress) clientDetails.push({ text: \`\${t.clientAddressLabel} \${previewData.clientAddress}\` });
+                            if (previewData.clientPhone) clientDetails.push({ text: \`\${t.clientPhoneLabel} \${previewData.clientPhone}\` });
+
+                            const companyDetails = [];
+                            if (companyName) companyDetails.push({ text: companyName, style: 'companyName', alignment: 'right' });
+                            if (previewData.companyWebsite) companyDetails.push({ text: previewData.companyWebsite, style: 'info', alignment: 'right' });
+                            if (previewData.companyEmail) companyDetails.push({ text: previewData.companyEmail, style: 'info', alignment: 'right' });
+                            if (previewData.companyPhone) companyDetails.push({ text: previewData.companyPhone, style: 'info', alignment: 'right' });
+
+                            const tableBody = previewData.quoteItems.map(item => {
+                                const productDescription = \`\${item.product[lang] || item.product.hu}\`;
+                                return [
+                                    { text: productDescription, style: 'tableCell' },
+                                    { text: \`\${item.width}x\${item.height}\`, style: 'tableCell' },
+                                    { text: item.billableArea.toFixed(2), style: 'tableCell' },
+                                    { text: item.quantity.toString(), style: 'tableCell' },
+                                    { text: \`\${item.unitPrice.toFixed(2)} \${previewData.currentCurrency}\`, style: 'tableCell', alignment: 'right' },
+                                    { text: \`\${item.price.toFixed(2)} \${previewData.currentCurrency}\`, style: 'tableCell', alignment: 'right' }
+                                ];
+                            });
+
+                            const docDefinition = {
+                                pageSize: 'A4',
+                                pageMargins: [ 40, 40, 40, 40 ],
+                                info: {
+                                    title: \`\${t.quotePreviewTitle}: \${quoteName}\`,
+                                    author: companyName
+                                },
+                                header: function() {
+                                    return {
+                                        columns: [
+                                            { stack: clientDetails, margin: [40, 30, 0, 0] },
+                                            { stack: companyDetails, margin: [0, 30, 40, 0] }
+                                        ]
+                                    };
+                                },
+                                content: [
+                                    { text: \`\${t.quotePreviewTitle}: \${quoteName}\`, style: 'title', margin: [0, 0, 0, 20] },
+                                    { text: new Date().toLocaleDateString(lang), style: 'date', alignment: 'right', margin: [0, 0, 0, 10] },
+                                    {
+                                        table: {
+                                            headerRows: 1,
+                                            widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto'],
+                                            body: [
+                                                [
+                                                    { text: t.tableProductTh, style: 'tableHeader' },
+                                                    { text: t.tableSizeTh, style: 'tableHeader' },
+                                                    { text: t.tableAreaTh, style: 'tableHeader' },
+                                                    { text: t.tableQuantityTh, style: 'tableHeader' },
+                                                    { text: t.tablePriceTh, style: 'tableHeader' },
+                                                    { text: t.tableSubtotalTh, style: 'tableHeader' }
+                                                ],
+                                                ...tableBody
+                                            ]
+                                        },
+                                        layout: {
+                                            hLineWidth: function (i, node) { return (i === 0 || i === node.table.body.length) ? 2 : 1; },
+                                            vLineWidth: function (i, node) { return (i === 0 || i === node.table.widths.length) ? 2 : 1; },
+                                            hLineColor: function (i, node) { return (i === 0 || i === node.table.body.length) ? '#009688' : '#e5e7eb'; },
+                                            vLineColor: function (i, node) { return (i === 0 || i === node.table.widths.length) ? '#009688' : '#e5e7eb'; },
+                                            fillColor: function (rowIndex, node, columnIndex) { return (rowIndex % 2 === 0) ? '#f3f4f6' : null; }
+                                        },
+                                        margin: [0, 10, 0, 10]
+                                    },
+                                    {
+                                        alignment: 'right',
+                                        margin: [0, 10, 0, 0],
+                                        stack: [
+                                            {
+                                                columns: [
+                                                    { text: t.subtotalText, alignment: 'right' },
+                                                    { text: \`\${previewData.subtotal.toFixed(2)} \${previewData.currentCurrency}\`, alignment: 'right', width: 'auto' }
+                                                ]
+                                            },
+                                            (previewData.discountPercentage > 0) ? {
+                                                columns: [
+                                                    { text: \`\${t.discountAmountText} (\${previewData.discountPercentage}%)\`, color: 'red', alignment: 'right' },
+                                                    { text: \`-\${previewData.discountAmount.toFixed(2)} \${previewData.currentCurrency}\`, color: 'red', alignment: 'right', width: 'auto' }
+                                                ]
+                                            } : null,
+                                            {
+                                                columns: [
+                                                    { text: t.totalText, alignment: 'right', bold: true, fontSize: 12, margin: [0, 5, 0, 0] },
+                                                    { text: \`\${previewData.finalTotal.toFixed(2)} \${previewData.currentCurrency}\`, alignment: 'right', bold: true, fontSize: 12, margin: [0, 5, 0, 0], width: 'auto' }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                styles: {
+                                    title: { fontSize: 18, bold: true, color: '#009688' },
+                                    companyName: { fontSize: 14, bold: true, color: '#009688' },
+                                    info: { fontSize: 10, alignment: 'right' },
+                                    date: { fontSize: 10, margin: [0, 5, 0, 0] },
+                                    tableHeader: { bold: true, fontSize: 10, fillColor: '#e5e7eb', alignment: 'center' },
+                                    tableCell: { fontSize: 9 }
+                                },
+                                defaultStyle: { fontSize: 10 }
+                            };
+                            
+                            pdfMake.createPdf(docDefinition).download(\`\${t.quotePreviewTitle}_\${quoteName}.pdf\`);
+                        }
                         
                         function renderPreview(lang) {
                             const t = previewData.translations[lang];
@@ -1897,56 +2190,6 @@
                             document.getElementById('preview-language-label').textContent = \`\${t.languageLabel}\`;
                         }
                         
-                        async function generatePdfBlob(lang) {
-                            const { jsPDF } = window.jspdf;
-                            const doc = new jsPDF();
-                            
-                            const t = previewData.translations[lang];
-                            
-                            if (previewData.companyLogo) { try { doc.addImage(previewData.companyLogo, 'PNG', 15, 15, 40, 15); } catch(e) { console.error("PDF Logo Error:", e); } }
-                            doc.setFontSize(20); doc.text(previewData.companyName || 'EUROPLAST', 15, 40);
-                            doc.setFontSize(10); 
-                            doc.text(previewData.companyWebsite || '', 15, 45);
-                            doc.text(previewData.companyEmail || '', 15, 50);
-                            doc.text(previewData.companyPhone || '', 15, 55);
-
-                            doc.setFontSize(16); doc.text(t.quoteHeading, 200, 20, { align: 'right' });
-                            doc.setFontSize(10); doc.text(new Date().toLocaleDateString(lang), 200, 26, { align: 'right' });
-                            
-                            doc.text(t.clientNameLabel, 200, 35, { align: 'right' });
-                            doc.text(previewData.clientName || '-', 200, 40, { align: 'right' });
-                            doc.text(previewData.clientAddress || '-', 200, 45, { align: 'right' });
-                            doc.text(previewData.clientPhone || '-', 200, 50, { align: 'right' });
-
-                            const tableColumn = [t.tableProductTh, t.tableSizeTh, t.tableAreaTh, t.tableQuantityTh, t.tablePriceTh, t.tableSubtotalTh];
-                            const tableRows = previewData.quoteItems.map(item => [ 
-                                { content: (item.product[lang] || item.product.hu) + '\\n' + item.width + 'x' + item.height + ' mm', styles: { fontSize: 8 } },
-                                { content: item.billableArea.toFixed(2), styles: { halign: 'center' } },
-                                { content: item.quantity, styles: { halign: 'center' } },
-                                { content: item.unitPrice.toFixed(2) + ' ' + previewData.currentCurrency, styles: { halign: 'right' } },
-                                { content: item.price.toFixed(2) + ' ' + previewData.currentCurrency, styles: { halign: 'right' } }
-                            ]);
-                            doc.autoTable({ 
-                                head: [tableColumn], body: tableRows, startY: 70,
-                                headStyles: { fillColor: [229, 231, 235], textColor: [31, 41, 55] },
-                                styles: { cellPadding: 2, fontSize: 9 }
-                            });
-
-                            let finalY = doc.autoTable.previous.finalY;
-                            doc.setFontSize(10);
-                            doc.text(\`\${t.subtotalText} \${previewData.subtotal.toFixed(2)} \${previewData.currentCurrency}\`, 200, finalY + 10, { align: 'right' });
-                            if (previewData.discountPercentage > 0) {
-                                doc.setTextColor(220, 53, 69);
-                                doc.text(\`\${t.discountAmountText} (\${previewData.discountPercentage}%): -\${previewData.discountAmount.toFixed(2)} \${previewData.currentCurrency}\`, 200, finalY + 15, { align: 'right' });
-                                doc.setTextColor(0, 0, 0);
-                                finalY += 5;
-                            }
-                            doc.setFontSize(12);
-                            doc.text(\`\${t.totalText} \${previewData.finalTotal.toFixed(2)} \${previewData.currentCurrency}\`, 200, finalY + 22, { align: 'right' });
-                            
-                            return doc.output('blob');
-                        }
-
                         async function generateJpgBlob() {
                             const quoteElement = document.getElementById('quote-preview-content');
                             const canvas = await html2canvas(quoteElement, { scale: 2, useCORS: true, backgroundColor: document.body.classList.contains('dark') ? '#1F2937' : '#FFFFFF' });
@@ -1978,25 +2221,7 @@
                             closeBtn.addEventListener('click', () => window.close());
 
                             pdfBtn.addEventListener('click', async () => {
-                                const lang = langSelect.value;
-                                const t = previewData.translations[lang];
-                                const pdfBlob = await generatePdfBlob(lang);
-                                const file = new File([pdfBlob], \`\${previewData.quoteName}.pdf\`, { type: 'application/pdf' });
-
-                                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                                    try {
-                                        await navigator.share({ title: \`\${t.quotePreviewTitle}: \${previewData.quoteName}\`, files: [file] });
-                                    } catch (err) { console.error("Share failed:", err.message); }
-                                } else {
-                                    const url = URL.createObjectURL(pdfBlob);
-                                    const a = document.createElement('a');
-                                    a.href = url;
-                                    a.download = \`\${previewData.quoteName}.pdf\`;
-                                    document.body.appendChild(a);
-                                    a.click();
-                                    document.body.removeChild(a);
-                                    URL.revokeObjectURL(url);
-                                }
+                                generateQuotePdfFromPreview(langSelect.value);
                             });
 
                             jpgBtn.addEventListener('click', async () => {
@@ -2430,7 +2655,7 @@
             $('#load-quotes-btn').addEventListener('click', () => { const section = $('#load-quote-section'); section.classList.toggle('visible'); if (section.classList.contains('visible')) { renderSavedQuotesList(); } });
             $('#close-load-quote-btn').addEventListener('click', () => $('#load-quote-section').classList.remove('visible'));
             $('#quote-search-input').addEventListener('input', (e) => renderSavedQuotesList(e.target.value));
-            $('#preview-quote-btn').addEventListener('click', generateQuotePreview);
+            $('#preview-quote-btn').addEventListener('click', openQuotePreviewWindow);
 
             $('#quote-items-body').addEventListener('click', (e) => { 
                 const button = e.target.closest('button');
@@ -2533,26 +2758,34 @@
                 return;
             }
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({ orientation: 'landscape' });
-            
             const quoteName = $('#quote-name').value.trim() || 'Névtelen';
             const clientName = $('#client-name').value.trim();
+            const clientAddress = $('#client-address').value.trim();
+            const clientPhone = $('#client-phone').value.trim();
+            const companyName = localStorage.getItem('companyName') || 'EUROPLAST';
+            const companyLogo = localStorage.getItem('companyLogo');
+            const companyWebsite = localStorage.getItem('companyWebsite') || '';
+            const companyEmail = localStorage.getItem('companyEmail') || '';
+            const companyPhone = localStorage.getItem('companyPhone') || '';
+            
+            const clientDetails = [];
+            if (clientName) clientDetails.push({ text: `${t.clientNameLabel} ${clientName}` });
+            if (clientAddress) clientDetails.push({ text: `${t.clientAddressLabel} ${clientAddress}` });
+            if (clientPhone) clientDetails.push({ text: `${t.clientPhoneLabel} ${clientPhone}` });
 
-            doc.setFontSize(18);
-            doc.text(`${t.orderPdfTitle} - ${quoteName}`, 15, 20);
-            doc.setFontSize(12);
-            if (clientName) {
-                 doc.text(`${t.clientNameLabel} ${clientName}`, 15, 28);
+            const companyDetails = [];
+            if (companyLogo) {
+                companyDetails.push({ image: companyLogo, width: 80, alignment: 'right', margin: [0, 0, 0, 5] });
             }
-            doc.setFontSize(10);
-            doc.text(`${new Date().toLocaleDateString(lang)}`, 282, 20, { align: 'right' }); 
+            companyDetails.push({ text: companyName, style: 'companyName', alignment: 'right' });
+            if (companyWebsite) companyDetails.push({ text: companyWebsite, style: 'info', alignment: 'right' });
+            if (companyEmail) companyDetails.push({ text: companyEmail, style: 'info', alignment: 'right' });
+            if (companyPhone) companyDetails.push({ text: companyPhone, style: 'info', alignment: 'right' });
+            companyDetails.push({ text: new Date().toLocaleDateString(lang), style: 'date', alignment: 'right' });
 
-
-            const tableColumn = [t.orderTableProductTh, t.orderTableSizeTh, t.orderTableDetailsTh, t.orderTableColorTh, t.orderTableQuantityTh];
-            const tableRows = blinds.map(item => {
+            const tableBody = blinds.map(item => {
                 const names = t.productNames;
-                const detailsText = getBlindOrderDetailsString(item, lang, true, true); // for PDF, exclude division
+                const detailsText = getBlindOrderDetailsString(item, lang, true, true);
                 const colorText = names[item.options.color] || item.options.color;
                 const productDescription = `${names[item.options.type]}`;
 
@@ -2563,23 +2796,68 @@
                 }
 
                 return [
-                    productDescription,
-                    sizeText,
-                    detailsText,
-                    colorText,
-                    item.quantity
+                    { text: productDescription, style: 'tableCell' },
+                    { text: sizeText, style: 'tableCell' },
+                    { text: detailsText, style: 'tableCell' },
+                    { text: colorText, style: 'tableCell' },
+                    { text: item.quantity.toString(), style: 'tableCell' }
                 ];
             });
 
-            doc.autoTable({
-                head: [tableColumn],
-                body: tableRows,
-                startY: 35,
-                headStyles: { fillColor: [0, 150, 136], textColor: [255, 255, 255] },
-                styles: { cellPadding: 2, fontSize: 9, valign: 'middle' }
-            });
-
-            doc.save(`${t.orderPdfTitle}_${quoteName}.pdf`);
+            const docDefinition = {
+                pageSize: 'A4',
+                pageOrientation: 'landscape',
+                pageMargins: [ 40, 40, 40, 40 ],
+                info: {
+                    title: `${t.orderPdfTitle} - ${quoteName}`,
+                    author: companyName
+                },
+                header: function() {
+                    return {
+                        columns: [
+                            { stack: clientDetails, width: '50%', margin: [40, 30, 0, 0] },
+                            { stack: companyDetails, width: '50%', alignment: 'right', margin: [0, 30, 40, 0] }
+                        ]
+                    };
+                },
+                content: [
+                    { text: `${t.orderPdfTitle} - ${quoteName}`, style: 'title', margin: [0, 0, 0, 20] },
+                    {
+                        table: {
+                            headerRows: 1,
+                            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+                            body: [
+                                [
+                                    { text: t.orderTableProductTh, style: 'tableHeader' },
+                                    { text: t.orderTableSizeTh, style: 'tableHeader' },
+                                    { text: t.orderTableDetailsTh, style: 'tableHeader' },
+                                    { text: t.orderTableColorTh, style: 'tableHeader' },
+                                    { text: t.orderTableQuantityTh, style: 'tableHeader' }
+                                ],
+                                ...tableBody
+                            ]
+                        },
+                        layout: {
+                            hLineWidth: function (i, node) { return (i === 0 || i === node.table.body.length) ? 2 : 1; },
+                            vLineWidth: function (i, node) { return (i === 0 || i === node.table.widths.length) ? 2 : 1; },
+                            hLineColor: function (i, node) { return (i === 0 || i === node.table.body.length) ? '#009688' : '#e5e7eb'; },
+                            vLineColor: function (i, node) { return (i === 0 || i === node.table.widths.length) ? '#009688' : '#e5e7eb'; },
+                            fillColor: function (rowIndex, node, columnIndex) { return (rowIndex % 2 === 0) ? '#f3f4f6' : null; }
+                        }
+                    }
+                ],
+                styles: {
+                    title: { fontSize: 18, bold: true, color: '#009688', alignment: 'center' },
+                    companyName: { fontSize: 14, bold: true, color: '#009688' },
+                    info: { fontSize: 10, alignment: 'right' },
+                    date: { fontSize: 10, margin: [0, 5, 0, 0] },
+                    tableHeader: { bold: true, fontSize: 10, fillColor: '#e5e7eb', alignment: 'center' },
+                    tableCell: { fontSize: 9 }
+                },
+                defaultStyle: { fontSize: 10 }
+            };
+            
+            pdfMake.createPdf(docDefinition).download(`${t.orderPdfTitle}_${quoteName}.pdf`);
         }
 
         function getBlindOrderDetailsString(item, lang, forPdf = false, excludeDivision = false) {
@@ -2644,5 +2922,3 @@
     </script>
 </body>
 </html>
-
-
