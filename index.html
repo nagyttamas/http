@@ -1909,7 +1909,7 @@
         function openQuotePreviewWindow() {
             if (quoteItems.length === 0) { showToast(translations[currentLanguage].noItemsInQuote, 'error'); return; }
             
-            const defaultPreviewLanguage = 'hu'; // Changed to Hungarian for consistency
+            const defaultPreviewLanguage = currentLanguage; 
 
             const previewData = { 
                 quoteItems,
@@ -2937,6 +2937,7 @@
     </script>
 </body>
 </html>
+
 
 
 
