@@ -1271,24 +1271,17 @@
 
         function toggleTheme() {
             const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme); // User override
             applyTheme(newTheme);
         }
 
         function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                applyTheme(savedTheme); // Apply user's saved preference
-            } else {
-                // Otherwise, follow system preference
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                applyTheme(systemPrefersDark ? 'dark' : 'light');
-            }
+            // Mindig a rendszer beállítását követi betöltéskor
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(systemPrefersDark ? 'dark' : 'light');
 
+            // Mindig frissít, ha a rendszer beállítása változik
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-                if (!localStorage.getItem('theme')) {
-                    applyTheme(event.matches ? 'dark' : 'light');
-                }
+                applyTheme(event.matches ? 'dark' : 'light');
             });
         }
         
@@ -2946,6 +2939,7 @@
     </script>
 </body>
 </html>
+
 
 
 
