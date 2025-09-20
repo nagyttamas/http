@@ -460,6 +460,15 @@
             opacity: 1;
         }
 
+        /* Jobb görgetési élmény tableteken a fülek számára */
+        .overflow-x-auto {
+            -webkit-overflow-scrolling: touch; /* Sima görgetés iOS-en */
+            scrollbar-width: none; /* Firefox scrollbar elrejtése */
+        }
+        .overflow-x-auto::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera scrollbar elrejtése */
+        }
+
         /* --- Eszköz-specifikus rács elrendezések --- */
         .form-grid {
             display: grid;
@@ -473,7 +482,7 @@
                 gap: 1.75rem;
             }
             #blinds-content .form-grid { grid-template-columns: repeat(3, 1fr); }
-            #screens-content .form-grid { grid-template-columns: repeat(2, 1fr); }
+            #screens-content .form-grid { grid-template-columns: repeat(3, 1fr); } /* Módosítva 3 oszlopra */
             #settings-content .form-grid { grid-template-columns: repeat(2, 1fr); }
             #quote-details-content .form-grid { grid-template-columns: repeat(2, 1fr); }
         }
@@ -490,7 +499,7 @@
                 font-size: 2rem;
             }
             .tab-button {
-                padding: 0.75rem 1.25rem;
+                padding: 0.85rem 1.5rem; /* Enyhén nagyobb gombok */
                 font-size: 1rem;
             }
             .input-group label {
@@ -519,6 +528,9 @@
             }
             .quote-summary #discount-percentage {
                  padding: 0.5rem;
+            }
+            .modal-content {
+                max-width: 550px; /* Szélesebb modális ablak tableten */
             }
         }
     </style>
@@ -2939,6 +2951,7 @@
     </script>
 </body>
 </html>
+
 
 
 
