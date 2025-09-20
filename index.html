@@ -897,7 +897,7 @@
         }
         
         // A PIN kódot itt lehet beállítani.
-        const PIN_CODE = "1234";
+        const PIN_CODE = "2009";
 
         function promptForPin() {
             return new Promise((resolve) => {
@@ -1792,15 +1792,18 @@
             const finalTotal = subtotal - discountAmount;
 
             const clientDetails = [];
-            if (clientName) clientDetails.push({ text: `${t.clientNameLabel} ${clientName}` });
-            if (clientAddress) clientDetails.push({ text: `${t.clientAddressLabel} ${clientAddress}` });
-            if (clientPhone) clientDetails.push({ text: `${t.clientPhoneLabel} ${clientPhone}` });
+            if (clientName) clientDetails.push({ text: `${t.clientNameLabel} ${clientName}`, alignment: 'right' });
+            if (clientAddress) clientDetails.push({ text: `${t.clientAddressLabel} ${clientAddress}`, alignment: 'right' });
+            if (clientPhone) clientDetails.push({ text: `${t.clientPhoneLabel} ${clientPhone}`, alignment: 'right' });
 
             const companyDetails = [];
-            if (companyName) companyDetails.push({ text: companyName, style: 'companyName', alignment: 'right' });
-            if (companyWebsite) companyDetails.push({ text: companyWebsite, style: 'info', alignment: 'right' });
-            if (companyEmail) companyDetails.push({ text: companyEmail, style: 'info', alignment: 'right' });
-            if (companyPhone) companyDetails.push({ text: companyPhone, style: 'info', alignment: 'right' });
+            if (companyLogo) {
+                companyDetails.push({ image: companyLogo, width: 80, margin: [0, 0, 0, 10] });
+            }
+            if (companyName) companyDetails.push({ text: companyName, style: 'companyName' });
+            if (companyWebsite) companyDetails.push({ text: companyWebsite, style: 'info' });
+            if (companyEmail) companyDetails.push({ text: companyEmail, style: 'info' });
+            if (companyPhone) companyDetails.push({ text: companyPhone, style: 'info' });
 
             const tableBody = quoteItems.map(item => {
                 const names = t.productNames;
@@ -1835,8 +1838,8 @@
                 content: [
                     {
                         columns: [
-                            { stack: clientDetails, width: '50%', margin: [0, 40, 0, 10] },
-                            { stack: companyDetails, width: '50%', alignment: 'right', margin: [0, 40, 0, 10] }
+                            { stack: companyDetails, width: '50%', margin: [0, 40, 0, 10] },
+                            { stack: clientDetails, width: '50%', margin: [0, 40, 0, 10] }
                         ]
                     },
                     {
@@ -2003,15 +2006,18 @@
                             const companyLogo = previewData.companyLogo;
 
                             const clientDetails = [];
-                            if (previewData.clientName) clientDetails.push({ text: \`\${t.clientNameLabel} \${previewData.clientName}\` });
-                            if (previewData.clientAddress) clientDetails.push({ text: \`\${t.clientAddressLabel} \${previewData.clientAddress}\` });
-                            if (previewData.clientPhone) clientDetails.push({ text: \`\${t.clientPhoneLabel} \${previewData.clientPhone}\` });
+                            if (previewData.clientName) clientDetails.push({ text: \`\${t.clientNameLabel} \${previewData.clientName}\`, alignment: 'right' });
+                            if (previewData.clientAddress) clientDetails.push({ text: \`\${t.clientAddressLabel} \${previewData.clientAddress}\`, alignment: 'right' });
+                            if (previewData.clientPhone) clientDetails.push({ text: \`\${t.clientPhoneLabel} \${previewData.clientPhone}\`, alignment: 'right' });
 
                             const companyDetails = [];
-                            if (companyName) companyDetails.push({ text: companyName, style: 'companyName', alignment: 'right' });
-                            if (previewData.companyWebsite) companyDetails.push({ text: previewData.companyWebsite, style: 'info', alignment: 'right' });
-                            if (previewData.companyEmail) companyDetails.push({ text: previewData.companyEmail, style: 'info', alignment: 'right' });
-                            if (previewData.companyPhone) companyDetails.push({ text: previewData.companyPhone, style: 'info', alignment: 'right' });
+                            if (companyLogo) {
+                                companyDetails.push({ image: companyLogo, width: 80, margin: [0, 0, 0, 10] });
+                            }
+                            if (companyName) companyDetails.push({ text: companyName, style: 'companyName' });
+                            if (previewData.companyWebsite) companyDetails.push({ text: previewData.companyWebsite, style: 'info' });
+                            if (previewData.companyEmail) companyDetails.push({ text: previewData.companyEmail, style: 'info' });
+                            if (previewData.companyPhone) companyDetails.push({ text: previewData.companyPhone, style: 'info' });
 
                             const tableBody = previewData.quoteItems.map(item => {
                                 const productDescription = \`\${item.product[lang] || item.product.hu}\`;
@@ -2033,16 +2039,20 @@
                                     author: companyName
                                 },
                                 header: function() {
-                                    return {
+                                     return {
                                         columns: [
-                                            { stack: clientDetails, margin: [40, 30, 0, 0] },
-                                            { stack: companyDetails, margin: [0, 30, 40, 0] }
+                                            { text: \`\${t.quotePreviewTitle}: \${quoteName}\`, style: 'title', margin: [40, 30, 0, 0] },
+                                            { text: new Date().toLocaleDateString(lang), style: 'info', alignment: 'right', margin: [0, 30, 40, 0] }
                                         ]
                                     };
                                 },
                                 content: [
-                                    { text: \`\${t.quotePreviewTitle}: \${quoteName}\`, style: 'title', margin: [0, 0, 0, 20] },
-                                    { text: new Date().toLocaleDateString(lang), style: 'date', alignment: 'right', margin: [0, 0, 0, 10] },
+                                     {
+                                        columns: [
+                                            { stack: companyDetails, width: '50%', margin: [0, 20, 0, 10] },
+                                            { stack: clientDetails, width: '50%', margin: [0, 20, 0, 10] }
+                                        ]
+                                    },
                                     {
                                         table: {
                                             headerRows: 1,
@@ -2769,19 +2779,19 @@
             const companyPhone = localStorage.getItem('companyPhone') || '';
             
             const clientDetails = [];
-            if (clientName) clientDetails.push({ text: `${t.clientNameLabel} ${clientName}` });
-            if (clientAddress) clientDetails.push({ text: `${t.clientAddressLabel} ${clientAddress}` });
-            if (clientPhone) clientDetails.push({ text: `${t.clientPhoneLabel} ${clientPhone}` });
+            if (clientName) clientDetails.push({ text: `${t.clientNameLabel} ${clientName}`, alignment: 'right' });
+            if (clientAddress) clientDetails.push({ text: `${t.clientAddressLabel} ${clientAddress}`, alignment: 'right' });
+            if (clientPhone) clientDetails.push({ text: `${t.clientPhoneLabel} ${clientPhone}`, alignment: 'right' });
 
             const companyDetails = [];
             if (companyLogo) {
-                companyDetails.push({ image: companyLogo, width: 80, alignment: 'right', margin: [0, 0, 0, 5] });
+                companyDetails.push({ image: companyLogo, width: 80, margin: [0, 0, 0, 5] });
             }
-            companyDetails.push({ text: companyName, style: 'companyName', alignment: 'right' });
-            if (companyWebsite) companyDetails.push({ text: companyWebsite, style: 'info', alignment: 'right' });
-            if (companyEmail) companyDetails.push({ text: companyEmail, style: 'info', alignment: 'right' });
-            if (companyPhone) companyDetails.push({ text: companyPhone, style: 'info', alignment: 'right' });
-            companyDetails.push({ text: new Date().toLocaleDateString(lang), style: 'date', alignment: 'right' });
+            companyDetails.push({ text: companyName, style: 'companyName' });
+            if (companyWebsite) companyDetails.push({ text: companyWebsite, style: 'info'});
+            if (companyEmail) companyDetails.push({ text: companyEmail, style: 'info' });
+            if (companyPhone) companyDetails.push({ text: companyPhone, style: 'info' });
+
 
             const tableBody = blinds.map(item => {
                 const names = t.productNames;
@@ -2814,14 +2824,19 @@
                 },
                 header: function() {
                     return {
-                        columns: [
-                            { stack: clientDetails, width: '50%', margin: [40, 30, 0, 0] },
-                            { stack: companyDetails, width: '50%', alignment: 'right', margin: [0, 30, 40, 0] }
+                         columns: [
+                           { text: `${t.orderPdfTitle}`, style: 'title', alignment: 'left', margin: [40, 30, 0, 0] },
+                           { text: new Date().toLocaleDateString(lang), style: 'date', alignment: 'right', margin: [0, 30, 40, 0] }
                         ]
                     };
                 },
                 content: [
-                    { text: `${t.orderPdfTitle} - ${quoteName}`, style: 'title', margin: [0, 0, 0, 20] },
+                    {
+                        columns: [
+                           { stack: companyDetails, width: '50%', margin: [0, 0, 0, 20] },
+                           { stack: clientDetails, width: '50%', margin: [0, 0, 0, 20] }
+                        ]
+                    },
                     {
                         table: {
                             headerRows: 1,
@@ -2922,3 +2937,6 @@
     </script>
 </body>
 </html>
+
+
+
